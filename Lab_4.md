@@ -122,6 +122,7 @@ ___
 Please use the signal names as shown in the block diagram. This allows TAs and myself to help you debug your design easier without having discover your naming convention.
 
 <br>
+
 ___
 
 ## Stretched Goal
