@@ -5,7 +5,7 @@
 ---
 ## Lab 4 - A Reduced RISC-V CPU
 
-**_Peter Cheung, V1.0 - 16 Nov 2022_**
+**_Peter Cheung, V1.1 - 17 Nov 2022_**
 
 ---
 
@@ -29,11 +29,11 @@ ___
 
 Working as a team with people you don't know is a challenge. It is often much easier to work on your own.  You are required to work as a team because:
 1. The coursework for this module is too large for one person to complete.
-2. You learn much more from each other provided that the "stronger" student is prepare to teach the "weaker" student - both will benefit, and those in need of help willing to admit and ask.
-3. Github was created mainly to provide a collaboration tool.  You will be force to learn and use Git and Github, which is part of the education goal of this module.
+2. You learn much more from each other provided that the "stronger" student is prepare to teach the "weaker" student - both will benefit provided that those need help are willing to admit and ask.
+3. Github was created mainly to provide a collaboration tool.  You will be forced to learn how to use Git and Github, which is part of the educational goals of this module.
 4. It may improve your social skills.
    
->Introduce yourself to each other by doing a 5 minutes each one-on-one chat. This will take only 15 minutes, but it is important to do this a this stage.
+>Introduce yourself to each other by doing a 5 minutes each one-on-one chat. This will take only 15 minutes, but it is important to do this at this stage.
 
 <br>
 
@@ -44,7 +44,7 @@ ___
 ___
 
 
->Choose among the Team a Repo Master, who is reponsible create the repo and  make sure that all other team member learn how to do it themselves if needed. All member should also learn how to branch, pull, push and commit to the repo.  Discuss among yourself an initial structure of the repo and a set of common practices that your Team should follow. 
+>Choose among the Team a Repo Master, who is reponsible to create the repo and  make sure that all other team member learn how to do it themselves if needed. All member should also learn how to branch, pull, push and commit to the repo.  Discuss among yourself an initial structure of the repo and a set of common practices that your Team should follow. 
 
 You can find a very helpful guide on how to set up your repo in Github [here](https://docs.github.com/en/get-started/quickstart/create-a-repo "How to create a repo").
 
@@ -65,7 +65,7 @@ Your team task for Lab 4 is to design a *__SINGLE CYCLE__* CPU that executes two
 
 <p align="center"> <img src="images/code1.jpg" /> </p> <br>
 
-This program performs the same function as the simple 8-bit binary counter you design in Lab 1 (i.e. counter.sv).  Note that this uses ONLY two instructions: "addi" and "bne". It demonstrates how "reduced" the RISC-V ISA is!  However, this also makes the assembly program hard to read and understand. One can translate these instructions to pseudoinstructions, which make the program much easier to read. (I used the online assembler [here](https://riscvasm.lucasteske.dev/).). The equivalent asssembly code with pseudoinstruction is:
+This program performs the same function as the simple 8-bit binary counter you designed in Lab 1 (i.e. counter.sv).  Note that this uses ONLY two instructions: "addi" and "bne". It demonstrates how "reduced" the RISC-V ISA is!  However, this also makes the assembly program hard to read and understand. One can translate these instructions to pseudoinstructions, which makes the program much easier to read. (I used the online assembler [here](https://riscvasm.lucasteske.dev/) to do this). The equivalent asssembly code with pseudoinstructions is:
 
 <p align="center"> <img src="images/pseudo.jpg" /> </p><BR>
 
@@ -95,14 +95,14 @@ To help you progress quickly, here is the top-level block diagram for this CPU. 
 
 ___
 
-## How to divide the job into individual components
+## Divide the task into individual components
 
 ___
 
-In team project, there is always a danger that a team member is too keen and able, and wanting so much the team to succeed that they "hog" the project and do everything.  Or a team member is trying to do as little as possible and just be a passenger.  Therefore, the task in this Lab is divided into four separate components as shaded blocks, one for each team member as followings:
-1. Program Counter and related adders, and the instruction memory.
+In a team project, there is always a danger that a team member is too keen and able, and wanting so much the team to succeed that they "hog" the project and do everything.  Or a team member is trying to do as little as possible and just be a passenger.  Therefore, the task in this Lab is divided into four separate components as shaded blocks, one for each team member as followings:
+1. Program Counter and related adders.
 2. The Register File, ALU and the related MUX.
-3. The Control Unit and the Sign-extension Unit.
+3. The Control Unit, the Sign-extension Unit and the instruction memory.
 4. The testbench and verification of the design working via gtkWave and Vbuddy (where appropriate).
 
 >Discuss and agree among yourselves who does what.  
@@ -112,14 +112,14 @@ In team project, there is always a danger that a team member is too keen and abl
 
 ___
 
-## Define interface of all modules
+## Define interfaces for all modules
 
 ___
 
 >Each member should define the interface signals of the modules for which they are responsible. The test person should create a test plan. 
 <br>
 
-Please use the signal names as shown in the block diagram. This allows TAs and myself to help you debug your design easier without having discover your naming convention.
+Please use the signal names as shown in the block diagram. This allows TAs and myself to help you debug your design easier without having  to discover your naming convention.
 
 <br>
 
@@ -129,7 +129,7 @@ ___
 
 ___
 
->If your team has time, you can modify your design to include the "lw" instruction.  You then need to change the microarchitecture to add a block of data memory (separate from program memory), into which you store a single cycle of sine coefficents. Replace line 7 of the program with:
+>If your team have time, you can modify your design to include the "lw" instruction.  You will need to change the microarchitecture to add a block of data memory (separate from program memory), into which you store a single cycle of sine coefficents. Replace line 7 of the program with:
 
 ```brainfuck
       lw    a0, 0(a1)
@@ -145,10 +145,10 @@ ___
 
 ___
 
-Note that Lab 4 is designed to be a formative assessment exercise.  The deliverables here are designed to help you learn and to self-assess how you and your team is doing.  We will also provide informal feedback to you during Lab Sessions.  This will NOT contribute towards the final coursework marks.
+Note that Lab 4 is designed to be a formative assessment exercise.  The deliverables here are designed to help you learn and to self-assess how you and your team are doing.  I and the TAs will also provide informal feedback to you during Lab Sessions.  **This will NOT contribute towards the final coursework marks**.
 
 >On the repo for your team, you should have:
 >1. A README.md that show evidences of the CPU working properly with the program.
 >2. A short narrative to state the challenges you encountered as a team. 
->3. Comments about any design decisions you made that are not obvious and reasons why.
+>3. Comments about any design decisions you made that are not obvious.
 >4. A reflection on what you might do differently if you were to start again.
