@@ -50,7 +50,7 @@ You can find a very helpful guide on how to set up your repo in Github [here](ht
 
 The Repo Master should now create a repo for the team with the name **TeamXX**, where 'XX" is the team number provided by me in the Teams List.  
 
-The Repo Master must then give permission to all team members AND ME, so that every member them can access the repo, and I can see what your team is doing.  I will be checking on the progress of all teams by the end of next week on Lab 4.
+The Repo Master must then give permission to all team members AND ME, so that every member can access the repo, and I can see what your team is doing.  I will be checking on the progress of all teams by the end of next week on Lab 4.
 
 ___
 
