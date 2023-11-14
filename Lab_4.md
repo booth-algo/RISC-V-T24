@@ -5,7 +5,7 @@
 ---
 ## Lab 4 - A Reduced RISC-V CPU
 
-**_Peter Cheung, V1.1 - 17 Nov 2022_**
+**_Peter Cheung, V1.1 - 14 Nov 2023_**
 
 ---
 
@@ -47,6 +47,10 @@ ___
 >Choose among the Team a Repo Master, who is reponsible to create the repo and  make sure that all other team member learn how to do it themselves if needed. All member should also learn how to branch, pull, push and commit to the repo.  Discuss among yourself an initial structure of the repo and a set of common practices that your Team should follow. 
 
 You can find a very helpful guide on how to set up your repo in Github [here](https://docs.github.com/en/get-started/quickstart/create-a-repo "How to create a repo").
+
+The Repo Master should now create a REPO for the team with the name TeamXX, where 'XX" is the team number provided by me in the Teams List.  
+
+The Repo Master must then give permission to all team members AND ME, so that every member them can access the repo, and I can see what your team is doing.  I will be checking on the progress of all teams by the end of next week on Lab 4.
 
 ___
 
