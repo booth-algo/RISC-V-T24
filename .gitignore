@@ -1,0 +1,4 @@
+.vscode
+obj_dir
+logs
+*.o
