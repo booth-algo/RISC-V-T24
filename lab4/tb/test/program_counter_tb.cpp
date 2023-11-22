@@ -3,23 +3,23 @@
  *  Author: William Huynh <wh1022@ic.ac.uk>
 */
 
-#include "Vprogram_counter.h"
+#include "Vdut.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "gtest/gtest.h"
 
 #define MAX_SIM_CYCLES  10000
-
+#define NAME            "program_counter"
 
 class PCTestbench : public ::testing::Test
 {
 protected:
-    Vprogram_counter* top;
+    Vdut* top;
 
     void SetUp() override
     {
         // Init top verilog instance
-        top = new Vprogram_counter;
+        top = new Vdut;
 
         // Init trace dump
         Verilated::traceEverOn(true);
@@ -132,7 +132,9 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     Verilated::mkdir("logs");
     auto res = RUN_ALL_TESTS();
-    VerilatedCov::write("logs/coverage_program_counter.dat");
+    VerilatedCov::write(
+        ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
+    );
 
     return res;
 }
