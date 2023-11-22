@@ -1,7 +1,7 @@
 module controlunit #(
     parameter DATA_WIDTH = 32
 ) (
-   input logic [DATA_WIDTH-1:0] instr,
+   input logic [6:0] op,
    input logic EQ, //not sure what this is for
    output logic ALUctrl, //this missing
    output logic ALUsrc, //ok
@@ -9,8 +9,6 @@ module controlunit #(
    output logic PCsrc, //this missing
    output logic RegWrite //ok
 );
-
-logic [6:0] op;
 
 always_comb begin
     case(op)
