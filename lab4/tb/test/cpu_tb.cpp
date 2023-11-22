@@ -3,13 +3,12 @@
  *  Author: William Huynh <wh1022@ic.ac.uk>
 */
 
-#include "base_testbench.h"
-
+#include "sync_testbench.h"
 
 #define NAME            "cpu"
 
 
-class CpuTestbench : public BaseTestbench
+class CpuTestbench : public SyncTestbench
 {
 protected:
     void initializeInputs() override
