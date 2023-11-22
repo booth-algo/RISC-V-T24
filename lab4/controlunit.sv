@@ -35,6 +35,7 @@ always_comb begin
                     ALUctrl = 0;
                     RegWrite = 0;
                 end
+            endcase
         end
 
         7'b1100011: begin
@@ -54,6 +55,7 @@ always_comb begin
                     ALUctrl = 0;
                     RegWrite = 0;
                 end
+            endcase
         end
 
         default: begin
