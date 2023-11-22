@@ -18,7 +18,6 @@ always_comb begin
             RegWrite = 1;
             ImmSrc = 2'b00;
             ALUSrc = 1;
-            Branch = 0;
             ALUOp = 2'b00;
         end
 
@@ -26,7 +25,6 @@ always_comb begin
             RegWrite = 0;
             ImmSrc = 2'b01;
             ALUSrc = 1;
-            Branch = 0;
             ALUOp = 2'b00;
         end
 
@@ -34,7 +32,6 @@ always_comb begin
             RegWrite = 1;
             //ImmSrc = 2'b00;
             ALUSrc = 0;
-            Branch = 0;
             ALUOp = 2'b10;
         end
 
@@ -42,8 +39,14 @@ always_comb begin
             RegWrite = 0;
             ImmSrc = 2'b10;
             ALUSrc = 0;
-            Branch = 1;
             ALUOp = 2'b01;
+        end
+
+        default: begin
+            RegWrite = 0;
+            ImmSrc = 2'b10;
+            ALUSrc = 0;
+            ALUOp = 2'b00;
         end
     endcase
 end
