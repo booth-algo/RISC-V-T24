@@ -25,7 +25,7 @@ protected:
         Verilated::traceEverOn(true);
         tfp = new VerilatedVcdC;
         top->trace(tfp, 99);
-        tfp->open("waveform.vcd");
+        tfp->open("logs/waveform.vcd");
 
         initializeInputs();
     }
@@ -163,9 +163,9 @@ int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);
-    auto res = RUN_ALL_TESTS();
     Verilated::mkdir("logs");
-    VerilatedCov::write("logs/coverage.dat");
+    auto res = RUN_ALL_TESTS();
+    VerilatedCov::write("logs/coverage_cpu.dat");
 
     return res;
 }
