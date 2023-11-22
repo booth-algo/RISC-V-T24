@@ -3,79 +3,84 @@ module cpu #(
 )(
     input logic clk,
     input logic rst,
-    input logic PCsrc,
-    input logic [WIDTH-1:0] ImmOp,
-    input logic ALUop1,
-    input logic ALUop2,
-    input logic ALUsrc,
-    input logic AD1,
-    input logic AD2,
-    input logic AD3,
-    input logic WE3,
-    input logic WD3, 
-    output logic [WIDTH-1:0] PC,
-    output logic ALUout,
-    output logic EQ,
     output logic a0,
-    output logic RD1,
-    output logic RD2
 );
+    // Program counter
+    logic PCsrc;
+    logic [WIDTH-1:0] ImmOp;
 
-    // Declaration of internal wires to interconnect submodules
-    logic [31:0] rs1;
-    logic [31:0] rs2;
-    logic [31:0] rd;
-    logic [31:0] RegWrite;
-    logic [31:0] regOp2;
-    logic [31:0] ALUop1;
-    logic [31:0] ALUop2;
-    logic [31:0] ALUsrc; // should this be here on in the module declaration???
+    // ALU
+    logic ALUop1;
+    logic ALUctrl;
+    logic regOp2;
+    logic ALUsrc;
+    logic EQ;
+    logic ALUout;
+    logic [WIDTH-1:0] PC;
+
+    // Regfile
+    logic rs1;
+    logic rs2;
+    logic rd;
+    logic RegWrite;
+
+    // Sign Extend
+    logic ImmSrc;
+
+    // Instruction Memory
+    logic [WIDTH-1:0] instr;
 
     program_counter program_counter_inst (
         .clk(clk),
         .rst(rst),
         .PCsrc(PCsrc)
         .ImmOp(ImmOp),
-        .PC(pc)
+        .PC(PC)
     )
     
     alu alu_inst (
         .ALUop1(ALUop1),
-        .ALUop2(ALUop2),
+        // ALUop2 should not be an input based on your design
+        .ALUctrl(ALUctrl),
+        // should not have a clk
+        .regOp2(regOp2),
+        .ImmOp(ImmOp),
         .ALUsrc(ALUsrc),
-        // probably need interconnecting stuff like regOp2, etc.
-        .sum(ALUout),
-        .EQ(EQ)
+        .EQ(EQ),
+        .ALUout(ALUout) // should technically be SUM, not ALUout, but it's fine, we can fix it later
     );
 
     reg_file reg_file_inst (
-        .clk(clk),
-        .rst(rst),
-        .AD1(AD1),
-        .AD2(AD2),
-        .AD3(AD3),
+        // your input and output in your module declaration of "regfile" is inaccurate - you should define by portname, not signal name
+        .AD1(rs1),
+        .AD2(rs2),
+        .AD3(rd),
         .WE3(RegWrite),
-        .WD3(ALUout), // hmmmmmmmmmmm
+        .WD3(ALUout),
+        .RD1(ALUop1),
+        .RD2(regOp2)
     );
 
     instr_mem instr_mem_inst (
+        // similar issue - port name declaration is inaccurate
         .A(PC),
-        .RD(instr) // not declared i think
+        .RD(instr)
     );
 
     control_unit control_unit_inst (
-        .ImmSrc(ImmSrc), // not declared
+        .RegWrite(RegWrite),
         .ALUctrl(ALUctrl),
         .ALUsrc(ALUsrc),
-        .PCsrc(PCsrc),
         .ImmSrc(ImmSrc),
+        .PCsrc(PCsrc),
         .EQ(EQ),
-        .reg_write(reg_write), // a lot not declared
+        .instr(instr)
     );
 
     sign_extend sign_extend_inst (
         .ImmOp(ImmOp),
-        .ImmOpSrc(ImmOpSrc)
+        .ImmOpSrc(ImmSrc),
+        .instr(instr)
     );
 
 endmodule
