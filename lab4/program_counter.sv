@@ -10,11 +10,11 @@ module program_counter #(
     
     logic [WIDTH-1:0] next_PC;
 
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk) begin
         PC <= rst ? 32'h0 : next_PC;
     end
 
-    always_comb @(*) begin
+    always_comb begin
         if (PCsrc)
             next_PC = PC + ImmOp;
         else
