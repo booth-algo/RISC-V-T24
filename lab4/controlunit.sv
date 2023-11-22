@@ -29,7 +29,11 @@ always_comb begin
                 end
 
                 default: begin
-                    jnec;
+                    PCsrc = 0;
+                    ImmSrc = 2'b00;
+                    ALUSrc = 1;
+                    ALUctrl = 0;
+                    RegWrite = 0;
                 end
         end
 
@@ -44,7 +48,11 @@ always_comb begin
                 end
 
                 default: begin
-                    ine;
+                    PCsrc = 0;
+                    ImmSrc = 2'b10;
+                    ALUSrc = 1;
+                    ALUctrl = 0;
+                    RegWrite = 0;
                 end
         end
 
@@ -52,7 +60,8 @@ always_comb begin
             RegWrite = 0;
             ImmSrc = 2'b10;
             ALUSrc = 0;
-            ALUOp = 2'b00;
+            ALUctrl = 0;
+            PCsrc = 0;
         end
     endcase
 end
