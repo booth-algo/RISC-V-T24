@@ -8,7 +8,9 @@ module signextend #(
 
 always_comb //non-synchronous
     if (ImmSrc)
-        ImmOp = {{DATA_WIDTH-12{instr[11]}}, instr[11:0]};
+        ImmOp = {{DATA_WIDTH-12{instr[31]}}, instr[31:20]};
+    else
+    ImmOp = {{DATA_WIDTH-12{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0};
     
 endmodule
 
