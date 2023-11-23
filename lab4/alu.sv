@@ -1,16 +1,16 @@
 module alu #( 
     parameter WIDTH = 32
 )( 
-    input logic        ALUop1,      // ALU input 1
-    input logic        ALUctrl,     // select signal for ALU       
-    input logic        regOp2,      
-    input logic        ImmOp,
-    input logic        ALUsrc,
-    output logic       EQ,
-    output logic       ALUout
+    input logic [WIDTH - 1:0]   ALUop1,      // ALU input 1
+    input logic                 ALUctrl,     // select signal for ALU       
+    input logic [WIDTH - 1:0]   regOp2,      
+    input logic [WIDTH - 1:0]   ImmOp,
+    input logic                 ALUsrc,
+    output logic                EQ,
+    output logic [WIDTH - 1:0]  ALUout
 );
 
-logic   ALUop2,      // ALU input 2
+logic   ALUop2[WIDTH - 1:0],      // ALU input 2
 
 always_comb 
     ALUop2 <= ALUsrc ? ImmOp: regOp2; // if instruction is ADDI, ALUsrc = 1
