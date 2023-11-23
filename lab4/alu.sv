@@ -2,9 +2,7 @@ module alu #(
     parameter WIDTH = 32
 )( 
     input logic        ALUop1,      // ALU input 1
-    input logic        ALUop2,      // ALU input 2
-    input logic        ALUctrl,     // select signal for ALU
-    input logic        clk,         
+    input logic        ALUctrl,     // select signal for ALU       
     input logic        regOp2,      
     input logic        ImmOp,
     input logic        ALUsrc,
@@ -12,7 +10,9 @@ module alu #(
     output logic       ALUout
 );
 
-always_ff @ (posedge clk)
+logic   ALUop2,      // ALU input 2
+
+always_comb 
     ALUop2 <= ALUsrc ? ImmOp: regOp2; // if instruction is ADDI, ALUsrc = 1
     if (ALUctrl) begin
          ALUout <= ALUop1 + ALUop2;// addi
