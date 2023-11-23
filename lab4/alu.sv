@@ -22,4 +22,5 @@ always_comb
         if (ALUout == 0'b0) EQ = 1;
         else EQ = 0; // EQ is going to define whether the status of the last operation was 0 or 1. I think this is used for bne, where if the answer to the compare is equal to 0, EQ = 1 
     end
+    
 endmodule

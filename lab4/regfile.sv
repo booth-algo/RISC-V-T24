@@ -16,7 +16,7 @@ logic [WIDTH - 1:0] reg;
 // add 32 registers 
 always_ff @ (posedge clk)
     a0 <= reg[9];
-    RD1 <= reg[AD1;]
+    RD1 <= reg[AD1];
     RD2 <= reg[AD2]; 
     if(WE3 & AD3 != 0'b0) 
         reg[AD3] <= WD3;
