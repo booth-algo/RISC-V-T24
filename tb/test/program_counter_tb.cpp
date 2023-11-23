@@ -40,6 +40,7 @@ TEST_F(PCTestbench, ResetStateTest)
 
 TEST_F(PCTestbench, PCSrcEqualsZeroTest)
 {
+    // No branching
     // Can be random number
     runSimulation(60);
 
