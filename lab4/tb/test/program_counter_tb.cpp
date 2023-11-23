@@ -5,7 +5,7 @@
 
 #include "sync_testbench.h"
 
-#define NAME            "cpu"
+#define NAME            "program_counter"
 
 
 class PCTestbench : public SyncTestbench
@@ -51,6 +51,7 @@ TEST_F(PCTestbench, PCSrcEqualsZeroTest)
     EXPECT_EQ(top->PC, PC + 4);             // Uses byte addressing
 }
 
+
 TEST_F(PCTestbench, PCSrcEqualsOneAndImmSrcWorksTest)
 {
     // Can be random number
@@ -68,7 +69,6 @@ TEST_F(PCTestbench, PCSrcEqualsOneAndImmSrcWorksTest)
 
     EXPECT_EQ(top->PC, branchPC);
 }
-
 
 
 int main(int argc, char **argv)

@@ -1,5 +1,5 @@
 /*
- *  Verifies the results of the program counter and exits with a 0 on success.
+ *  Verifies the results of the instruction memory, exits with a 0 on success.
  *  Author: William Huynh <wh1022@ic.ac.uk>
 */
 
@@ -30,7 +30,9 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     Verilated::mkdir("logs");
     auto res = RUN_ALL_TESTS();
-    VerilatedCov::write("logs/" NAME "_tb.dat");
+    VerilatedCov::write(
+        ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
+    );
 
     return res;
 }
