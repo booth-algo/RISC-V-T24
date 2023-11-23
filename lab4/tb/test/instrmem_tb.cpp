@@ -13,14 +13,15 @@ class InstrMemTestbench : public BaseTestbench
 protected:
     void initializeInputs() override
     {
-        top->pc = 0;
+        top->A = 0;
     }
 };
 
 
 TEST_F(InstrMemTestbench, InstructionExistsTest)
 {    
-    EXPECT_NE(top->instr, 0);
+    top->eval();
+    EXPECT_NE(top->RD, 0);
 }
 
 
