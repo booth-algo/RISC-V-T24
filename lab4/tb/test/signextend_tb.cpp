@@ -176,7 +176,7 @@ TEST_F(SignextendTestbench, ImmSrcEqualsTwoAndPositiveImmediateTest)
                     );
     
     top->instr = instruction;
-    top->ImmSrc = 1;
+    top->ImmSrc = 2;
     
     top->eval();
 
@@ -212,7 +212,7 @@ TEST_F(SignextendTestbench, ImmSrcEqualsTwoAndNegativeImmediateTest)
                     );
     
     top->instr = instruction;
-    top->ImmSrc = 1;
+    top->ImmSrc = 2;
 
     top->eval();
 
