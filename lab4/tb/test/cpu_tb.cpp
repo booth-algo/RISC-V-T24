@@ -3,73 +3,19 @@
  *  Author: William Huynh <wh1022@ic.ac.uk>
 */
 
-#include "Vcpu.h"
-#include "verilated.h"
-#include "verilated_vcd_c.h"
-#include "gtest/gtest.h"
+#include "sync_testbench.h"
 
-#define MAX_SIM_CYCLES  10000
+#define NAME            "cpu"
 
 
-class CpuTestbench : public ::testing::Test
+class CpuTestbench : public SyncTestbench
 {
 protected:
-    Vcpu* top;
-
-    void SetUp() override
-    {
-        // Init top verilog instance
-        top = new Vcpu;
-
-        // Init trace dump
-        Verilated::traceEverOn(true);
-        tfp = new VerilatedVcdC;
-        top->trace(tfp, 99);
-        tfp->open("logs/waveform.vcd");
-
-        initializeInputs();
-    }
-
-    void TearDown() override
-    {
-        top->final();
-        tfp->close();
-
-        delete top;
-        delete tfp;
-    }
-
-    void initializeInputs()
+    void initializeInputs() override
     {
         top->clk = 1;
         top->rst = 0;
     }
-
-    void runSimulation(int num_cycles = 1)
-    {
-        // Run simuation for many clock cycles
-        for (int i = 0; i < num_cycles; ++i)
-        {
-            // dump variables into VCD file and toggle clock
-            for (int clk = 0; clk < 2; ++clk)
-            {
-                tfp->dump(2*ticks + clk);    // picoseconds
-                top->clk = !top->clk;
-                top->eval();
-            }
-
-            ticks++;
-
-            if (Verilated::gotFinish())
-            {
-                exit(0);
-            }
-        }
-    }
-
-private:
-    VerilatedVcdC* tfp;
-    int ticks;
 };
 
 
@@ -165,7 +111,9 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     Verilated::mkdir("logs");
     auto res = RUN_ALL_TESTS();
-    VerilatedCov::write("logs/coverage_cpu.dat");
+    VerilatedCov::write(
+        ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
+    );
 
     return res;
 }

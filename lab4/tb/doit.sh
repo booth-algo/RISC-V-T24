@@ -27,15 +27,16 @@ for file in ${TEST_FOLDER}/*_tb.cpp; do
     verilator   -Wall --coverage --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
                 --exe ${TEST_FOLDER}/${name}_tb.cpp \
-                -o V${name} \
+                --prefix "Vdut" \
+                -o Vdut \
                 -CFLAGS "-fprofile-generate" \
                 -LDFLAGS "-lgtest -lpthread -fprofile-generate" \
 
     # Build C++ project with automatically generated Makefile
-    make -j -C obj_dir/ -f V${name}.mk
+    make -j -C obj_dir/ -f Vdut.mk
 
     # Run executable simulation file
-    ./obj_dir/V${name}
+    ./obj_dir/Vdut
     
     # Check if the test succeeded or not
     if [ $? -eq 0 ]; then
