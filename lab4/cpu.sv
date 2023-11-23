@@ -19,9 +19,9 @@ module cpu #(
     logic [WIDTH-1:0] PC;
 
     // Regfile
-    logic rs1 = instr[19:15];
-    logic rs2 = instr[24:20];
-    logic rd = instr[11:7];
+    logic rs1 <= instr[19:15];
+    logic rs2 <= instr[24:20];
+    logic rd <= instr[11:7];
     logic RegWrite;
 
     // Sign Extend
