@@ -5,8 +5,8 @@
 
 
 # Constants
-TEST_FOLDER="test"
-RTL_FOLDER="../rtl"
+TEST_FOLDER=$(realpath "test")
+RTL_FOLDER=$(realpath "../rtl")
 GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 RESET=$(tput sgr0)
