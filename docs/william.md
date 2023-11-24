@@ -14,7 +14,7 @@ coding standards and testing.
 
 By establishing a thorough and robust testbenching early, this allows 
 us to catch bugs as they appear, rather than having to stare at waves 
-later done the line.
+later down the line.
 
 
 ## Timestamps

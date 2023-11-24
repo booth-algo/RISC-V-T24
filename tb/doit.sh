@@ -27,6 +27,7 @@ for file in ${TEST_FOLDER}/*_tb.cpp; do
     verilator   -Wall --coverage --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
                 --exe ${TEST_FOLDER}/${name}_tb.cpp \
+                -y ${RTL_FOLDER} \
                 --prefix "Vdut" \
                 -o Vdut \
                 -CFLAGS "-fprofile-generate" \

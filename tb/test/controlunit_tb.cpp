@@ -41,47 +41,6 @@ protected:
     }
 };
 
-/*
- *  @brief              Generates a 32-bit RISC-V instruction
- *  
- *  @param  immediate   Immediate field (12-13 bits)
- *  @param  rs2         Register 2/ Destination register (5-bits)
- *  @param  rs1         Register 1 (5-bits)
- *  @param  funct3      Select different functions (3-bits)
- *  @param  opcode      Select between instructions (7-bits)
-*/
-int generateInstruction(int immediate, int rs2, int rs1, int funct3, int opcode)
-{
-    switch(opcode) 
-    {
-        case opcode_I1: case opcode_I2: case opcode_I3: case opcode_I4:
-
-            break;
-
-        case opcode_U1: case opcode_U2:
-            break;
-
-        case opcode_S:
-            break;
-            
-        case opcode_B:
-            break;
-        
-        case opcode_R:
-            break;
-        
-        case opcode_J:
-            break;
-
-        default:
-            throw std::runtime_error(
-                "Undefined Opcode"
-            );
-            break;
-    }
-
-}
-
 
 TEST_F(ControlunitTestbench, ALUControl)
 {
