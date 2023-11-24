@@ -5,8 +5,8 @@
 
 
 # Constants
-TEST_FOLDER="test"
-RTL_FOLDER="../rtl"
+TEST_FOLDER=$(realpath "test")
+RTL_FOLDER=$(realpath "../rtl")
 GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 RESET=$(tput sgr0)
@@ -27,6 +27,7 @@ for file in ${TEST_FOLDER}/*_tb.cpp; do
     verilator   -Wall --coverage --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
                 --exe ${TEST_FOLDER}/${name}_tb.cpp \
+                -y ${RTL_FOLDER} \
                 --prefix "Vdut" \
                 -o Vdut \
                 -CFLAGS "-fprofile-generate" \
