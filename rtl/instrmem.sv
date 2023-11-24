@@ -9,6 +9,6 @@ module instrmem #(
 logic [DATA_WIDTH-1:0] rom_array [2**ADDRESS_WIDTH-1:0];
 
 always_comb //non-synchronous
-    RD <= rom_array[A]; //the word address is increased by 4, but this should be implemented in the PCreg
+    RD = rom_array[A]; //the word address is increased by 4, but this should be implemented in the PCreg
     
 endmodule

@@ -12,13 +12,15 @@ module regfile #(
     output logic [WIDTH - 1:0]  a0
 );
 
-logic [WIDTH - 1:0] reg;
-// add 32 registers 
-always_ff @ (posedge clk)
-    a0 <= reg[9];
-    RD1 <= reg[AD1];
-    RD2 <= reg[AD2]; 
-    if(WE3 & AD3 != 0'b0) 
-        reg[AD3] <= WD3;
+logic [WIDTH - 1:0] reg_arr [WIDTH - 1:0]; // declare as array of 32 logic variables (i.e. registers)
+
+assign a0 = reg_arr[9]; // assign a0 outside the always_ff block
+
+always_ff @ (posedge clk) begin
+    RD1 <= reg_arr[AD1];
+    RD2 <= reg_arr[AD2]; 
+    if(WE3 & AD3 != 5'b0) 
+        reg_arr[AD3] <= WD3;
+end
 
 endmodule
