@@ -19,4 +19,4 @@ I was in charge of designing the **Sign Extension** unit, as well as the **Contr
      - Started working on the testbench for the ALU as I had finished all of my modules
 
 - 26/11
-    - Submitted the first verion of the ALU testbench. Got some feedback from William. Still implementing it.
+    - Submitted the first verion of the ALU testbench. Got some feedback from William. Still implementing it
