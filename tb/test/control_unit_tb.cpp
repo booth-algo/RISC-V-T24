@@ -63,11 +63,11 @@ TEST_F(ControlunitTestbench, ALUControl)
     
     // beq should always signify an SUB
     top->instr = OPCODE_B + (0b000 << 12);
-    EXPECT_EQ(top->ALUctrl, 1); // @William I changed this line
+    EXPECT_EQ(top->ALUctrl, 1);
 
     // bne should always signify an SUB
     top->instr = OPCODE_B + (0b001 << 12);
-    EXPECT_EQ(top->ALUctrl, 1); // @William I changed this line
+    EXPECT_EQ(top->ALUctrl, 1);
 
     // TODO check more instructions
 }
