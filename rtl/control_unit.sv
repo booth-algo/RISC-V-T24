@@ -1,4 +1,4 @@
-module controlunit #(
+module control_unit #(
     parameter DATA_WIDTH = 32
 ) (
    input logic [DATA_WIDTH-1:0] instr,
@@ -13,9 +13,10 @@ module controlunit #(
 logic [6:0] op;
 logic [2:0] funct3;
 
+assign op = instr[6:0];
+assign funct3 = instr[14:12];
+
 always_comb begin
-    op = instr[6:0];
-    funct3 = instr[14:12];
 
     case(op)
         7'b0010011: begin
@@ -26,6 +27,7 @@ always_comb begin
                     ALUsrc = 1;
                     ALUctrl = 0;
                     RegWrite = 1;
+                    $display("addi", op, " ", funct3);                    
                 end
 
                 default: begin
@@ -34,6 +36,8 @@ always_comb begin
                     ALUsrc = 1;
                     ALUctrl = 0;
                     RegWrite = 0;
+                    $display("addi def", op, " ", funct3);                    
+
                 end
             endcase
         end
@@ -46,6 +50,7 @@ always_comb begin
                     ALUsrc = 0;
                     ALUctrl = 1;
                     RegWrite = 0;
+                    $display("bne", op, " ", funct3);
                 end
 
                 default: begin
@@ -54,6 +59,7 @@ always_comb begin
                     ALUsrc = 1;
                     ALUctrl = 0;
                     RegWrite = 0;
+                    $display("bne def", op, " ", funct3);
                 end
             endcase
         end

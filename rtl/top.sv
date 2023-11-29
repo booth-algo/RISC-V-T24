@@ -1,4 +1,4 @@
-module cpu #(
+module top #(
     parameter WIDTH = 32
 )(
     input logic clk,
@@ -48,7 +48,7 @@ module cpu #(
         .ALUout(ALUout) 
     );
 
-    regfile reg_file_inst (
+    regfile regfile_inst (
         .clk(clk),
         .AD1(rs1),
         .AD2(rs2),
@@ -60,12 +60,12 @@ module cpu #(
         .a0(a0)
     );
 
-    instrmem instr_mem_inst (
+    instr_mem instr_mem_inst (
         .A(PC),
         .RD(instr)
     );
 
-    controlunit control_unit_inst (
+    control_unit control_unit_inst (
         .RegWrite(RegWrite),
         .ALUctrl(ALUctrl),
         .ALUsrc(ALUsrc),
@@ -75,10 +75,10 @@ module cpu #(
         .instr(instr)
     );
 
-    signextend sign_extend_inst (
+    sign_extend sign_extend_inst (
         .ImmOp(ImmOp),
         .ImmSrc(ImmSrc),
-        .instr(instr[31:7]) // erm I am not sure about this, Lec 7 Slide 16 says this should only supply 25 bits
+        .instr(instr)
     );
 
 endmodule
