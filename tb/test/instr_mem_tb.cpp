@@ -4,6 +4,7 @@
 */
 
 #include "base_testbench.h"
+#include <cstdlib>
 
 #define NAME            "instr_mem"
 
@@ -19,7 +20,9 @@ protected:
 
 
 TEST_F(InstrMemTestbench, InstructionExistsTest)
-{    
+{   
+    system("./compile.sh --input asm/program.S");
+    
     top->eval();
    
     std::cout << "top->RD (hex): " 
@@ -30,6 +33,20 @@ TEST_F(InstrMemTestbench, InstructionExistsTest)
     EXPECT_NE(top->RD, 0);
 }
 
+
+TEST_F(InstrMemTestbench, InstructionCanBeReloaded)
+{
+    system("./compile.sh --input asm/add1.S");
+
+    top->eval();
+    
+    std::cout << "top->RD (hex): " 
+            << std::setw(8) << std::setfill('0')
+            << std::hex << top->RD 
+            << std::endl;
+
+    EXPECT_NE(top->RD, 0);
+}
 
 int main(int argc, char **argv)
 {
