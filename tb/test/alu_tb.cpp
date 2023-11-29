@@ -6,6 +6,7 @@
 #include "base_testbench.h"
 
 #define NAME            "alu"
+
 #define OPCODE_ADD      0b000
 #define OPCODE_SUB      0b001
 #define OPCODE_AND      0b010

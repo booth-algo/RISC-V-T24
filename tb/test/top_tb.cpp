@@ -5,7 +5,7 @@
 
 #include "sync_testbench.h"
 
-#define NAME            "cpu"
+#define NAME            "top"
 
 
 class CpuTestbench : public SyncTestbench

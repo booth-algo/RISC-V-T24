@@ -8,10 +8,24 @@
 input_file="program.S"
 output_file="../rtl/program.hex"
 
+function display_help() {
+  cat <<EOF
+Usage: script.sh [--input INPUT_FILE] [--output OUTPUT_FILE] [--help]
+
+Options:
+    -i, --input     Specify input file
+    -o, --output    Specify output file
+    -h, --help      Show this help message
+EOF
+}
 
 # Handle terminal arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        -h|--help)
+            display_help
+            exit 0
+            ;;
         -i|--input)
             input_file="$2"
             shift

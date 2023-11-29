@@ -5,7 +5,7 @@
 
 #include "base_testbench.h"
 
-#define NAME            "instrmem"
+#define NAME            "instr_mem"
 
 
 class InstrMemTestbench : public BaseTestbench
