@@ -9,7 +9,7 @@
 
 #include "base_testbench.h"
 
-#define NAME            "controlunit"
+#define NAME            "control_unit"
 
 #define OPCODE_I1       0b001'0011          // addi, xori, ori... (ALU imm)
 #define OPCODE_I2       0b000'0011          // lb, lh, lw... (load imm)
@@ -46,12 +46,12 @@ TEST_F(ControlunitTestbench, ALUControl)
 {
     // ADD (000)    - add, addi, lw, sw
     // SUB (001)    - sub, beq
-    // AND (010)    - add
-    // OR (011)     - or
-    // -- (100)
+    // AND (010)    - and
+    // OR  (011)     - or
+    // --  (100)
     // SLT (101)    - slt
-    // -- (110)
-    // -- (111)
+    // --  (110)
+    // --  (111)
 
     // lw should always signify an ADD
     top->instr = OPCODE_I2;

@@ -15,7 +15,7 @@
 #include "base_testbench.h"
 #include <random>
 
-#define NAME            "signextend"
+#define NAME            "sign_extend"
 
 
 class SignextendTestbench : public BaseTestbench
