@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # This script runs the testbench
+
+# Usage: ./doit.sh <file1> <file2>
+# If no files are specified, it will run the whole test suite.
+
 # Author: William Huynh <wh1022@ic.ac.uk>
 
 
@@ -11,16 +15,27 @@ GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 RESET=$(tput sgr0)
 
+
 # Variables
 data_files=()
 passes=0
 fails=0
 
 
+# Handle terminal arguments
+if [[ $# -eq 0 ]]; then
+    # If no arguments provided, run all tests
+    files=(${TEST_FOLDER}/*_tb.cpp)
+else
+    # If arguments provided, use them as input files
+    files=("$@")
+fi
+
 # Cleanup
 rm -rf obj_dir
 
-for file in ${TEST_FOLDER}/*_tb.cpp; do
+# Iterate through files
+for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp)
 
     # Translate Verilog -> C++ including testbench
