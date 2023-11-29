@@ -20,13 +20,12 @@ protected:
     void initializeInputs() override
     {
         top->clk = 1;
-        top->rst = 0;
         
-        top->AD1 = 0,
-        top->AD2 = 0,
-        top->AD3 = 0,
-        top->WE3 = 0,
-        top->WD3 = 0,
+        top->AD1 = 0;
+        top->AD2 = 0;
+        top->AD3 = 0;
+        top->WE3 = 0;
+        top->WD3 = 0;
 
         // output logic [WIDTH - 1:0] RD1,
         // output logic [WIDTH - 1:0] RD2,
@@ -41,7 +40,7 @@ TEST_F(RegfileTestbench, RegZeroHardWiredTest)
 
     // Modify x0 (zero)
     top->AD3 = 1;
-    top->WD3 = randomNumber
+    top->WD3 = randomNumber;
     top->WE3 = 1;
 
     runSimulation(1);
@@ -62,7 +61,7 @@ TEST_F(RegfileTestbench, AllRegsFunctionTest)
     int randomNumber = 0x12345678;
 
     // Modify x0 (zero)
-    top->WD3 = randomNumber
+    top->WD3 = randomNumber;
     top->WE3 = 1;
 
     for (int i = 1; i < 32; ++i)
@@ -88,7 +87,7 @@ TEST_F(RegfileTestbench, a0FunctionTest)
 
     // Modify a0 (x10)
     top->AD3 = 10;
-    top->WD3 = randomNumber
+    top->WD3 = randomNumber;
     top->WE3 = 1;
 
     runSimulation(1);
