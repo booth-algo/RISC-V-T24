@@ -28,9 +28,14 @@ Kevin's logbook (more details in Google Docs file)
     - instrmem.sv AND controlunit.sv -- changed to blocking
     - alu.sv -- default assignment for EQ to avoid latch inference
   - Note: potentially need to fix signextend.sv module
-- 29/11
+- 28/11
   - Added the machine code for lab4
   - Running the testbench to check for errors in code
   - Renaming files to follow underscore convention
   - instr_mem.sv
     - Note byte addressing method, setting data_width to 8 bits
+- 29/11
+  - Pipeline file added
+  - Tried to figure out cache - think about how many bits you need in the two-way set and figure it out - draw a sketch or something
+  - Some other sminor changes
+  - 
