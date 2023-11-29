@@ -3,3 +3,4 @@ obj_dir
 logs
 *.o
 *.vcd
+*.hex

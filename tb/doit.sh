@@ -2,7 +2,7 @@
 
 # This script runs the testbench
 
-# Usage: ./doit.sh <file1> <file2>
+# Usage: ./doit.sh <file1.cpp> <file2.cpp>
 # If no files are specified, it will run the whole test suite.
 
 # Author: William Huynh <wh1022@ic.ac.uk>

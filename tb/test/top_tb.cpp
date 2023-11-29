@@ -4,6 +4,7 @@
 */
 
 #include "sync_testbench.h"
+#include <cstdlib>
 
 #define NAME            "top"
 
@@ -15,6 +16,9 @@ protected:
     {
         top->clk = 1;
         top->rst = 0;
+
+        // We compile the program here, so the whole thing can use it.
+        system("./compile.sh --input asm/program.S");
     }
 };
 

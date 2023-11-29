@@ -14,6 +14,7 @@
 
 #include "base_testbench.h"
 #include <random>
+#include <bitset>
 
 #define NAME            "sign_extend"
 
