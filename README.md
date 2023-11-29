@@ -4,6 +4,6 @@ Team 24
 - Noam Wietzman
 - William Huynh
 
-Team Notes:
-- https://docs.google.com/document/d/13NazeVUqx2kL3-MxnroBaxvU2RG6UBFrCzZBmmQvg5A/edit?usp=sharing
+Team contribution:
+- https://docs.google.com/spreadsheets/d/1qkn8uNHzbcW35JPvH5nXA2zehHfRK2pVViz1fDL2NVE/edit?usp=sharing
 
