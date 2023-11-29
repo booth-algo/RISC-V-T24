@@ -39,3 +39,4 @@ Kevin's logbook (more details in Google Docs file)
   - Tried to figure out cache - think about how many bits you need in the two-way set and figure it out - draw a sketch or something
   - Some other sminor changes
   - Added mux and data memory to rtl
+  - Two-way set cache structure designed
