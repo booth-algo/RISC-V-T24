@@ -23,6 +23,25 @@ This file will note down major meetups and breakdown the progress completed by t
       - Yes
 
 - Group meetup (29/11)
-
+  - Plan (part 1 and 2)
+    | Part | Task                                 | Status | Member 1 | Member 2  |
+    |------|--------------------------------------|--------|----------|-----------|
+    | 1    | Lab 4 control unit debugging         | [ ]    | William  |           |
+    | 1    | ALU testbench                        | [x]    | Noam     | William   |
+    | 1    | Data memory creation                 | [x]    | Jamie    | Kevin     |
+    | 2    | Code refactoring (pulling out muxes) | [ ]    |          |           |
+    | 2    | Write ALU for single cycle           | [ ]    |          |           |
+    | 2    | Write control unit for single cycle  | [x]    | Noam     | Jamie     |
+    | 2    | Write asm code for F1 lights         | [x]    | Jamie    |           |
+    | extra| Design two-way set associative cache | [x]    | Kevin    | Jamie     |
+    | extra| Code FETCH cycle of pipeline         | [x]    | Kevin    |           |
+   - Note:
+     - A lot of testbench writing was done by William today for the Lab 4 control unit debugging - this will be further elaborated in William's logbook
+     - By the end of meetup, the control unit is NOT FULLY DEBUGGED and it remains the only component in lab4 that has issues, and we are still trying to debug it
 
 - Group meeting (30/11)
+  - Plan
+    | Task                          | Status |
+    |-------------------------------|--------|
+    | Complete tasks from 29/11     | [ ]    |
+    |    
