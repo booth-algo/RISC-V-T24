@@ -14,7 +14,7 @@ module regfile #(
 
 logic [WIDTH - 1:0] reg_arr [WIDTH - 1:0]; // declare as array of 32 logic variables (i.e. registers)
 
-assign a0 = reg_arr[9]; // assign a0 outside the always_ff block
+assign a0 = reg_arr[10]; // assign a0 outside the always_ff block
 
 always_ff @ (posedge clk) begin
     RD1 <= reg_arr[AD1];

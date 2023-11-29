@@ -21,6 +21,12 @@ protected:
 TEST_F(InstrMemTestbench, InstructionExistsTest)
 {    
     top->eval();
+   
+    std::cout << "top->RD (hex): " 
+            << std::setw(8) << std::setfill('0')
+            << std::hex << top->RD 
+            << std::endl;
+            
     EXPECT_NE(top->RD, 0);
 }
 
