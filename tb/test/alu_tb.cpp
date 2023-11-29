@@ -18,18 +18,22 @@ protected:
     void initializeInputs() override
     {
         top->ALUop1 = 0;
-        top->ALUop2 = 0;
         top->ALUctrl = 0;
         top->regOp2 = 0;
         top->ImmOp = 0;
         top->ALUsrc = 0;
+
+        // output logic                EQ,
+        // output logic [WIDTH - 1:0]  ALUout
     }
 };
 
+
 TEST_F(ALUTestbench, AdditionTest)
 {
-    op1 = 5;
-    op2 = 10;
+    int op1 = 5;
+    int op2 = 10;
+    
     //inputs for addition operation
     top->ALUop1 = op1;
     top->ALUctrl = OPCODE_ADD;
@@ -44,10 +48,12 @@ TEST_F(ALUTestbench, AdditionTest)
     EXPECT_EQ(top->EQ, op1 + op2 == 0);
 }
 
+
 TEST_F(ALUTestbench, SubtractionTest)
 {
-    op1 = 5;
-    op2 = 5;
+    int op1 = 5;
+    int op2 = 5;
+    
     //inputs for subtraction operation
     top->ALUop1 = op1;
     top->ALUctrl = OPCODE_SUB;
@@ -62,10 +68,12 @@ TEST_F(ALUTestbench, SubtractionTest)
     EXPECT_EQ(top->EQ, op1 - op2 == 0);
 }
 
+
 TEST_F(ALUTestbench, BinaryAndTest)
 {
-    op1 = 0b0110;
-    op2 = 0b0101;
+    int op1 = 0b0110;
+    int op2 = 0b0101;
+    
     //inputs for binary AND operation
     top->ALUop1 = op1;
     top->ALUctrl = OPCODE_AND;
@@ -80,10 +88,12 @@ TEST_F(ALUTestbench, BinaryAndTest)
     EXPECT_EQ(top->EQ, (op1 & op2) == 0);
 }
 
+
 TEST_F(ALUTestbench, BinaryOrTest)
 {
-    op1 = 0b0110;
-    op2 = 0b0101;
+    int op1 = 0b0110;
+    int op2 = 0b0101;
+    
     //inputs for binary OR operation
     top->ALUop1 = op1;
     top->ALUctrl = OPCODE_OR;
@@ -98,10 +108,12 @@ TEST_F(ALUTestbench, BinaryOrTest)
     EXPECT_EQ(top->EQ, (op1 | op2) == 0);
 }
 
+
 TEST_F(ALUTestbench, SetIfLessThanTest)
 {
-    op1 = 0b0110;
-    op2 = 0b0101;
+    int op1 = 0b0110;
+    int op2 = 0b0101;
+    
     //inputs for binary SLT operation
     top->ALUop1 = op1;
     top->ALUctrl = OPCODE_OR;
@@ -115,6 +127,7 @@ TEST_F(ALUTestbench, SetIfLessThanTest)
     EXPECT_EQ(top->ALUout, (op1 < op2) ? 1 : 0);
     EXPECT_EQ(top->EQ, (op1 < op2) == 0);
 }
+
 
 int main(int argc, char **argv)
 {

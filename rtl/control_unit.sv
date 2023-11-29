@@ -3,7 +3,7 @@ module control_unit #(
 ) (
    input logic [DATA_WIDTH-1:0] instr,
    input logic EQ,
-   output logic ALUctrl,
+   output logic [2:0] ALUctrl,
    output logic ALUsrc,
    output logic [1:0] ImmSrc,
    output logic PCsrc,

@@ -11,7 +11,7 @@ module top #(
 
     // ALU
     logic [WIDTH-1:0] ALUop1;
-    logic ALUctrl;
+    logic [2:0] ALUctrl;
     logic [WIDTH-1:0] regOp2;
     logic ALUsrc;
     logic EQ;
