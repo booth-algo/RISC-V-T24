@@ -25,12 +25,12 @@ jobs:
                 sudo apt install -y libgtest-dev lcov verilator
             
             - name: run-tests
-              continue-on-error: true
               run: |
                 cd tb
                 ./doit.sh
             
             - name: upload-code-coverage-report
+              if: always()
               uses: actions/upload-artifact@v2
               with:
                 name: code-coverage-report

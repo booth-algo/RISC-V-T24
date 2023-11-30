@@ -55,19 +55,19 @@ TEST_F(ControlunitTestbench, ALUControl)
 
     // lw should always signify an ADD
     top->instr = OPCODE_I2;
-    EXPECT_EQ(top->ALUctrl, 0);
+    EXPECT_EQ(top->ALUctrl, 0) << "Test 1";
 
     // sw should always signify an ADD
     top->instr = OPCODE_S;
-    EXPECT_EQ(top->ALUctrl, 0);
+    EXPECT_EQ(top->ALUctrl, 0) << "Test 2";
     
     // beq should always signify an SUB
     top->instr = OPCODE_B + (0b000 << 12);
-    EXPECT_EQ(top->ALUctrl, 1);
+    EXPECT_EQ(top->ALUctrl, 1) << "Test 3";
 
     // bne should always signify an SUB
     top->instr = OPCODE_B + (0b001 << 12);
-    EXPECT_EQ(top->ALUctrl, 1);
+    EXPECT_EQ(top->ALUctrl, 1) << "Test 4";
 
     // TODO check more instructions
 }
@@ -85,7 +85,7 @@ TEST_F(ControlunitTestbench, RegWriteTest)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->RegWrite, 1);
+        EXPECT_EQ(top->RegWrite, 1) << "Opcode: " <<  opcode;
     }
 
     for (int opcode : { OPCODE_S, OPCODE_B }) 
@@ -93,7 +93,7 @@ TEST_F(ControlunitTestbench, RegWriteTest)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->RegWrite, 0);
+        EXPECT_EQ(top->RegWrite, 0) << "Opcode: " <<  opcode;
     }
 }
 
@@ -110,7 +110,7 @@ TEST_F(ControlunitTestbench, ALUsrcTest)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->ALUsrc, 1);
+        EXPECT_EQ(top->ALUsrc, 1) << "Opcode: " <<  opcode;
     }
 
     for (int opcode : { OPCODE_R, OPCODE_S, OPCODE_B }) 
@@ -118,7 +118,7 @@ TEST_F(ControlunitTestbench, ALUsrcTest)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->ALUsrc, 0);
+        EXPECT_EQ(top->ALUsrc, 0) << "Opcode: " <<  opcode;
     }
 }
 
@@ -132,21 +132,21 @@ TEST_F(ControlunitTestbench, PCsrcTest)
     top->instr = OPCODE_B;
     top->eval();
 
-    EXPECT_EQ(top->PCsrc, 1);
+    EXPECT_EQ(top->PCsrc, 1) << "Test 1";
     
     // EQ is OFF now
     top->EQ = 0;
     top->instr = OPCODE_B;
     top->eval();
 
-    EXPECT_EQ(top->PCsrc, 0);
+    EXPECT_EQ(top->PCsrc, 0) << "Test 2";
     
     // EQ is on but OPCODE is wrong now
     top->EQ = 1;
     top->instr = OPCODE_I1;
     top->eval();
 
-    EXPECT_EQ(top->PCsrc, 0);
+    EXPECT_EQ(top->PCsrc, 0) << "Test 3";
 }
 
 
@@ -158,7 +158,7 @@ TEST_F(ControlunitTestbench, ImmSrc0Test)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->ImmSrc, 0);
+        EXPECT_EQ(top->ImmSrc, 0) << "Opcode: " <<  opcode;
     }
 }
 

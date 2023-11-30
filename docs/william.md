@@ -22,10 +22,12 @@ later down the line.
 ### Week 1 (commencing 20/11/2023)
 
 - Created an abstraction class for testbenches `BaseTestbench` and
-`SyncTestbench` as well as `cpu_tb.cpp`, `instrmem_tb.cpp`, 
+`SyncTestbench` as well as `top_tb.cpp`, `instrmem_tb.cpp`, 
 `program_counter_tb.cpp`, `signextend_tb.cpp` and `controlunit_tb.cpp`.
 
 ### Week 2 (commencing 27/11/2023)
+
+- Created `regfile_tb.cpp`
 
 ### Week 3 (commencing 04/12/2023)
 
