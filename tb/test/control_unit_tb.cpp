@@ -8,6 +8,7 @@
 */
 
 #include "base_testbench.h"
+#include <bitset>
 
 #define NAME            "control_unit"
 
@@ -86,18 +87,27 @@ TEST_F(ControlunitTestbench, RegWriteTest)
         OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
         OPCODE_R, OPCODE_U1, OPCODE_U2, OPCODE_J 
     }) {
+        // This assumes OPCODE_S sets it to 1
+        // This makes sure it actually SETS it to 0 instead of default 0
+        top->instr = OPCODE_S;
+        top->eval();
+
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->RegWrite, 1) << "Opcode: " <<  opcode;
+        EXPECT_EQ(top->RegWrite, 1) << "Opcode: " << std::bitset<7>(opcode);
     }
 
     for (int opcode : { OPCODE_S, OPCODE_B }) 
     {
+        // This assumes OPCODE_I1 sets it to 0
+        top->instr = OPCODE_I1;
+        top->eval();
+        
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->RegWrite, 0) << "Opcode: " <<  opcode;
+        EXPECT_EQ(top->RegWrite, 0) << "Opcode: " << std::bitset<7>(opcode);
     }
 }
 
@@ -111,18 +121,24 @@ TEST_F(ControlunitTestbench, ALUsrcTest)
         OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
         OPCODE_U1, OPCODE_U2, OPCODE_J 
     }) {
+        top->instr = OPCODE_R;
+        top->eval();
+
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->ALUsrc, 1) << "Opcode: " <<  opcode;
+        EXPECT_EQ(top->ALUsrc, 1) << "Opcode: " << std::bitset<7>(opcode);
     }
 
     for (int opcode : { OPCODE_R, OPCODE_S, OPCODE_B }) 
     {
+        top->instr = OPCODE_I1;
+        top->eval();
+        
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->ALUsrc, 0) << "Opcode: " <<  opcode;
+        EXPECT_EQ(top->ALUsrc, 0) << "Opcode: " << std::bitset<7>(opcode);
     }
 }
 
@@ -146,11 +162,21 @@ TEST_F(ControlunitTestbench, PCsrcTest)
     EXPECT_EQ(top->PCsrc, 0) << "Test 2";
     
     // EQ is on but OPCODE is wrong now
-    top->EQ = 1;
-    top->instr = OPCODE_I1;
-    top->eval();
+    for (int opcode : { 
+        OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
+        OPCODE_U1, OPCODE_U2, OPCODE_J, OPCODE_R, OPCODE_S
+    }) {
+        // Make sure PCsrc pulls DOWN instead of leave hanging
+        top->EQ = 1;
+        top->instr = OPCODE_B;
+        top->eval();
 
-    EXPECT_EQ(top->PCsrc, 0) << "Test 3";
+        top->EQ = 1;
+        top->instr = opcode;
+        top->eval();
+
+        EXPECT_EQ(top->PCsrc, 0) << "Opcode: " << std::bitset<7>(opcode);
+    }
 }
 
 
@@ -162,7 +188,7 @@ TEST_F(ControlunitTestbench, ImmSrc0Test)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->ImmSrc, 0) << "Opcode: " <<  opcode;
+        EXPECT_EQ(top->ImmSrc, 0) << "Opcode: " << std::bitset<7>(opcode);
     }
 }
 

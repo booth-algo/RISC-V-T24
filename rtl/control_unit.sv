@@ -39,6 +39,7 @@ always_comb begin
 
         // R type instructions
         7'b0110011: begin
+            PCsrc = 0;
             case(funct3)
                 
                 // add and sub
@@ -96,7 +97,8 @@ always_comb begin
         end
 
         // I type instructions
-        7'b0010011: begin 
+        7'b0010011: begin
+            PCsrc = 0;
             case(funct3)
 
                 // addi
@@ -147,6 +149,7 @@ always_comb begin
 
         // Load type instructions
         7'b0000011: begin
+            PCsrc = 0;
             case(funct3)
                 
                 // lw
@@ -170,6 +173,7 @@ always_comb begin
 
         // S type instructions
         7'b0100011: begin
+            PCsrc = 0;
             case(funct3)
             
             // sw
@@ -193,6 +197,8 @@ always_comb begin
         
         // B type instructions
         7'b1100011: begin
+            RegWrite = 0;
+            ALUsrc = 0;
             case(funct3)
             
             // beq
@@ -207,14 +213,13 @@ always_comb begin
             // bne
             3'b001: begin
                 ImmSrc = 2'b10;
-                PCsrc = EQ ? 1 : 0;
+                PCsrc = EQ ? 0 : 1;
                 branch = 1;
                 ALUctrl = 3'b001;
                 $display("bne", op, " ", funct3);
             end
             
             default: begin
-                ALUsrc = 0;
                 PCsrc = 0;
                 RegWrite = 0;
                 ImmSrc = 2'b10;
@@ -227,6 +232,7 @@ always_comb begin
         // J type instructions
         7'b1101111: begin
             //jal
+            PCsrc = 0;
             ALUsrc = 1;
             RegWrite = 1;
             jump = 1'b1;
@@ -235,6 +241,7 @@ always_comb begin
 
         // I type instruction
         7'b1100111: begin 
+            PCsrc = 0;
             RegWrite = 1;
             jump = 1;
             ALUsrc = 1;
@@ -244,6 +251,7 @@ always_comb begin
         // U type instructions
         7'b0110111: begin
             // lui
+            PCsrc = 0;
             ALUsrc = 1;
             RegWrite = 1;
             $display("lui", op, " ", funct3);
@@ -252,6 +260,7 @@ always_comb begin
 
         7'b0010111: begin
             //auipc
+            PCsrc = 0;
             ALUsrc = 1;
             RegWrite = 1;
             $display("auipc", op, " ", funct3);
@@ -260,6 +269,8 @@ always_comb begin
 
         // Environment type instructions
         7'b1110011: begin
+            PCsrc = 0;
+            RegWrite = 1;
             case(instr[7])
 
             // ecall
@@ -278,6 +289,7 @@ always_comb begin
 
         //Other instructions
         default: begin
+            PCsrc = 0;
             RegWrite = 0;
             ImmSrc = 3'b000;
             ALUsrc = 0;
