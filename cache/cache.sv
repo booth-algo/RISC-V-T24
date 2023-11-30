@@ -72,11 +72,19 @@ always_comb begin
             hit = 0;
             miss = 1;
         end
+
+        if miss begin
+            // Handle a cache miss
+            // Read from memory
+            // Update cache
+        end
     end
 
 // Cache write logic
 
-// Handle cache misses
+    if (write_en) begin
+
+    end
 
 // Replacement policy
 

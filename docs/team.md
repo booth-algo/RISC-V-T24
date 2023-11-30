@@ -40,8 +40,8 @@ This file will note down major meetups and breakdown the progress completed by t
      - By the end of meetup, the control unit is NOT FULLY DEBUGGED and it remains the only component in lab4 that has issues, and we are still trying to debug it
 
 - Group meeting (30/11)
-  - Plan
-    | Task                          | Status |
-    |-------------------------------|--------|
-    | Complete tasks from 29/11     | [ ]    |
-    |    
+  - Notes:
+    - Jamie: ALU and top file updated for single-cycle, data_mem fixed, ALU nearly done, top file needs debugging
+    - Noam: Control unit for single-cycle done
+    - William: Testbenches fixed, "things will be done by tonight"
+    - Kevin: Cache discussion with UTA
