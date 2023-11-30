@@ -35,7 +35,7 @@ protected:
         }
     }
 private:
-    int ticks;
+    int ticks = 0;
 };
 
 
