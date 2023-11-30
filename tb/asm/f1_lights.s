@@ -1,7 +1,7 @@
 # for vbuddy testing, an extra mux can be added to implement a test although not necesarry
 main: 
     li 		t2, 0x2000
-iloop:
+loop:
     lw 		s0, 0(t2)
     jal 	ra, subroutine
     j		iloop

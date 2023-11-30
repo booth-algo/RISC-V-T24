@@ -1,12 +1,11 @@
 /*
- *  Verifies the results of the CPU for F1 lights program and exits with a 0 on success.
+ *  Verifies the results of the CPU for F1 lights program
  *  Author: Kevin Lau <khl22@ic.ac.uk>
 */
 
 #include "sync_testbench.h"
-#include <cstdlib>
 
-#define NAME            "top"
+#define NAME            "top-f1lights"
 
 
 class CpuTestbench : public SyncTestbench
@@ -22,28 +21,72 @@ protected:
     }
 };
 
-
-TEST_F(CpuTestbench, InitialStateTest)
+TEST_F(CpuTestbench, MainRoutineTest)
 {
-    top->eval();
-    
-    EXPECT_EQ(top->clk, 1);
-    EXPECT_EQ(top->rst, 0);
-    EXPECT_EQ(top->a0, 0);
+    int max_cycles = 50;
+
+    for (int i = 0; i < max_cycles; ++i)
+    {
+        runSimulation(); // Evaluate the model
+
+        if (top->a0 == 0x2000) // Check if t2 has the correct value
+        {
+            SUCCEED();
+            return;
+        }
+
+        top->clk = !top->clk; // Toggle the clock to simulate the next cycle
+    }
+
+    FAIL() << "The register t2 (a0) did not reach the expected value within " << max_cycles << " cycles.";
 }
 
-/*  Archived test for later
-TEST_F(CpuTestbench, ResetStateTest)
+TEST_F(CpuTestbench, LoopTest)
 {
-    // Can be random number
-    runSimulation(60);
+    int max_cycles = 1000;
 
-    top->rst = 1;
-    runSimulation(1);
+    for (int i = 0; i < max_cycles; ++i)
+    {
+        runSimulation(); // Evaluate the model
 
-    EXPECT_EQ(top->a0, 0);
+        // Checking for subroutine execution (e.g., a0 reaching 0xff)
+        if (top->a0 == 0xff) // Subroutine's final value
+        {
+            // Check if loop continues by resetting a0 and observing it in subsequent cycles
+            top->a0 = 0;
+        }
+        else if (top->a0 != 0)
+        {
+            SUCCEED(); // Indicates the loop has iterated at least once
+            return;
+        }
+
+        top->clk = !top->clk; // Toggle the clock
+    }
+
+    FAIL() << "The iloop did not demonstrate expected behavior within " << max_cycles << " cycles.";
 }
-*/
+
+TEST_F(CpuTestbench, SubroutineFinalValueTest)
+{
+    int max_cycles = 1000; // Define a maximum number of cycles to simulate
+
+    for (int i = 0; i < max_cycles; ++i)
+    {
+        runSimulation(); // Evaluate the model
+
+        if (top->a0 == 0xff) // Check if a0 has the correct final value
+        {
+            SUCCEED();
+            return;
+        }
+
+        top->clk = !top->clk; // Toggle the clock to simulate the next cycle
+    }
+
+    FAIL() << "The register a0 did not reach the expected value within " << max_cycles << " cycles.";
+}
+
 
 int main(int argc, char **argv)
 {
