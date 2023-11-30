@@ -10,6 +10,7 @@ module control_unit #(
    output logic RegWrite,
    output logic MemWrite,
    output logic jump,
+   output logic branch
    // Maybe add ResultSrc later if needed
 );
 
@@ -29,7 +30,8 @@ assign ALUsrc = 1'b0;
 assign ImmSrc = 2'b000;
 assign MemWrite = 1'b0;
 assign jump = 1'b0;
-assign PCsrc = 0;
+assign PCsrc = 1'b0;
+assign branch = 1'b0;
 
 
 always_comb begin
@@ -47,6 +49,7 @@ always_comb begin
                         6'b000000: begin
                             ALUctrl = 3'b000;
                             RegWrite = 1;
+                            ALUsrc = 0;
                             $display("add", op, " ", funct3);
                         end
                         
@@ -54,6 +57,7 @@ always_comb begin
                         6'b000010: begin
                             ALUctrl = 3'b001;
                             RegWrite = 1;
+                            ALUsrc = 0;
                             $display("sub", op, " ", funct3);
                         end
                     endcase 
@@ -63,6 +67,7 @@ always_comb begin
                 3'b110: begin
                     ALUctrl = 3'b011;
                     RegWrite = 1;
+                    ALUsrc = 0;
                     $display("or", op, " ", funct3);
                 end
                 
@@ -70,6 +75,7 @@ always_comb begin
                 3'b111: begin
                     ALUctrl = 3'b010;
                     RegWrite = 1;
+                    ALUsrc = 0;
                     $display("and", op, " ", funct3);
                 end
                 
@@ -77,21 +83,22 @@ always_comb begin
                 3'b010: begin
                     ALUctrl = 3'b101;
                     RegWrite = 1;
+                    ALUsrc = 0;
                     $display("slt", op, " ", funct3);
                 end
                 
                 default: begin
                     ALUsrc = 0;
-                    RegWrite = 1;
+                    RegWrite = 0;
                     $display("R type default", op, " ", funct3);
                 end
-            endcase
+            endcase 
         end
 
         // I type instructions
         7'b0010011: begin 
             case(funct3)
-                
+
                 // addi
                 3'b000: begin
                     ALUsrc = 1;
@@ -133,8 +140,7 @@ always_comb begin
                     ALUctrl = 3'b000;
                     RegWrite = 0;
                     ImmSrc = 2'b00;
-                    $display("I type default", op, " ", funct3);                    
-
+                    $display("I type default", op, " ", funct3);
                 end
             endcase
         end
@@ -145,18 +151,21 @@ always_comb begin
                 
                 // lw
                 3'b010: begin
-                    ALUsrc = 0;
+                    ALUsrc = 1;
                     ALUctrl = 1;
-                    RegWrite = 0;
+                    RegWrite = 1;
+                    ImmSrc = 2'b00;
                     $display("lw", op, " ", funct3);
                 end
 
                 default: begin
                     ALUsrc = 1;
-                    RegWrite = 0;
+                    RegWrite = 1; //might be 0, no 100% sure
+                    ImmSrc = 2'b00;
                     $display("L type default", op, " ", funct3);
                 end
             endcase
+            
         end
 
         // S type instructions
@@ -167,12 +176,16 @@ always_comb begin
             3'b010: begin 
                 RegWrite = 0;
                 ImmSrc = 2'b01;
+                ALUsrc = 0;
+                MemWrite = 1;
                 $display("sw", op, " ", funct3);
             end
             
             default: begin
                 RegWrite = 0;
                 ImmSrc = 2'b01;
+                ALUsrc = 0;
+                MemWrite = 1;
                 $display("S type default", op, " ", funct3);
             end
             endcase
@@ -185,22 +198,27 @@ always_comb begin
             // beq
             3'b000: begin
                 ImmSrc = 2'b10;
-                PCsrc = 1;
+                PCsrc = EQ ? 1 : 0;
+                branch = 1;
+                ALUctrl = 3'b001;
                 $display("beq", op, " ", funct3);
             end
             
             // bne
             3'b001: begin
                 ImmSrc = 2'b10;
-                PCsrc = 1;
+                PCsrc = EQ ? 1 : 0;
+                branch = 1;
+                ALUctrl = 3'b001;
                 $display("bne", op, " ", funct3);
             end
             
             default: begin
                 ALUsrc = 0;
-                PCsrc = 1;
+                PCsrc = 0;
                 RegWrite = 0;
                 ImmSrc = 2'b10;
+                ALUctrl = 3'b001;
                 $display("B type default", op, " ", funct3);
             end
             endcase
@@ -215,29 +233,58 @@ always_comb begin
             $display("jal", op, " ", funct3);
         end
 
+        // I type instruction
+        7'b1100111: begin 
+            RegWrite = 1;
+            jump = 1;
+            ALUsrc = 1;
+            $display("jalr", op, " ", funct3);
+        end
+
         // U type instructions
         7'b0110111: begin
             // lui
             ALUsrc = 1;
             RegWrite = 1;
             $display("lui", op, " ", funct3);
+            
+        end
+
+        7'b0010111: begin
+            //auipc
+            ALUsrc = 1;
+            RegWrite = 1;
+            $display("auipc", op, " ", funct3);
+            
         end
 
         // Environment type instructions
         7'b1110011: begin
+            case(instr[7])
+
             // ecall
-            ALUsrc = 1;
-            $display("ecall", op, " ", funct3);
+            1'b0: begin
+                ALUsrc = 1;
+                $display("ecall", op, " ", funct3);
+            end 
+
+            // ebreak
+            1'b1: begin
+                ALUsrc = 1;
+                $display("ebreak", op, " ", funct3);
+            end
+            endcase
         end
 
         //Other instructions
         default: begin
-            RegWrite = 1'b0;
+            RegWrite = 0;
             ImmSrc = 3'b000;
-            ALUsrc = 1'b0;
+            ALUsrc = 0;
             ALUctrl = 3'b000;
-            MemWrite = 1'b0;
-            jump = 1'b0;
+            MemWrite = 0;
+            jump = 0;
+            branch = 0;
             $display("General default", op, " ", funct3);
         end
     endcase
