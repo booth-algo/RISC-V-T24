@@ -4,3 +4,4 @@ logs
 *.o
 *.vcd
 *.hex
+*dis.txt

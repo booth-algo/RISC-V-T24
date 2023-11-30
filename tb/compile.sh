@@ -8,6 +8,7 @@
 input_file="program.S"
 output_file="../rtl/program.hex"
 
+
 function display_help() {
   cat <<EOF
 Usage: script.sh [--input INPUT_FILE] [--output OUTPUT_FILE] [--help]
@@ -43,6 +44,7 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+basename=$(basename $input_file .S)
 
 riscv64-unknown-elf-as -R -march=rv32im -mabi=ilp32 \
                         -o "a.out" "${input_file}"
@@ -56,6 +58,12 @@ rm "a.out"
 
 riscv64-unknown-elf-objcopy -O binary \
                             -j .text "a.out.reloc" "a.bin"
+
+rm asm/*dis.txt
+
+# This generates a disassembly file in the asm folder
+riscv64-unknown-elf-objdump -D -b binary \
+                            -m riscv a.bin > asm/${basename}.dis.txt
 
 rm "a.out.reloc"
 
