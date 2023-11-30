@@ -55,18 +55,22 @@ TEST_F(ControlunitTestbench, ALUControl)
 
     // lw should always signify an ADD
     top->instr = OPCODE_I2;
+    top->eval();
     EXPECT_EQ(top->ALUctrl, 0) << "Test 1";
 
     // sw should always signify an ADD
     top->instr = OPCODE_S;
+    top->eval();
     EXPECT_EQ(top->ALUctrl, 0) << "Test 2";
     
     // beq should always signify an SUB
     top->instr = OPCODE_B + (0b000 << 12);
+    top->eval();
     EXPECT_EQ(top->ALUctrl, 1) << "Test 3";
 
     // bne should always signify an SUB
     top->instr = OPCODE_B + (0b001 << 12);
+    top->eval();
     EXPECT_EQ(top->ALUctrl, 1) << "Test 4";
 
     // TODO check more instructions
