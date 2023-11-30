@@ -15,6 +15,7 @@ module top #(
     logic [2:0] ALUctrl;
     logic [WIDTH-1:0] regOp2;
     logic ALUsrc;
+    /* verilator lint_off UNOPTFLAT */
     logic EQ;
     logic [WIDTH-1:0] ALUout;
     logic [WIDTH-1:0] PC;
@@ -50,7 +51,7 @@ module top #(
 
         .RD(instr)
     );
-
+    /* verilator lint_off PINMISSING */
     control_unit control_unit_inst (
         .instr(instr),
         .EQ(EQ),
@@ -61,7 +62,7 @@ module top #(
         .ImmSrc(ImmSrc),
         .PCsrc(PCsrc)
     );
-
+    /* verilator lint_on PINMISSING */
     sign_extend sign_extend_inst (
         .instr(instr),
         .ImmSrc(ImmSrc),

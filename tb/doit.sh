@@ -36,12 +36,12 @@ rm -rf obj_dir
 
 # Iterate through files
 for file in "${files[@]}"; do
-    name=$(basename "$file" _tb.cpp)
+    name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
     # Translate Verilog -> C++ including testbench
     verilator   -Wall --coverage --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
-                --exe ${TEST_FOLDER}/${name}_tb.cpp \
+                --exe ${file} \
                 -y ${RTL_FOLDER} \
                 --prefix "Vdut" \
                 -o Vdut \

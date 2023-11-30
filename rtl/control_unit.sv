@@ -8,9 +8,7 @@ module control_unit #(
    output logic [1:0] ImmSrc,
    output logic PCsrc,
    output logic RegWrite,
-   output logic MemWrite,
-   output logic jump,
-   output logic branch
+   output logic MemWrite
    // Maybe add ResultSrc later if needed
 );
 
@@ -29,10 +27,7 @@ assign ALUctrl = 3'b000;
 assign ALUsrc = 1'b0;
 assign ImmSrc = 2'b000;
 assign MemWrite = 1'b0;
-assign jump = 1'b0;
 assign PCsrc = 1'b0;
-assign branch = 1'b0;
-
 
 always_comb begin
     case(op)
@@ -47,7 +42,7 @@ always_comb begin
                     case(funct7)
                         
                         // add
-                        6'b000000: begin
+                        7'h00: begin
                             ALUctrl = 3'b000;
                             RegWrite = 1;
                             ALUsrc = 0;
@@ -55,12 +50,15 @@ always_comb begin
                         end
                         
                         // sub
-                        6'b000010: begin
+                        7'h20: begin
                             ALUctrl = 3'b001;
                             RegWrite = 1;
                             ALUsrc = 0;
                             $display("sub", op, " ", funct3);
                         end
+    
+                        default: $display("Warning: undefined add/sub");
+    
                     endcase 
                 end
                 
@@ -205,7 +203,6 @@ always_comb begin
             3'b000: begin
                 ImmSrc = 2'b10;
                 PCsrc = EQ ? 1 : 0;
-                branch = 1;
                 ALUctrl = 3'b001;
                 $display("beq", op, " ", funct3);
             end
@@ -214,7 +211,6 @@ always_comb begin
             3'b001: begin
                 ImmSrc = 2'b10;
                 PCsrc = EQ ? 0 : 1;
-                branch = 1;
                 ALUctrl = 3'b001;
                 $display("bne", op, " ", funct3);
             end
@@ -235,7 +231,6 @@ always_comb begin
             PCsrc = 0;
             ALUsrc = 1;
             RegWrite = 1;
-            jump = 1'b1;
             $display("jal", op, " ", funct3);
         end
 
@@ -243,7 +238,6 @@ always_comb begin
         7'b1100111: begin 
             PCsrc = 0;
             RegWrite = 1;
-            jump = 1;
             ALUsrc = 1;
             $display("jalr", op, " ", funct3);
         end
@@ -291,12 +285,10 @@ always_comb begin
         default: begin
             PCsrc = 0;
             RegWrite = 0;
-            ImmSrc = 3'b000;
+            ImmSrc = 2'b00;
             ALUsrc = 0;
             ALUctrl = 3'b000;
             MemWrite = 0;
-            jump = 0;
-            branch = 0;
             $display("General default", op, " ", funct3);
         end
     endcase
