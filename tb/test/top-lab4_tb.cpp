@@ -6,7 +6,7 @@
 #include "sync_testbench.h"
 #include <cstdlib>
 
-#define NAME            "top"
+#define NAME            "top-lab4"
 
 
 class CpuTestbench : public SyncTestbench
