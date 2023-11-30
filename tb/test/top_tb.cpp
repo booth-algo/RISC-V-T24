@@ -18,7 +18,7 @@ protected:
         top->rst = 0;
 
         // We compile the program here, so the whole thing can use it.
-        system("./compile.sh --input asm/program.S");
+        system("./compile.sh --input asm/program.s");
     }
 };
 

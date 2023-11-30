@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Usage: ./compile.sh <file.S>
+# Usage: ./compile.sh <file.s>
 # Author: pykcheung, modified by William Huynh <wh1022@ic.ac.uk>
 
 
 # Default vars
-input_file="program.S"
+input_file="program.s"
 output_file="../rtl/program.hex"
 
 
@@ -14,7 +14,7 @@ function display_help() {
 Usage: script.sh [--input INPUT_FILE] [--output OUTPUT_FILE] [--help]
 
 Options:
-    -i, --input     Specify input file
+    -i, --input     Specify input file (.s or .c)
     -o, --output    Specify output file
     -h, --help      Show this help message
 EOF
@@ -44,7 +44,16 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-basename=$(basename $input_file .S)
+
+basename=$(basename "$input_file" | sed 's/\.[^.]*$//')
+file_extension="${input_file##*.}"
+
+# Compile the C code if necessary
+if [ $file_extension == "c" ]; then
+    riscv64-unknown-elf-gcc -S -march=rv32im -mabi=ilp32 \
+                            -o "asm/${basename}.s" $input_file
+    input_file="asm/${basename}.s"
+fi
 
 riscv64-unknown-elf-as -R -march=rv32im -mabi=ilp32 \
                         -o "a.out" "${input_file}"

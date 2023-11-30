@@ -21,7 +21,7 @@ protected:
 
 TEST_F(InstrMemTestbench, InstructionExistsTest)
 {   
-    system("./compile.sh --input asm/program.S");
+    system("./compile.sh --input asm/program.s");
     
     top->eval();
    
@@ -36,7 +36,7 @@ TEST_F(InstrMemTestbench, InstructionExistsTest)
 
 TEST_F(InstrMemTestbench, InstructionCanBeReloaded)
 {
-    system("./compile.sh --input asm/add1.S");
+    system("./compile.sh --input asm/f1_lights.s");
 
     top->eval();
     
