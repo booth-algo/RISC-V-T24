@@ -96,6 +96,28 @@ TEST_F(RegfileTestbench, a0FunctionTest)
 }
 
 
+TEST_F(RegfileTestbench, asyncReadTest)
+{
+    int randomNumber = 0x12345678;
+
+    // Modify a0 (x10)
+    top->AD3 = 10;
+    top->WD3 = randomNumber;
+    top->WE3 = 1;
+
+    runSimulation(1);
+
+    top->AD1 = 10;
+    top->AD2 = 10;
+
+    // Async operation
+    top->eval();
+    
+    EXPECT_EQ(top->RD1, randomNumber);
+    EXPECT_EQ(top->RD2, randomNumber);
+}
+
+
 int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);

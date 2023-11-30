@@ -1,26 +1,20 @@
 module alu #( 
     parameter WIDTH = 32
 )( 
-    input logic [WIDTH - 1:0]   ALUop1,      // ALU input 1
+    input logic [WIDTH - 1:0]   a,      // ALU input 1
+    input logic [WIDTH - 1:0]   b,
     input logic [2:0]           ALUctrl,     // select signal for ALU       
-    input logic [WIDTH - 1:0]   regOp2,      
-    input logic [WIDTH - 1:0]   ImmOp,
-    input logic                 ALUsrc,
     output logic                EQ,
     output logic [WIDTH - 1:0]  ALUout
 );
 
-logic [WIDTH - 1:0] ALUop2;      // ALU input 2
-
-always_comb begin
-    ALUop2 = ALUsrc ? ImmOp: regOp2;       // if instruction is ADDI, ALUsrc = 1
-        
+always_comb begin        
     case(ALUctrl)
-        3'b000:     ALUout = ALUop1 + ALUop2;
-        3'b001:     ALUout = ALUop1 - ALUop2;
-        3'b010:     ALUout = ALUop1 & ALUop2;
-        3'b011:     ALUout = ALUop1 | ALUop2;
-        3'b101:     ALUout = (ALUop1 < ALUop2) ? 1 : 0;
+        3'b000:     ALUout = a + b;
+        3'b001:     ALUout = a - b;
+        3'b010:     ALUout = a & b;
+        3'b011:     ALUout = a | b;
+        3'b101:     ALUout = (a < b) ? 1 : 0;
         default:    ALUout = 0;   
     endcase
 

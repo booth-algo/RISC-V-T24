@@ -10,7 +10,8 @@ module top #(
     logic [WIDTH-1:0] ImmOp;
 
     // ALU
-    logic [WIDTH-1:0] ALUop1;
+    logic [WIDTH-1:0] ALUin1;
+    logic [WIDTH-1:0] ALUin2;
     logic [2:0] ALUctrl;
     logic [WIDTH-1:0] regOp2;
     logic ALUsrc;
@@ -18,32 +19,69 @@ module top #(
     logic [WIDTH-1:0] ALUout;
     logic [WIDTH-1:0] PC;
 
+    // Instruction Memory
+    logic [WIDTH-1:0] instr;
+
     // Regfile
-    logic [4:0] rs1 = instr[19:15];
-    logic [4:0] rs2 = instr[24:20];
-    logic [4:0] rd = instr[11:7];
+    logic [4:0] rs1;
+    logic [4:0] rs2;
+    logic [4:0] rd;
+
+    assign rs1 = instr[19:15];
+    assign rs2 = instr[24:20];
+    assign rd = instr[11:7];
+
     logic RegWrite;
 
     // Sign Extend
     logic [1:0] ImmSrc;
-
-    // Instruction Memory
-    logic [WIDTH-1:0] instr;
 
     program_counter program_counter_inst (
         .clk(clk),
         .rst(rst),
         .PCsrc(PCsrc),
         .ImmOp(ImmOp),
+
         .PC(PC)
     );
     
-    alu alu_inst (
-        .ALUop1(ALUop1),
+    instr_mem instr_mem_inst (
+        .A(PC),
+
+        .RD(instr)
+    );
+
+    control_unit control_unit_inst (
+        .instr(instr),
+        .EQ(EQ),
+
+        .RegWrite(RegWrite),
         .ALUctrl(ALUctrl),
-        .regOp2(regOp2),
-        .ImmOp(ImmOp),
         .ALUsrc(ALUsrc),
+        .ImmSrc(ImmSrc),
+        .PCsrc(PCsrc)
+    );
+
+    sign_extend sign_extend_inst (
+        .instr(instr),
+        .ImmSrc(ImmSrc),
+
+        .ImmOp(ImmOp)
+    );
+
+    mux #(WIDTH) mux_inst (
+        .in0(regOp2),
+        .in1(ImmOp),
+        .sel(ALUsrc),
+
+        .out(ALUin2)
+    );
+
+    alu alu_inst (
+        .a(ALUin1),
+        .b(ALUin2),
+        .ALUctrl(ALUctrl),
+
         .EQ(EQ),
         .ALUout(ALUout) 
     );
@@ -55,30 +93,10 @@ module top #(
         .AD3(rd),
         .WE3(RegWrite),
         .WD3(ALUout),
-        .RD1(ALUop1),
+
+        .RD1(ALUin1),
         .RD2(regOp2),
         .a0(a0)
-    );
-
-    instr_mem instr_mem_inst (
-        .A(PC),
-        .RD(instr)
-    );
-
-    control_unit control_unit_inst (
-        .RegWrite(RegWrite),
-        .ALUctrl(ALUctrl),
-        .ALUsrc(ALUsrc),
-        .ImmSrc(ImmSrc),
-        .PCsrc(PCsrc),
-        .EQ(EQ),
-        .instr(instr)
-    );
-
-    sign_extend sign_extend_inst (
-        .ImmOp(ImmOp),
-        .ImmSrc(ImmSrc),
-        .instr(instr)
     );
 
 endmodule

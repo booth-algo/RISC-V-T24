@@ -27,7 +27,9 @@ later down the line.
 
 ### Week 2 (commencing 27/11/2023)
 
-- Created `regfile_tb.cpp`
+- Created `regfile_tb.cpp`, `mux.sv`. Fixed integration bugs to allow for
+working single cycle (with addi and bne).
+
 
 ### Week 3 (commencing 04/12/2023)
 

@@ -18,11 +18,9 @@ class ALUTestbench : public BaseTestbench
 protected:
     void initializeInputs() override
     {
-        top->ALUop1 = 0;
+        top->a = 0;
+        top->b = 0;
         top->ALUctrl = 0;
-        top->regOp2 = 0;
-        top->ImmOp = 0;
-        top->ALUsrc = 0;
 
         // output logic                EQ,
         // output logic [WIDTH - 1:0]  ALUout
@@ -36,11 +34,9 @@ TEST_F(ALUTestbench, AdditionTest)
     int op2 = 10;
     
     //inputs for addition operation
-    top->ALUop1 = op1;
+    top->a = op1;
+    top->b = op2;
     top->ALUctrl = OPCODE_ADD;
-    top->regOp2 = op2;
-    top->ImmOp = 0;
-    top->ALUsrc = 0;
 
     top->eval();
 
@@ -56,11 +52,9 @@ TEST_F(ALUTestbench, SubtractionTest)
     int op2 = 5;
     
     //inputs for subtraction operation
-    top->ALUop1 = op1;
+    top->a = op1;
+    top->b = op2;
     top->ALUctrl = OPCODE_SUB;
-    top->regOp2 = op2;
-    top->ImmOp = 0;
-    top->ALUsrc = 0;
 
     top->eval();
 
@@ -76,11 +70,9 @@ TEST_F(ALUTestbench, BinaryAndTest)
     int op2 = 0b0101;
     
     //inputs for binary AND operation
-    top->ALUop1 = op1;
+    top->a = op1;
+    top->b = op2;
     top->ALUctrl = OPCODE_AND;
-    top->regOp2 = op2;
-    top->ImmOp = 0;
-    top->ALUsrc = 0;
 
     top->eval();
 
@@ -96,11 +88,9 @@ TEST_F(ALUTestbench, BinaryOrTest)
     int op2 = 0b0101;
     
     //inputs for binary OR operation
-    top->ALUop1 = op1;
+    top->a = op1;
+    top->b = op2;
     top->ALUctrl = OPCODE_OR;
-    top->regOp2 = op2;
-    top->ImmOp = 0;
-    top->ALUsrc = 0;
 
     top->eval();
 
@@ -116,11 +106,9 @@ TEST_F(ALUTestbench, SetIfLessThanTest)
     int op2 = 0b0101;
     
     //inputs for binary SLT operation
-    top->ALUop1 = op1;
-    top->ALUctrl = OPCODE_OR;
-    top->regOp2 = op2;
-    top->ImmOp = 0;
-    top->ALUsrc = 0;
+    top->a = op1;
+    top->b = op2;
+    top->ALUctrl = OPCODE_SLT;
 
     top->eval();
 
