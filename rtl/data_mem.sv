@@ -1,6 +1,7 @@
 module data_mem #(
         parameter   DATA_WIDTH = 32, 
-                    ADDR_WIDTH = 12,
+                    ADDR_WIDTH = 32,
+                    MEM_WIDTH = 8
 )(
         input  logic                    clk,
         input  logic [ADDR_WIDTH-1:0]   A, // address
@@ -10,14 +11,18 @@ module data_mem #(
 );
 
     // Define the data array
-    logic [DATA_WIDTH-1:0] array [2**12-1:0];
+    // Each bit is 1 byte (8 bits) wide, with 2^16 = 65536 bytes memory locations
+    logic [MEM_WIDTH-1:0] array [2**16-1:0];
 
-    assign RD = array[A]; // Read
+    assign RD = {array[A+3], array[A+2], array[A+1], array[A]}; // Read
 
     // Read and write operations
     always_ff @(posedge clk) begin
         if (WE) begin // Write
-            array[A] <= WD;
+            array[A] <= WD[7:0];
+            array[A+1] <= WD[15:8];
+            array[A+2] <= WD[23:16];
+            array[A+3] <= WD[31:24];
         end
     end
 
