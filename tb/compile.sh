@@ -46,17 +46,23 @@ done
 
 
 basename=$(basename "$input_file" | sed 's/\.[^.]*$//')
+parent=$(dirname "$input_file")
 file_extension="${input_file##*.}"
 
 # Compile the C code if necessary
 if [ $file_extension == "c" ]; then
     riscv64-unknown-elf-gcc -S -march=rv32im -mabi=ilp32 \
-                            -o "asm/${basename}.s" $input_file
-    input_file="asm/${basename}.s"
+                            -o "${basename}.s" $input_file
+    input_file="${basename}.s"
 fi
 
 riscv64-unknown-elf-as -R -march=rv32im -mabi=ilp32 \
                         -o "a.out" "${input_file}"
+
+# Remove the .s file if necessary
+if [ $file_extension == "c" ]; then
+    rm ${input_file}
+fi
 
 riscv64-unknown-elf-ld -melf32lriscv \
                         -e 0xBFC00000 \
@@ -68,11 +74,12 @@ rm "a.out"
 riscv64-unknown-elf-objcopy -O binary \
                             -j .text "a.out.reloc" "a.bin"
 
-rm asm/*dis.txt
+rm asm/*dis.txt 2>/dev/null
+rm c/*dis.txt 2>/dev/null
 
-# This generates a disassembly file in the asm folder
+# This generates a disassembly file in the respective folder
 riscv64-unknown-elf-objdump -D -b binary \
-                            -m riscv a.bin > asm/${basename}.dis.txt
+                            -m riscv a.bin > ${parent}/${basename}.dis.txt
 
 rm "a.out.reloc"
 

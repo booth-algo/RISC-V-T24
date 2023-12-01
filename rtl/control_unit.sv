@@ -8,8 +8,8 @@ module control_unit #(
    output logic [1:0] ImmSrc,
    output logic PCsrc,
    output logic RegWrite,
-   output logic MemWrite
-   // Maybe add ResultSrc later if needed
+   output logic MemWrite,
+   output logic ResultSrc
 );
 
 logic [6:0] op;
@@ -26,10 +26,13 @@ assign RegWrite = 1'b0;
 assign ALUctrl = 3'b000;
 assign ALUsrc = 1'b0;
 assign ImmSrc = 2'b000;
-assign MemWrite = 1'b0;
 assign PCsrc = 1'b0;
+assign MemWrite = 1'b0;
+assign ResultSrc = 1'b0;
 
 always_comb begin
+    MemWrite = 0;
+    ResultSrc = 0;
     case(op)
 
         // R type instructions
@@ -105,7 +108,6 @@ always_comb begin
                     ALUctrl = 3'b000;
                     RegWrite = 1;
                     ImmSrc = 2'b00;
-                    $display("addi", op, " ", funct3);                    
                 end
                 
                 // ori
@@ -148,12 +150,13 @@ always_comb begin
         // Load type instructions
         7'b0000011: begin
             PCsrc = 0;
+            ResultSrc = 1;
+            ALUctrl = 0;
             case(funct3)
                 
                 // lw
                 3'b010: begin
                     ALUsrc = 1;
-                    ALUctrl = 1;
                     RegWrite = 1;
                     ImmSrc = 2'b00;
                     $display("lw", op, " ", funct3);
@@ -172,13 +175,14 @@ always_comb begin
         // S type instructions
         7'b0100011: begin
             PCsrc = 0;
+            ALUsrc = 1;
+            ALUctrl = 0;
             case(funct3)
             
             // sw
             3'b010: begin 
                 RegWrite = 0;
                 ImmSrc = 2'b01;
-                ALUsrc = 0;
                 MemWrite = 1;
                 $display("sw", op, " ", funct3);
             end
@@ -186,7 +190,6 @@ always_comb begin
             default: begin
                 RegWrite = 0;
                 ImmSrc = 2'b01;
-                ALUsrc = 0;
                 MemWrite = 1;
                 $display("S type default", op, " ", funct3);
             end
@@ -212,7 +215,6 @@ always_comb begin
                 ImmSrc = 2'b10;
                 PCsrc = EQ ? 0 : 1;
                 ALUctrl = 3'b001;
-                $display("bne", op, " ", funct3);
             end
             
             default: begin
@@ -289,7 +291,6 @@ always_comb begin
             ALUsrc = 0;
             ALUctrl = 3'b000;
             MemWrite = 0;
-            $display("General default", op, " ", funct3);
         end
     endcase
 end
