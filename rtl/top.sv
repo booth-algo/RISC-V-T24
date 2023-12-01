@@ -28,6 +28,10 @@ module top #(
     logic [4:0] rs2;
     logic [4:0] rd;
 
+    // Data memory
+    logic MemWrite;
+    logic [WIDTH-1:0] ReadData;
+
     assign rs1 = instr[19:15];
     assign rs2 = instr[24:20];
     assign rd = instr[11:7];
@@ -36,6 +40,11 @@ module top #(
 
     // Sign Extend
     logic [1:0] ImmSrc;
+
+    // Result
+    // TODO this is going to be 2-bits
+    logic [WIDTH-1:0] result;
+    logic ResultSrc;
 
     program_counter program_counter_inst (
         .clk(clk),
@@ -51,18 +60,20 @@ module top #(
 
         .RD(instr)
     );
-    /* verilator lint_off PINMISSING */
+
     control_unit control_unit_inst (
         .instr(instr),
         .EQ(EQ),
 
         .RegWrite(RegWrite),
+        .MemWrite(MemWrite),
         .ALUctrl(ALUctrl),
         .ALUsrc(ALUsrc),
         .ImmSrc(ImmSrc),
-        .PCsrc(PCsrc)
+        .PCsrc(PCsrc),
+        .ResultSrc(ResultSrc)
     );
-    /* verilator lint_on PINMISSING */
+    
     sign_extend sign_extend_inst (
         .instr(instr),
         .ImmSrc(ImmSrc),
@@ -70,7 +81,7 @@ module top #(
         .ImmOp(ImmOp)
     );
 
-    mux #(WIDTH) mux_inst (
+    mux #(WIDTH) mux_alu_inst (
         .in0(regOp2),
         .in1(ImmOp),
         .sel(ALUsrc),
@@ -93,11 +104,28 @@ module top #(
         .AD2(rs2),
         .AD3(rd),
         .WE3(RegWrite),
-        .WD3(ALUout),
+        .WD3(result),
 
         .RD1(ALUin1),
         .RD2(regOp2),
         .a0(a0)
+    );
+    
+    data_mem data_mem_inst (
+        .clk(clk),
+        .A(ALUout),
+        .WD(regOp2),
+        .WE(MemWrite),
+        
+        .RD(ReadData)
+    );
+
+    mux #(WIDTH) mux_result_inst (
+        .in0(ALUout),
+        .in1(ReadData),
+        .sel(ResultSrc),
+
+        .out(result)
     );
 
 endmodule
