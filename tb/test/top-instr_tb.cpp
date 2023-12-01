@@ -30,6 +30,16 @@ TEST_F(CpuTestbench, PositiveAdditionIsCorrectTest)
 }
 
 
+TEST_F(CpuTestbench, PositiveAdditionIsCorrect2Test)
+{
+    system("./compile.sh --input c/1-add_positive.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ(top->a0, 246);
+}
+
+
 TEST_F(CpuTestbench, NegativeAdditionIsCorrectTest)
 {
     system("./compile.sh --input asm/2-add_negative.s");
