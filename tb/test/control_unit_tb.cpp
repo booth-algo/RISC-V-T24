@@ -39,6 +39,8 @@ protected:
         // ImmSrc - selects between I (0), S (1) and B (2) type
         // PCsrc - selects next PC (0) or branch (1)
         // RegWrite - enables writing of register
+        // MemWrite - enables writing of data memory
+        // ResultSrc - chooses ALUout (0) or memory read (1)
     }
 };
 
@@ -54,10 +56,18 @@ TEST_F(ControlunitTestbench, ALUControl)
     // --  (110)
     // --  (111)
 
+    // This is to make sure it pulls down rather than taking default
+    top->instr = OPCODE_B + (0b001 << 12);
+    top->eval();
+
     // lw should always signify an ADD
     top->instr = OPCODE_I2;
     top->eval();
     EXPECT_EQ(top->ALUctrl, 0) << "Test 1";
+
+    // This is to make sure it pulls down rather than taking default
+    top->instr = OPCODE_B + (0b001 << 12);
+    top->eval();
 
     // sw should always signify an ADD
     top->instr = OPCODE_S;
@@ -114,12 +124,12 @@ TEST_F(ControlunitTestbench, RegWriteTest)
 
 TEST_F(ControlunitTestbench, ALUsrcTest)
 {
-    // ALUsrc = 1 (chooses immediate): I-type, U-type, J-type
-    // ALUsrc = 0 (chooses rd2): R-type, S-type, B-type
+    // ALUsrc = 1 (chooses immediate): I-type, U-type, J-type, S-type
+    // ALUsrc = 0 (chooses rd2): R-type, B-type
     
     for (int opcode : { 
         OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
-        OPCODE_U1, OPCODE_U2, OPCODE_J 
+        OPCODE_U1, OPCODE_U2, OPCODE_J, OPCODE_S
     }) {
         top->instr = OPCODE_R;
         top->eval();
@@ -130,7 +140,7 @@ TEST_F(ControlunitTestbench, ALUsrcTest)
         EXPECT_EQ(top->ALUsrc, 1) << "Opcode: " << std::bitset<7>(opcode);
     }
 
-    for (int opcode : { OPCODE_R, OPCODE_S, OPCODE_B }) 
+    for (int opcode : { OPCODE_R, OPCODE_B }) 
     {
         top->instr = OPCODE_I1;
         top->eval();
@@ -210,6 +220,59 @@ TEST_F(ControlunitTestbench, ImmSrc2Test)
     top->eval();
 
     EXPECT_EQ(top->ImmSrc, 2);
+}
+
+
+TEST_F(ControlunitTestbench, MemWriteTest)
+{   
+    // MemWrite = 1: all store instructions
+    // MemWrite = 0: else
+
+    top->instr = OPCODE_S;
+    top->eval();
+
+    EXPECT_EQ(top->MemWrite, 1) << "Opcode = OPCODE_S";
+
+    for (int opcode : { 
+        OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
+        OPCODE_U1, OPCODE_U2, OPCODE_J, OPCODE_R, OPCODE_J
+    }) {
+        // Make sure MemWrite pulls DOWN instead of leave hanging
+        top->instr = OPCODE_S;
+        top->eval();
+
+        top->instr = opcode;
+        top->eval();
+
+        EXPECT_EQ(top->MemWrite, 0) << "Opcode: " << std::bitset<7>(opcode);
+    }
+}
+
+
+TEST_F(ControlunitTestbench, ResultSrcTest)
+{   
+    // TODO : ResultSrc = 2: jal, jalr
+    // ResultSrc = 1: all load instructions
+    // ResultSrc = 0: else
+
+    top->instr = OPCODE_I2;
+    top->eval();
+
+    EXPECT_EQ(top->ResultSrc, 1) << "Opcode = OPCODE_I2";
+
+    for (int opcode : { 
+        OPCODE_I1, OPCODE_I4, 
+        OPCODE_U1, OPCODE_U2, OPCODE_R
+    }) {
+        // Make sure ResultSrc pulls DOWN instead of leave hanging
+        top->instr = OPCODE_I2;
+        top->eval();
+
+        top->instr = opcode;
+        top->eval();
+
+        EXPECT_EQ(top->ResultSrc, 0) << "Opcode: " << std::bitset<7>(opcode);
+    }
 }
 
 

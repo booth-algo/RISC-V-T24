@@ -4,7 +4,7 @@ main:
 loop:
     lw 		s0, 0(t2)
     jal 	ra, subroutine
-    j		iloop
+    j		loop
     ret
 
 subroutine:

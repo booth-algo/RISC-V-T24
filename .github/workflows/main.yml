@@ -22,7 +22,7 @@ jobs:
             - name: setup-dependencies
               run: |
                 sudo apt update
-                sudo apt install -y libgtest-dev lcov verilator
+                sudo apt install -y libgtest-dev lcov verilator gcc-riscv64-unknown-elf
             
             - name: run-tests
               run: |

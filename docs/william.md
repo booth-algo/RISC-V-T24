@@ -22,12 +22,12 @@ later down the line.
 ### Week 1 (commencing 20/11/2023)
 
 - Created an abstraction class for testbenches `BaseTestbench` and
-`SyncTestbench` as well as `top_tb.cpp`, `instrmem_tb.cpp`, 
+`SyncTestbench` as well as `top-lab4_tb.cpp`, `instrmem_tb.cpp`, 
 `program_counter_tb.cpp`, `signextend_tb.cpp` and `controlunit_tb.cpp`.
 
 ### Week 2 (commencing 27/11/2023)
 
-- Created `regfile_tb.cpp`, `mux.sv`. Fixed integration bugs to allow for
+- Created `regfile_tb.cpp`, `mux.sv`, `mux_tb.cpp`. Fixed integration bugs to allow for
 working single cycle (with addi and bne).
 
 

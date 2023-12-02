@@ -13,14 +13,25 @@ cd tb
 ./compile.sh --input <asm/file.s>
 ```
 
-This will also generate a **disassembly** file. This contains
-human-readable information on the program that you have just
-compiled.
+This will also generate a **disassembly** file. This contains human-readable 
+information on the program that you have just compiled.
 
 This will create a **hex** file. Default: `rtl/program.hex`.
 
 The default location for the file is `tb/asm/<filename>.dis.txt`.
 
+### Validating tests
+
+To get the expected output of the files under `c/`, you can compile and run it
+locally
+
+```bash
+gcc -o <program> <program.c>
+./program
+
+# Recommended but not essential
+rm program
+```
 
 ### Running tests
 
