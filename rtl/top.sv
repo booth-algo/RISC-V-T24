@@ -51,20 +51,25 @@ module top #(
         .rst(rst),
         .PCsrc(PCsrc),
         .ImmOp(ImmOp),
-
         .PC(PC)
+    );
+
+    mux #(WIDTH) mux_PC_inst ( 
+        // Implements: PCnext = PCsrc ? PC + ImmOp : PC + 4;
+        .in0(PC+4), // incPC = PC + 4
+        .in1(PC+ImmOp), // branchPC = PC + ImmOp
+        .sel(PCsrc),
+        .out(PCnext)
     );
     
     instr_mem instr_mem_inst (
         .A(PC),
-
         .RD(instr)
     );
 
     control_unit control_unit_inst (
         .instr(instr),
         .EQ(EQ),
-
         .RegWrite(RegWrite),
         .MemWrite(MemWrite),
         .ALUctrl(ALUctrl),
@@ -77,7 +82,6 @@ module top #(
     sign_extend sign_extend_inst (
         .instr(instr),
         .ImmSrc(ImmSrc),
-
         .ImmOp(ImmOp)
     );
 
@@ -85,7 +89,6 @@ module top #(
         .in0(regOp2),
         .in1(ImmOp),
         .sel(ALUsrc),
-
         .out(ALUin2)
     );
 
@@ -93,7 +96,6 @@ module top #(
         .a(ALUin1),
         .b(ALUin2),
         .ALUctrl(ALUctrl),
-
         .EQ(EQ),
         .ALUout(ALUout) 
     );
@@ -105,7 +107,6 @@ module top #(
         .AD3(rd),
         .WE3(RegWrite),
         .WD3(result),
-
         .RD1(ALUin1),
         .RD2(regOp2),
         .a0(a0)
@@ -116,7 +117,6 @@ module top #(
         .A(ALUout),
         .WD(regOp2),
         .WE(MemWrite),
-        
         .RD(ReadData)
     );
 
@@ -124,7 +124,6 @@ module top #(
         .in0(ALUout),
         .in1(ReadData),
         .sel(ResultSrc),
-
         .out(result)
     );
 
