@@ -40,3 +40,6 @@ Kevin's logbook (more details in Google Docs file)
   - Some other sminor changes
   - Added mux and data memory to rtl
   - Two-way set cache structure designed
+- 30/11
+  - Data memory testbench written, data memory debugged, all tests passed
+  - F1 lights testbench written, testbench not fully debugged
