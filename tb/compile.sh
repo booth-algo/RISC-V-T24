@@ -49,8 +49,9 @@ basename=$(basename "$input_file" | sed 's/\.[^.]*$//')
 parent=$(dirname "$input_file")
 file_extension="${input_file##*.}"
 
-# Compile the C code if necessary
+# Compile the C code if necessary.
 if [ $file_extension == "c" ]; then
+    # IMPORTANT: MUST NOT OPTIMIZE COMPILER! Or instructions could be lost!
     riscv64-unknown-elf-gcc -S -march=rv32im -mabi=ilp32 \
                             -o "${basename}.s" $input_file
     input_file="${basename}.s"
