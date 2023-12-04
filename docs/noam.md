@@ -2,7 +2,7 @@
 
 ## Role
 
-I was in charge of designing the **Sign Extension** unit, as well as the **Control Unit** and the **Instruction Memory** unit. I also took on the responsability of writing up the **testbench** the ALU.
+I was in charge of designing the **Sign Extension** unit, as well as the **Control Unit** and the **Instruction Memory** unit. I also took on the responsability of writing some of the **testbenches**.
 
 ## Timetable details
 
