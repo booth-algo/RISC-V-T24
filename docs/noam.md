@@ -24,3 +24,6 @@ I was in charge of designing the **Sign Extension** unit, as well as the **Contr
 - 29/11
     - Implemented changes in the ALU testbench file. Added all the operations and functions to check them (ADD, SUB, AND, OR, SLT) and implemented changes in the functions so that the test is easier
     - Worked on the new control unit file
+
+- 30/11 
+    - Worked on debugging the control unit. Implemented lots of changes to it for all types of instruction. Have a final WORKING version of the control unit module
