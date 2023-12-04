@@ -10,11 +10,15 @@ module alu #(
 
 always_comb begin        
     case(ALUctrl)
-        3'b000:     ALUout = a + b;
-        3'b001:     ALUout = a - b;
-        3'b010:     ALUout = a & b;
-        3'b011:     ALUout = a | b;
-        3'b101:     ALUout = (a < b) ? 1 : 0;
+        4'b0000:     ALUout = a + b;
+        4'b0001:     ALUout = a - b;
+        4'b0010:     ALUout = a & b;
+        4'b0011:     ALUout = a | b;
+        4'b0100:     ALUout = a ^ b;
+        4'b0101:     ALUout = a << b;
+        4'b0110:     ALUout = a >> b;
+        4'b0111:     ALUout = (a < b) ? 1 : 0;
+        4'b1000:     ALUout = b;
         default:    ALUout = 0;   
     endcase
 

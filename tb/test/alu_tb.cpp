@@ -7,11 +7,15 @@
 
 #define NAME            "alu"
 
-#define OPCODE_ADD      0b000
-#define OPCODE_SUB      0b001
-#define OPCODE_AND      0b010
-#define OPCODE_OR       0b011
-#define OPCODE_SLT      0b111
+#define OPCODE_ADD      0b0000
+#define OPCODE_SUB      0b0001
+#define OPCODE_AND      0b0010
+#define OPCODE_OR       0b0011
+#define OPCODE_XOR      0b0100
+#define OPCODE_LSL      0b0101
+#define OPCODE_LSR      0b0110
+#define OPCODE_SLT      0b0111
+#define OPCODE_LUI      0b1000
 
 class ALUTestbench : public BaseTestbench
 {
@@ -99,6 +103,56 @@ TEST_F(ALUTestbench, BinaryOrTest)
     EXPECT_EQ(top->EQ, (op1 | op2) == 0);
 }
 
+TEST_F(ALUTestbench, BinaryXorTest)
+{
+    int op1 = 0b0110;
+    int op2 = 0b0101;
+    
+    //inputs for binary XOR operation
+    top->a = op1;
+    top->b = op2;
+    top->ALUctrl = OPCODE_XOR;
+
+    top->eval();
+
+    //check the ALU output and EQ signal for XOR
+    EXPECT_EQ(top->ALUout, op1 ^ op2);
+    EXPECT_EQ(top->EQ, (op1 ^ op2) == 0);
+}
+
+TEST_F(ALUTestbench, LogicalShiftLeftTest)
+{
+    int op1 = 0b0110;
+    int op2 = 4;
+    
+    //inputs for LSL operation
+    top->a = op1;
+    top->b = op2;
+    top->ALUctrl = OPCODE_LSL;
+
+    top->eval();
+
+    //check the ALU output and EQ signal for LSL
+    EXPECT_EQ(top->ALUout, op1 << op2);
+    EXPECT_EQ(top->EQ, (op1 << op2) == 0);
+}
+
+TEST_F(ALUTestbench, LogicalShiftRightTest)
+{
+    int op1 = 0b0110;
+    int op2 = 4;
+    
+    //inputs for LSR operation
+    top->a = op1;
+    top->b = op2;
+    top->ALUctrl = OPCODE_LSR;
+
+    top->eval();
+
+    //check the ALU output and EQ signal for LSR
+    EXPECT_EQ(top->ALUout, op1 >> op2);
+    EXPECT_EQ(top->EQ, (op1>> op2) == 0);
+}
 
 TEST_F(ALUTestbench, SetIfLessThanTest)
 {
@@ -117,6 +171,22 @@ TEST_F(ALUTestbench, SetIfLessThanTest)
     EXPECT_EQ(top->EQ, (op1 < op2) == 0);
 }
 
+TEST_F(ALUTestbench, LoadUpperImmTest)
+{
+    int op1 = 0b0110;
+    int op2 = 0b1101;
+    
+    //inputs for LUI operation
+    top->a = op1;
+    top->b = op2;
+    top->ALUctrl = OPCODE_LUI;
+
+    top->eval();
+
+    //check the ALU output and EQ signal for LUI
+    EXPECT_EQ(top->ALUout, op2);
+    EXPECT_EQ(top->EQ, op2 == 0);
+}
 
 int main(int argc, char **argv)
 {
