@@ -69,6 +69,7 @@ TEST_F(CpuTestbench, SubtractionTest)
     EXPECT_EQ((int)top->a0, 889);
 }
 
+
 TEST_F(CpuTestbench, XORTest)
 {
     system("./compile.sh --input c/003-xor.c");
@@ -77,7 +78,6 @@ TEST_F(CpuTestbench, XORTest)
     
     EXPECT_EQ((int)top->a0, 7942);
 }
-
 
 
 TEST_F(CpuTestbench, ORTest)
@@ -89,6 +89,7 @@ TEST_F(CpuTestbench, ORTest)
     EXPECT_EQ((int)top->a0, 8191);
 }
 
+
 TEST_F(CpuTestbench, LUITest)
 {
     system("./compile.sh --input c/011-lui.c");
@@ -98,54 +99,55 @@ TEST_F(CpuTestbench, LUITest)
     EXPECT_EQ((int)top->a0, 17257);
 }
 
-// TEST_F(CpuTestbench, ShiftTest)
-// {
-//     system("./compile.sh --input c/005-shift_left_right.c");
+
+TEST_F(CpuTestbench, ShiftTest)
+{
+    system("./compile.sh --input c/005-shift_left_right.c");
     
-//     runSimulation(200);
+    runSimulation(200);
     
-//     EXPECT_EQ((int)top->a0, 534);
-// }
+    EXPECT_EQ((int)top->a0, 534);
+}
 
 
-// TEST_F(CpuTestbench, SLTTest)
-// {
-//     system("./compile.sh --input c/006-slt.c");
+TEST_F(CpuTestbench, SLTTest)
+{
+    system("./compile.sh --input c/006-slt.c");
     
-//     runSimulation(200);
+    runSimulation(200);
     
-//     EXPECT_EQ((int)top->a0, 6);
-// }
+    EXPECT_EQ((int)top->a0, 6);
+}
 
 
-// TEST_F(CpuTestbench, WhileLoopTest)
-// {
-//     system("./compile.sh --input c/007-while_loop.c");
+TEST_F(CpuTestbench, WhileLoopTest)
+{
+    system("./compile.sh --input c/007-while_loop.c");
     
-//     runSimulation(200);
+    runSimulation(200);
     
-//     EXPECT_EQ((int)top->a0, 460881);
-// }
+    EXPECT_EQ((int)top->a0, 460881);
+}
 
 
-// TEST_F(CpuTestbench, ForLoopTest)
-// {
-//     system("./compile.sh --input c/008-for_loop.c");
+TEST_F(CpuTestbench, ForLoopTest)
+{
+    system("./compile.sh --input c/008-for_loop.c");
     
-//     runSimulation(2000);
+    runSimulation(2000);
     
-//     EXPECT_EQ((int)top->a0, 5050);
-// }
+    EXPECT_EQ((int)top->a0, 5050);
+}
 
 
-// TEST_F(CpuTestbench, FibonnaciTest)
-// {
-//     system("./compile.sh --input c/010-fibonnaci.c");
+TEST_F(CpuTestbench, FibonnaciTest)
+{
+    system("./compile.sh --input c/010-fibonnaci.c");
     
-//     runSimulation(2000);
+    runSimulation(2000);
     
-//     EXPECT_EQ((int)top->a0, 832040);
-// }
+    EXPECT_EQ((int)top->a0, 832040);
+}
 
 
 int main(int argc, char **argv)
