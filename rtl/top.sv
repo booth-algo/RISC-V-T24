@@ -12,7 +12,7 @@ module top #(
     // ALU
     logic [WIDTH-1:0] ALUin1;
     logic [WIDTH-1:0] ALUin2;
-    logic [2:0] ALUctrl;
+    logic [3:0] ALUctrl;
     logic [WIDTH-1:0] regOp2;
     logic ALUsrc;
     /* verilator lint_off UNOPTFLAT */

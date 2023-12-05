@@ -3,7 +3,7 @@ module alu #(
 )( 
     input logic [WIDTH - 1:0]   a,      // ALU input 1
     input logic [WIDTH - 1:0]   b,
-    input logic [2:0]           ALUctrl,     // select signal for ALU       
+    input logic [3:0]           ALUctrl,     // select signal for ALU       
     output logic                EQ,
     output logic [WIDTH - 1:0]  ALUout
 );

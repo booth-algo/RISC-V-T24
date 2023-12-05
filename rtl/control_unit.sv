@@ -86,6 +86,12 @@ always_comb begin
                     ALUctrl = 4'b0111;
                     $display("slt", op, " ", funct3);
                 end
+
+                // sltu
+                3'b011: begin
+                    ALUctrl = 4'b0111;
+                    $display("sltu", op, " ", funct3);
+                end
                 
                 default: begin
                     ALUsrc = 0;
@@ -116,7 +122,7 @@ always_comb begin
                 end
 
                 // xori
-                3'b110: begin
+                3'b100: begin
                     ALUctrl = 4'b0100;
                     ImmSrc = 2'b00;
                     $display("xori", op, " ", funct3);
@@ -128,6 +134,13 @@ always_comb begin
                     ImmSrc = 2'b00;
                     $display("andi", op, " ", funct3);
                 end
+
+                // slli
+                3'b001: begin
+                    ALUctrl = 4'b0010;
+                    ImmSrc = 2'b00;
+                    $display("andi", op, " ", funct3);
+                end
                 
                 // slti
                 3'b010: begin
@@ -135,6 +148,13 @@ always_comb begin
                     ImmSrc = 2'b00;
                     $display("slti", op, " ", funct3);
                 end
+
+                // sltiu
+                3'b011: begin
+                    ALUctrl = 4'b0101;
+                    ImmSrc = 2'b00;
+                    $display("sltiu", op, " ", funct3);
+                end 
 
                 default: begin
                     ALUctrl = 4'b0000;
