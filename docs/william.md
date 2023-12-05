@@ -27,9 +27,9 @@ later down the line.
 
 ### Week 2 (commencing 27/11/2023)
 
-- Created `regfile_tb.cpp`, `mux.sv`, `mux_tb.cpp`. Fixed integration bugs to allow for
-working single cycle (with addi and bne).
-
+- Created `regfile_tb.cpp`, `mux.sv`, `mux_tb.cpp`. Fixed integration bugs to 
+allow for working single cycle (with addi and bne). Created a load of tests in 
+`tb/c` for testing all features of the CPU.
 
 ### Week 3 (commencing 04/12/2023)
 

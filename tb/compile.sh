@@ -11,7 +11,7 @@ output_file="../rtl/program.hex"
 
 function display_help() {
   cat <<EOF
-Usage: script.sh [--input INPUT_FILE] [--output OUTPUT_FILE] [--help]
+Usage: compile.sh [--input INPUT_FILE] [--output OUTPUT_FILE] [--help]
 
 Options:
     -i, --input     Specify input file (.s or .c)
@@ -52,7 +52,8 @@ file_extension="${input_file##*.}"
 # Compile the C code if necessary.
 if [ $file_extension == "c" ]; then
     # IMPORTANT: MUST NOT OPTIMIZE COMPILER! Or instructions could be lost!
-    riscv64-unknown-elf-gcc -S -march=rv32im -mabi=ilp32 \
+    riscv64-unknown-elf-gcc -S -g -O0 -fno-builtin -static \
+                            -march=rv32im -mabi=ilp32 \
                             -o "${basename}.s" $input_file
     input_file="${basename}.s"
 fi
@@ -70,8 +71,6 @@ riscv64-unknown-elf-ld -melf32lriscv \
                         -Ttext 0xBFC00000 \
                         -o "a.out.reloc" "a.out"
 
-rm "a.out"
-
 riscv64-unknown-elf-objcopy -O binary \
                             -j .text "a.out.reloc" "a.bin"
 
@@ -79,12 +78,13 @@ rm asm/*dis.txt 2>/dev/null
 rm c/*dis.txt 2>/dev/null
 
 # This generates a disassembly file in the respective folder
-riscv64-unknown-elf-objdump -D -b binary \
-                            -m riscv a.bin > ${parent}/${basename}.dis.txt
-
-rm "a.out.reloc"
+# Memory in wrong place, but makes it easier to read (should be main = 0xbfc00000)
+riscv64-unknown-elf-objdump -f -d --source -m riscv \
+                            a.out > ${parent}/${basename}.dis.txt
 
 # Formats into a hex file
 od -v -An -t x1 "a.bin" | tr -s '\n' | awk '{$1=$1};1' > "${output_file}"
 
+rm "a.out.reloc"
+rm "a.out"
 rm "a.bin"
