@@ -69,17 +69,7 @@ TEST_F(CpuTestbench, SubtractionTest)
     EXPECT_EQ((int)top->a0, 889);
 }
 
-
 TEST_F(CpuTestbench, XORTest)
-{
-    system("./compile.sh --input asm/004-xor.s");
-    
-    runSimulation(200);
-    
-    EXPECT_EQ((int)top->a0, 20);
-}
-
-TEST_F(CpuTestbench, XORTest2)
 {
     system("./compile.sh --input c/003-xor.c");
     
@@ -89,15 +79,24 @@ TEST_F(CpuTestbench, XORTest2)
 }
 
 
-// TEST_F(CpuTestbench, ORTest)
-// {
-//     system("./compile.sh --input c/004-or.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 8191);
-// }
 
+TEST_F(CpuTestbench, ORTest)
+{
+    system("./compile.sh --input c/004-or.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 8191);
+}
+
+TEST_F(CpuTestbench, LUITest)
+{
+    system("./compile.sh --input c/011-lui.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 17257);
+}
 
 // TEST_F(CpuTestbench, ShiftTest)
 // {

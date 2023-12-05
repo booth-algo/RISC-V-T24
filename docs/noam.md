@@ -29,4 +29,4 @@ I was in charge of designing the **Sign Extension** unit, as well as the **Contr
     - Worked on debugging the control unit. Implemented lots of changes to it for all types of instruction. Have a final WORKING version of the control unit module
 
 - 04/12 
-    - 
+    - Worked on implementing all missig instructions (Logical Shift Left, Logical Shift Right, XOR, ). Created testbenches for those, modified the ALU to implement them, ....
