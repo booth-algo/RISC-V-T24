@@ -10,14 +10,14 @@
 
 int main() 
 {
-    int num = 0x123213;
+    unsigned int num = 0x123213;
     int shift_amount = 5;
 
     // srl (logical right shift)
-    int srl_result = num >> shift_amount;
+    unsigned int srl_result = num >> shift_amount;
 
     // srli (logical right shift immediate)
-    int ans = srl_result >> 3;             // Shift by a constant amount
+    unsigned int ans = srl_result >> 3;             // Shift by a constant amount
 
 #if !defined(__riscv)
     printf("srl: %d\n", srl_result);

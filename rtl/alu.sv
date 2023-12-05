@@ -1,3 +1,5 @@
+`include "def.sv"
+
 module alu #( 
     parameter WIDTH = 32
 )( 
@@ -10,16 +12,17 @@ module alu #(
 
 always_comb begin        
     case(ALUctrl)
-        4'b0000:     ALUout = a + b;
-        4'b0001:     ALUout = a - b;
-        4'b0010:     ALUout = a & b;
-        4'b0011:     ALUout = a | b;
-        4'b0100:     ALUout = a ^ b;
-        4'b0101:     ALUout = a << b;
-        4'b0110:     ALUout = a >> b;
-        4'b0111:     ALUout = (a < b) ? 1 : 0;
-        4'b1000:     ALUout = b;
-        default:    ALUout = 0;   
+        `ALU_OPCODE_ADD:        ALUout = a + b;
+        `ALU_OPCODE_SUB:        ALUout = a - b;
+        `ALU_OPCODE_AND:        ALUout = a & b;
+        `ALU_OPCODE_OR:         ALUout = a | b;
+        `ALU_OPCODE_XOR:        ALUout = a ^ b;
+        `ALU_OPCODE_LSL:        ALUout = a << b;
+        `ALU_OPCODE_LSR:        ALUout = a >> b;
+        `ALU_OPCODE_ASR:        ALUout = a >>> b;
+        `ALU_OPCODE_SLT:        ALUout = (a < b) ? 1 : 0;
+        `ALU_OPCODE_B:          ALUout = b;
+        default:                ALUout = 0;   
     endcase
 
     // EQ is going to define whether the status of the last operation was 0 or 1. 

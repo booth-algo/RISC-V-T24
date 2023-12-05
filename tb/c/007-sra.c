@@ -15,16 +15,16 @@ int main()
     int shift_amount = 5;
 
     // sra (arithmetic right shift)
-    int sra_result = ((unsigned int)num) >> shift_amount;
+    int sra_result = num >> shift_amount;
 
     // srai (arithmetic right shift immediate)
-    int ans = ((unsigned int)num) >> 3;  // Shift by a constant amount
+    int ans = num >> 3;  // Shift by a constant amount
 
 #if !defined(__riscv)
     printf("sra: %d\n", sra_result);
     printf("ans: %d\n", (int)ans);
 #endif
 
-    // EXPECTED OUTPUT = 536869662
+    // EXPECTED OUTPUT = -1250
     return ans;
 }

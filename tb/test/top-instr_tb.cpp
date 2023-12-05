@@ -77,7 +77,7 @@ TEST_F(CpuTestbench, NegativeAdditionTest)
 //     runSimulation(200);
     
 //     EXPECT_EQ((int)top->a0, 7942);
-// }
+}
 
 
 // TEST_F(CpuTestbench, ORTest)
@@ -92,7 +92,7 @@ TEST_F(CpuTestbench, NegativeAdditionTest)
 
 // TEST_F(CpuTestbench, LUITest)
 // {
-//     system("./compile.sh --input c/011-lui.c");
+//     system("./compile.sh --input c/010-lui.c");
     
 //     runSimulation(200);
     
@@ -100,19 +100,39 @@ TEST_F(CpuTestbench, NegativeAdditionTest)
 // }
 
 
+
+TEST_F(CpuTestbench, SLLTest)
+{
+    system("./compile.sh --input c/005-sll.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 74496);
+}
+
+
+TEST_F(CpuTestbench, SRLTest)
+{
+    system("./compile.sh --input c/006-srl.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 4658);
+}
+
+
+TEST_F(CpuTestbench, SRATest)
+{
+    system("./compile.sh --input c/007-sra.c");
+    
+     runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 17257);
+}
+
 // TEST_F(CpuTestbench, ShiftTest)
 // {
 //     system("./compile.sh --input c/005-shift_left_right.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 534);
-// }
-
-
-// TEST_F(CpuTestbench, SLTTest)
-// {
-//     system("./compile.sh --input c/008-slt.c");
     
 //     runSimulation(200);
     
@@ -122,7 +142,7 @@ TEST_F(CpuTestbench, NegativeAdditionTest)
 
 // TEST_F(CpuTestbench, SLTUTest)
 // {
-//     system("./compile.sh --input c/009-sltu.c");
+//     system("./compile.sh --input c/006-slt.c");
     
 //     runSimulation(200);
     

@@ -39,7 +39,7 @@ module top #(
     logic RegWrite;
 
     // Sign Extend
-    logic [1:0] ImmSrc;
+    logic [2:0] ImmSrc;
 
     // Result
     // TODO this is going to be 2-bits
