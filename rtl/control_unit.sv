@@ -112,6 +112,7 @@ always_comb begin
                 3'b000: begin
                     ALUctrl = 4'b0000;
                     ImmSrc = 2'b00;
+                    $display("addi", op, " ", funct3);
                 end
                 
                 // ori
@@ -139,7 +140,7 @@ always_comb begin
                 3'b001: begin
                     ALUctrl = 4'b0010;
                     ImmSrc = 2'b00;
-                    $display("andi", op, " ", funct3);
+                    $display("slli", op, " ", funct3);
                 end
                 
                 // slti
@@ -217,11 +218,11 @@ always_comb begin
         7'b1100011: begin
             RegWrite = 0;
             ALUsrc = 0;
+            ImmSrc = 2'b10;
             case(funct3)
             
             // beq
             3'b000: begin
-                ImmSrc = 2'b10;
                 PCsrc = EQ ? 1 : 0;
                 ALUctrl = 4'b0001;
                 $display("beq", op, " ", funct3);
@@ -229,15 +230,42 @@ always_comb begin
             
             // bne
             3'b001: begin
-                ImmSrc = 2'b10;
                 PCsrc = EQ ? 0 : 1;
                 ALUctrl = 4'b0001;
+                $display("bne", op, " ", funct3);
             end
-            
+
+            // blt
+            3'b100: begin
+                PCsrc = EQ ? 0 : 1;
+                ALUctrl = 4'b0111;
+                $display("blt", op, " ", funct3);
+            end
+
+            // bge
+            3'b101: begin
+                PCsrc = EQ ? 1 : 0;
+                ALUctrl = 4'b0111;
+                $display("bge", op, " ", funct3);
+            end
+
+            // bltu
+            3'b110: begin
+                PCsrc = !EQ ? 1 : 0;
+                ALUctrl = 4'b0111;
+                $display("bltu", op, " ", funct3);
+            end
+
+            // bgeu
+            3'b111: begin
+                PCsrc = !EQ ? 0 : 1;
+                ALUctrl = 4'b0111;
+                $display("bgeu", op, " ", funct3);
+            end
+
             default: begin
                 PCsrc = 0;
                 RegWrite = 0;
-                ImmSrc = 2'b10;
                 ALUctrl = 4'b0001;
                 $display("B type default", op, " ", funct3);
             end
@@ -247,7 +275,7 @@ always_comb begin
         // J type instructions
         7'b1101111: begin
             //jal
-            PCsrc = 0;
+            PCsrc = 1;
             ALUsrc = 1;
             RegWrite = 1;
             $display("jal", op, " ", funct3);

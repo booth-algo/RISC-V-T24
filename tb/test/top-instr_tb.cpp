@@ -110,14 +110,14 @@ TEST_F(CpuTestbench, NegativeAdditionTest)
 // }
 
 
-TEST_F(CpuTestbench, SLTTest)
-{
-    system("./compile.sh --input c/008-slt.c");
+// TEST_F(CpuTestbench, SLTTest)
+// {
+//     system("./compile.sh --input c/008-slt.c");
     
-    runSimulation(200);
+//     runSimulation(200);
     
-    EXPECT_EQ((int)top->a0, 1);
-}
+//     EXPECT_EQ((int)top->a0, 1);
+// }
 
 
 // TEST_F(CpuTestbench, SLTUTest)
@@ -139,6 +139,14 @@ TEST_F(CpuTestbench, SLTTest)
 //     EXPECT_EQ((int)top->a0, 460881);
 // }
 
+TEST_F(CpuTestbench, bltuTest)
+{
+    system("./compile.sh --input c/016-bltu.c");
+    
+    runSimulation(300);
+    
+    EXPECT_EQ((int)top->a0, -50);
+}
 
 // TEST_F(CpuTestbench, ForLoopTest)
 // {
