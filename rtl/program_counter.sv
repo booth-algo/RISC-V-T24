@@ -3,25 +3,12 @@ module program_counter #(
 )(
     input logic clk,
     input logic rst,
-    input logic PCsrc,
-    input logic [WIDTH-1:0] ImmOp,
-    output logic [WIDTH-1:0] PC,
-    output logic [WIDTH-1:0] PCPlus4
+    input logic [WIDTH-1:0] PCnext,
+    output logic [WIDTH-1:0] PC
 );
     
-    logic [WIDTH-1:0] next_PC;
-
     always_ff @(posedge clk) begin
-        PC <= rst ? 32'h0 : next_PC;
-    end
-
-    always_comb begin
-        PCPlus4 = PC + 4;
-
-        if (PCsrc)
-            next_PC = PC + ImmOp;
-        else
-            next_PC = PCPlus4;
+        PC <= rst ? 32'h0 : PCnext;
     end
 
 endmodule

@@ -1,6 +1,6 @@
 ## Time Stamps
 
-Kevin's logbook (more details in Google Docs file)
+Kevin's logbook
 
 - 16/11
   - Created program counter for lab4
@@ -40,3 +40,11 @@ Kevin's logbook (more details in Google Docs file)
   - Some other sminor changes
   - Added mux and data memory to rtl
   - Two-way set cache structure designed
+- 30/11
+  - Data memory testbench written, data memory debugged, all tests passed
+  - F1 lights testbench written, testbench not fully debugged
+- 2/12
+  - Restructing the pipeline files into 4 flip flops
+  - IF_ID (fetch to decode) flip flop completed, not tested
+  - Mux pulled out from PC (previous poor design), top and PC updated
+  - All other pipeline flip flops ports defined, but not completed
