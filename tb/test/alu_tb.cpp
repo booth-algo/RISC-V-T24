@@ -14,8 +14,9 @@
 #define OPCODE_XOR      0b0100
 #define OPCODE_LSL      0b0101
 #define OPCODE_LSR      0b0110
-#define OPCODE_SLT      0b0111
-#define OPCODE_LUI      0b1000
+#define OPCODE_ASR      0b0111
+#define OPCODE_SLT      0b1000
+#define OPCODE_B        0b1001
 
 class ALUTestbench : public BaseTestbench
 {
@@ -103,6 +104,7 @@ TEST_F(ALUTestbench, BinaryOrTest)
     EXPECT_EQ(top->EQ, (op1 | op2) == 0);
 }
 
+
 TEST_F(ALUTestbench, BinaryXorTest)
 {
     int op1 = 0b0110;
@@ -119,6 +121,7 @@ TEST_F(ALUTestbench, BinaryXorTest)
     EXPECT_EQ(top->ALUout, op1 ^ op2);
     EXPECT_EQ(top->EQ, (op1 ^ op2) == 0);
 }
+
 
 TEST_F(ALUTestbench, LogicalShiftLeftTest)
 {
@@ -137,10 +140,11 @@ TEST_F(ALUTestbench, LogicalShiftLeftTest)
     EXPECT_EQ(top->EQ, (op1 << op2) == 0);
 }
 
+
 TEST_F(ALUTestbench, LogicalShiftRightTest)
 {
-    int op1 = 0b0110;
-    int op2 = 4;
+    unsigned int op1 = 0b0110;
+    unsigned int op2 = 4;
     
     //inputs for LSR operation
     top->a = op1;
@@ -153,6 +157,22 @@ TEST_F(ALUTestbench, LogicalShiftRightTest)
     EXPECT_EQ(top->ALUout, op1 >> op2);
     EXPECT_EQ(top->EQ, (op1>> op2) == 0);
 }
+
+TEST_F(ALUTestbench, ASRTest)
+{
+    int op1 = 0xffffd8f1;
+    int op2 = 0x5;
+    
+    top->a = op1;
+    top->b = op2;
+    top->ALUctrl = OPCODE_ASR;
+
+    top->eval();
+
+    EXPECT_EQ((int)top->ALUout, op1 >> op2);
+    EXPECT_EQ(top->EQ, op2 == 0);
+}
+
 
 TEST_F(ALUTestbench, SetIfLessThanTest)
 {
@@ -171,6 +191,7 @@ TEST_F(ALUTestbench, SetIfLessThanTest)
     EXPECT_EQ(top->EQ, (op1 < op2) == 0);
 }
 
+
 TEST_F(ALUTestbench, LoadUpperImmTest)
 {
     int op1 = 0b0110;
@@ -179,7 +200,7 @@ TEST_F(ALUTestbench, LoadUpperImmTest)
     //inputs for LUI operation
     top->a = op1;
     top->b = op2;
-    top->ALUctrl = OPCODE_LUI;
+    top->ALUctrl = OPCODE_B;
 
     top->eval();
 
@@ -187,6 +208,7 @@ TEST_F(ALUTestbench, LoadUpperImmTest)
     EXPECT_EQ(top->ALUout, op2);
     EXPECT_EQ(top->EQ, op2 == 0);
 }
+
 
 int main(int argc, char **argv)
 {

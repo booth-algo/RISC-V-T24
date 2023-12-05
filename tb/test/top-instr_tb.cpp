@@ -50,55 +50,44 @@ TEST_F(CpuTestbench, NegativeAdditionTest)
 }
 
 
-// TEST_F(CpuTestbench, DataMemoryIsCorrectTest)
-// {
-//     system("./compile.sh --input asm/003-load_and_store.s");
+TEST_F(CpuTestbench, DataMemoryIsCorrectTest)
+{
+    system("./compile.sh --input asm/003-load_and_store.s");
     
-//     runSimulation(200);
+    runSimulation(200);
     
-//     EXPECT_EQ((int)top->a0, -122);
-// }
-
-
-// TEST_F(CpuTestbench, SubtractionTest)
-// {
-//     system("./compile.sh --input c/002-subtract.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 889);
-// }
-
-
-// TEST_F(CpuTestbench, XORTest)
-// {
-//     system("./compile.sh --input c/003-xor.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 7942);
+    EXPECT_EQ((int)top->a0, -122);
 }
 
 
-// TEST_F(CpuTestbench, ORTest)
-// {
-//     system("./compile.sh --input c/004-or.c");
+TEST_F(CpuTestbench, SubtractionTest)
+{
+    system("./compile.sh --input c/002-subtract.c");
     
-//     runSimulation(200);
+    runSimulation(200);
     
-//     EXPECT_EQ((int)top->a0, 8191);
-// }
+    EXPECT_EQ((int)top->a0, 889);
+}
 
 
-// TEST_F(CpuTestbench, LUITest)
-// {
-//     system("./compile.sh --input c/010-lui.c");
+TEST_F(CpuTestbench, XORTest)
+{
+    system("./compile.sh --input c/003-xor.c");
     
-//     runSimulation(200);
+    runSimulation(200);
     
-//     EXPECT_EQ((int)top->a0, 17257);
-// }
+    EXPECT_EQ((int)top->a0, 7942);
+}
 
+
+TEST_F(CpuTestbench, ORTest)
+{
+    system("./compile.sh --input c/004-or.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 8191);
+}
 
 
 TEST_F(CpuTestbench, SLLTest)
@@ -127,46 +116,51 @@ TEST_F(CpuTestbench, SRATest)
     
      runSimulation(200);
     
+    EXPECT_EQ((int)top->a0, -1250);
+}
+
+
+TEST_F(CpuTestbench, SLTTest)
+{
+    system("./compile.sh --input c/008-slt.c");
+    
+    runSimulation(200);
+    
+    EXPECT_EQ((int)top->a0, 1);
+}
+
+
+TEST_F(CpuTestbench, LUITest)
+{
+    system("./compile.sh --input c/010-lui.c");
+    
+    runSimulation(200);
+    
     EXPECT_EQ((int)top->a0, 17257);
 }
 
-// TEST_F(CpuTestbench, ShiftTest)
-// {
-//     system("./compile.sh --input c/005-shift_left_right.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 1);
-// }
+/*
+*   No test at the moment for auipc
+*/
 
-
-// TEST_F(CpuTestbench, SLTUTest)
-// {
-//     system("./compile.sh --input c/006-slt.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 2);
-// }
-
-
-// TEST_F(CpuTestbench, WhileLoopTest)
-// {
-//     system("./compile.sh --input c/007-while_loop.c");
-    
-//     runSimulation(200);
-    
-//     EXPECT_EQ((int)top->a0, 460881);
-// }
-
-TEST_F(CpuTestbench, bltuTest)
+TEST_F(CpuTestbench, BEQTest)
 {
-    system("./compile.sh --input c/016-bltu.c");
+    system("./compile.sh --input c/012-beq.c");
     
-    runSimulation(300);
+    runSimulation(200);
     
-    EXPECT_EQ((int)top->a0, -50);
+    EXPECT_EQ((int)top->a0, 1);
 }
+
+
+// TEST_F(CpuTestbench, BLTUTest)
+// {
+//     system("./compile.sh --input c/016-bltu.c");
+    
+//     runSimulation(300);
+    
+//     EXPECT_EQ((int)top->a0, -50);
+// }
 
 // TEST_F(CpuTestbench, ForLoopTest)
 // {

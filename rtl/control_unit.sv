@@ -7,7 +7,7 @@ module control_unit #(
    input logic EQ,
    output logic [3:0] ALUctrl,
    output logic ALUsrc,
-   output logic [1:0] ImmSrc,
+   output logic [2:0] ImmSrc,
    output logic PCsrc,
    output logic RegWrite,
    output logic MemWrite,
@@ -27,7 +27,7 @@ assign funct7 = instr[31:25];
 assign RegWrite = 1'b0;
 assign ALUctrl = `ALU_OPCODE_ADD;
 assign ALUsrc = 1'b0;
-assign ImmSrc = 2'b000;
+assign ImmSrc = 3'b000;
 assign PCsrc = 1'b0;
 assign MemWrite = 1'b0;
 assign ResultSrc = 1'b0;
@@ -118,7 +118,7 @@ always_comb begin
 
                 // sltu
                 3'b011: begin
-                    ALUctrl = 4'b0111;
+                    ALUctrl = `ALU_OPCODE_SLTU;
                     $display("sltu", op, " ", funct3);
                 end
                 
@@ -163,12 +163,14 @@ always_comb begin
 
                 // slli
                 3'b001: begin
+                    ImmSrc = `SIGN_EXTEND_I5;
                     ALUctrl = `ALU_OPCODE_LSL;
                     $display("slli", op, " ", funct3);
                 end
 
                 // srli or srai
                 3'b101: begin
+                    ImmSrc = `SIGN_EXTEND_I5;
                     case(funct7)
                         
                         // srli
@@ -197,17 +199,9 @@ always_comb begin
 
                 // sltiu
                 3'b011: begin
-                    ALUctrl = 4'b0101;
-                    ImmSrc = 2'b00;
+                    ALUctrl = `ALU_OPCODE_SLTU;
                     $display("slti", op, " ", funct3);
                 end
-
-                // sltiu
-                3'b011: begin
-                    ALUctrl = 4'b0101;
-                    ImmSrc = 2'b00;
-                    $display("sltiu", op, " ", funct3);
-                end 
 
                 default: begin
                     ALUctrl = 4'b0000;

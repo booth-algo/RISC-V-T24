@@ -10,7 +10,8 @@
 `define ALU_OPCODE_LSR              4'b0110
 `define ALU_OPCODE_ASR              4'b0111
 `define ALU_OPCODE_SLT              4'b1000
-`define ALU_OPCODE_B                4'b1001
+`define ALU_OPCODE_SLTU             4'b1001
+`define ALU_OPCODE_B                4'b1010
 
 `define SIGN_EXTEND_I               3'b000
 `define SIGN_EXTEND_S               3'b001
