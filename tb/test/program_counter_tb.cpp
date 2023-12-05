@@ -45,6 +45,7 @@ TEST_F(PCTestbench, PCSrcEqualsZeroTest)
     runSimulation(60);
 
     int PC = top->PC;
+    EXPECT_EQ(top->PCPlus4, PC + 4);
 
     top->PCsrc = 0;
     runSimulation(1);

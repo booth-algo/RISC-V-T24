@@ -155,7 +155,7 @@ TEST_F(ControlunitTestbench, ALUsrcTest)
 
 TEST_F(ControlunitTestbench, PCsrcTest)
 {
-    // PCsrc = 1: FLAG_ZERO & B-Type
+    // PCsrc = 1: FLAG_ZERO & (B-Type or J-type)
     // Pcsrc = 0: Otherwise
     
     top->EQ = 1;
@@ -164,17 +164,23 @@ TEST_F(ControlunitTestbench, PCsrcTest)
 
     EXPECT_EQ(top->PCsrc, 1) << "Test 1";
     
+    top->EQ = 1;
+    top->instr = OPCODE_J;
+    top->eval();
+
+    EXPECT_EQ(top->PCsrc, 1) << "Test 2";
+    
     // EQ is OFF now
     top->EQ = 0;
     top->instr = OPCODE_B;
     top->eval();
 
-    EXPECT_EQ(top->PCsrc, 0) << "Test 2";
+    EXPECT_EQ(top->PCsrc, 0) << "Test 3";
     
     // EQ is on but OPCODE is wrong now
     for (int opcode : { 
         OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
-        OPCODE_U1, OPCODE_U2, OPCODE_J, OPCODE_R, OPCODE_S
+        OPCODE_U1, OPCODE_U2, OPCODE_R, OPCODE_S
     }) {
         // Make sure PCsrc pulls DOWN instead of leave hanging
         top->EQ = 1;

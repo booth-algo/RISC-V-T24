@@ -11,7 +11,7 @@ module control_unit #(
    output logic PCsrc,
    output logic RegWrite,
    output logic MemWrite,
-   output logic ResultSrc
+   output logic [1:0] ResultSrc
 );
 
 logic [6:0] op;
@@ -30,7 +30,7 @@ assign ALUsrc = 1'b0;
 assign ImmSrc = 3'b000;
 assign PCsrc = 1'b0;
 assign MemWrite = 1'b0;
-assign ResultSrc = 1'b0;
+assign ResultSrc = 2'b00;
 
 always_comb begin
     MemWrite = 0;
@@ -318,18 +318,22 @@ always_comb begin
 
         // J type instructions
         7'b1101111: begin
-            //jal
+            // jal
             PCsrc = 1;
+            ImmSrc = `SIGN_EXTEND_J;
             ALUsrc = 1;
             RegWrite = 1;
+            ResultSrc = 2;
             $display("jal", op, " ", funct3);
         end
 
         // I type instruction
         7'b1100111: begin 
+            // jalr
             PCsrc = 0;
             RegWrite = 1;
             ALUsrc = 1;
+            ResultSrc = 2;
             $display("jalr", op, " ", funct3);
         end
 

@@ -17,6 +17,7 @@
 `define SIGN_EXTEND_S               3'b001
 `define SIGN_EXTEND_B               3'b010
 `define SIGN_EXTEND_U               3'b011
-`define SIGN_EXTEND_I5              3'b100
+`define SIGN_EXTEND_J               3'b100
+`define SIGN_EXTEND_I5              3'b101
 
 `endif

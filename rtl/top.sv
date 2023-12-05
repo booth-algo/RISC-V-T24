@@ -19,6 +19,7 @@ module top #(
     logic EQ;
     logic [WIDTH-1:0] ALUout;
     logic [WIDTH-1:0] PC;
+    logic [WIDTH-1:0] PCPlus4;
 
     // Instruction Memory
     logic [WIDTH-1:0] instr;
@@ -44,7 +45,7 @@ module top #(
     // Result
     // TODO this is going to be 2-bits
     logic [WIDTH-1:0] result;
-    logic ResultSrc;
+    logic [1:0] ResultSrc;
 
     program_counter program_counter_inst (
         .clk(clk),
@@ -52,7 +53,8 @@ module top #(
         .PCsrc(PCsrc),
         .ImmOp(ImmOp),
 
-        .PC(PC)
+        .PC(PC),
+        .PCPlus4(PCPlus4)
     );
     
     instr_mem instr_mem_inst (
@@ -120,9 +122,11 @@ module top #(
         .RD(ReadData)
     );
 
-    mux #(WIDTH) mux_result_inst (
+    mux4 #(WIDTH) mux_result_inst (
         .in0(ALUout),
         .in1(ReadData),
+        .in2(PCPlus4),
+        .in3(0),
         .sel(ResultSrc),
 
         .out(result)

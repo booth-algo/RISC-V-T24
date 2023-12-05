@@ -5,7 +5,8 @@ module program_counter #(
     input logic rst,
     input logic PCsrc,
     input logic [WIDTH-1:0] ImmOp,
-    output logic [WIDTH-1:0] PC
+    output logic [WIDTH-1:0] PC,
+    output logic [WIDTH-1:0] PCPlus4
 );
     
     logic [WIDTH-1:0] next_PC;
@@ -15,10 +16,12 @@ module program_counter #(
     end
 
     always_comb begin
+        PCPlus4 = PC + 4;
+
         if (PCsrc)
             next_PC = PC + ImmOp;
         else
-            next_PC = PC + 4;
+            next_PC = PCPlus4;
     end
 
 endmodule
