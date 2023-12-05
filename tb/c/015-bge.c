@@ -13,9 +13,9 @@ int main()
     int ans = 111;
     
     // Test bge
-    while (ans >= 3) 
+    while (ans < 300) 
     {
-        ans--;
+        ans++;
     }
 
 #if !defined(__riscv)
@@ -23,6 +23,6 @@ int main()
     printf("ans: %d\n", ans);
 #endif
 
-    // EXPECTED OUTPUT = 2
+    // EXPECTED OUTPUT = 300
     return ans;
 }

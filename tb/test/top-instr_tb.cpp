@@ -153,33 +153,64 @@ TEST_F(CpuTestbench, BEQTest)
 }
 
 
-// TEST_F(CpuTestbench, BLTUTest)
-// {
-//     system("./compile.sh --input c/016-bltu.c");
+TEST_F(CpuTestbench, BNETest)
+{
+    system("./compile.sh --input c/013-bne.c");
     
-//     runSimulation(300);
+    runSimulation(2000);
     
-//     EXPECT_EQ((int)top->a0, -50);
-// }
-
-// TEST_F(CpuTestbench, ForLoopTest)
-// {
-//     system("./compile.sh --input c/008-for_loop.c");
-    
-//     runSimulation(2000);
-    
-//     EXPECT_EQ((int)top->a0, 5050);
-// }
+    EXPECT_EQ((int)top->a0, 50);
+}
 
 
-// TEST_F(CpuTestbench, FibonnaciTest)
-// {
-//     system("./compile.sh --input c/010-fibonnaci.c");
+TEST_F(CpuTestbench, BLTTest)
+{
+    system("./compile.sh --input c/014-blt.c");
     
-//     runSimulation(2000);
+    runSimulation(2000);
     
-//     EXPECT_EQ((int)top->a0, 832040);
-// }
+    EXPECT_EQ((int)top->a0, 273);
+}
+
+
+TEST_F(CpuTestbench, BGETest)
+{
+    system("./compile.sh --input c/015-bge.c");
+    
+    runSimulation(2000);
+    
+    EXPECT_EQ((int)top->a0, 300);
+}
+
+
+TEST_F(CpuTestbench, BLTUTest)
+{
+    system("./compile.sh --input c/016-bltu.c");
+    
+    runSimulation(300);
+    
+    EXPECT_EQ((int)top->a0, 0);
+}
+
+
+TEST_F(CpuTestbench, ForLoopTest)
+{
+    system("./compile.sh --input c/018-for_loop.c");
+    
+    runSimulation(2000);
+    
+    EXPECT_EQ((int)top->a0, 5050);
+}
+
+
+TEST_F(CpuTestbench, FibonnaciTest)
+{
+    system("./compile.sh --input c/020-fibonnaci.c");
+    
+    runSimulation(2000);
+    
+    EXPECT_EQ((int)top->a0, 832040);
+}
 
 
 int main(int argc, char **argv)

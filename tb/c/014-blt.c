@@ -10,12 +10,12 @@
 
 int main() 
 {
-    int ans = 0;
+    int ans = 0x200;
     
     // Test blt
-    while (ans < 0x111) 
+    while (ans > 0x111) 
     {
-        ans++;
+        ans--;
     }
 
 #if !defined(__riscv)

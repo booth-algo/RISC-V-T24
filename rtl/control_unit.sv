@@ -282,28 +282,28 @@ always_comb begin
             // blt
             3'b100: begin
                 PCsrc = EQ ? 0 : 1;
-                ALUctrl = 4'b0111;
+                ALUctrl = `ALU_OPCODE_SLT;
                 $display("blt", op, " ", funct3);
             end
 
             // bge
             3'b101: begin
                 PCsrc = EQ ? 1 : 0;
-                ALUctrl = 4'b0111;
+                ALUctrl = `ALU_OPCODE_SLT;
                 $display("bge", op, " ", funct3);
             end
 
             // bltu
             3'b110: begin
-                PCsrc = !EQ ? 1 : 0;
-                ALUctrl = 4'b0111;
+                PCsrc = EQ ? 0 : 1;
+                ALUctrl = `ALU_OPCODE_SLTU;
                 $display("bltu", op, " ", funct3);
             end
 
             // bgeu
             3'b111: begin
-                PCsrc = !EQ ? 0 : 1;
-                ALUctrl = 4'b0111;
+                PCsrc = EQ ? 1 : 0;
+                ALUctrl = `ALU_OPCODE_SLTU;
                 $display("bgeu", op, " ", funct3);
             end
 

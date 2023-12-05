@@ -10,10 +10,10 @@
 
 int main() 
 {
-    int ans = -50;
+    int ans = -1;
     
     // Test bltu
-    while ((unsigned int)ans < 0x100) 
+    while ((unsigned int)ans >= 0x100) 
     {
         ans++;
     }
@@ -23,6 +23,6 @@ int main()
     printf("ans: %d\n", ans);
 #endif
 
-    // EXPECTED OUTPUT = -50
+    // EXPECTED OUTPUT = 0
     return ans;
 }

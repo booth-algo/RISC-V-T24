@@ -10,10 +10,10 @@
 
 int main() 
 {
-    int ans = -1;
+    int ans = -50;
     
     // Test bgeu
-    while ((unsigned int)ans >= 0x100) 
+    while ((unsigned int)ans < 0x100) 
     {
         ans++;
     }
@@ -23,6 +23,6 @@ int main()
     printf("ans: %d\n", ans);
 #endif
 
-    // EXPECTED OUTPUT = 0
+    // EXPECTED OUTPUT = -50
     return ans;
 }
