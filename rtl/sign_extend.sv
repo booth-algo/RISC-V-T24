@@ -1,5 +1,7 @@
 `include "def.sv"
 
+/* verilator lint_off UNUSED */
+
 module sign_extend #(
     parameter DATA_WIDTH = 32
 ) (

@@ -8,8 +8,6 @@ module instr_mem #(
     output logic [DATA_OUT_WIDTH-1:0] RD
 );
 
-logic [ADDRESS_REAL_WIDTH:0] addr = A[ADDRESS_REAL_WIDTH:0];
-
 logic [DATA_WIDTH-1:0] array [2**ADDRESS_REAL_WIDTH-1:0];
 
 initial begin
