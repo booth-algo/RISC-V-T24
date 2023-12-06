@@ -223,6 +223,16 @@ TEST_F(CpuTestbench, FibonnaciTest)
 }
 
 
+TEST_F(CpuTestbench, LB_and_SB_Test)
+{
+    system("./compile.sh --input asm/006-lb-lbu-sb.s");
+    
+    runSimulation(50000);
+    
+    EXPECT_EQ((int)top->a0, 134);
+}
+
+
 int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);

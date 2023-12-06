@@ -4,6 +4,7 @@ module data_mem #(
                     MEM_WIDTH = 8
 )(
         input  logic                    clk,
+        input  logic                    addr_mode, // for byte addressing
         input  logic [ADDR_WIDTH-1:0]   A, // address
         input  logic [DATA_WIDTH-1:0]   WD, // write data
         input  logic                    WE, // write enable (memwrite from control_unit)
@@ -19,11 +20,24 @@ module data_mem #(
         $readmemh("../rtl/data.hex", array);
     end
 
-    assign RD = {array[A+3], array[A+2], array[A+1], array[A]}; // Read
+    always_ff @* begin
+        if (addr_mode) // Read one byte
+            RD = {24'b0, array[A]};
+        else // Read whole word
+            RD = {array[A+3], array[A+2], array[A+1], array[A]};
+    end
+
 
     // Read and write operations
     always_ff @(posedge clk) begin
-        if (WE) begin // Write
+        if (WE && addr_mode) begin // Write only least significant byte (8 bits)
+            array[A] <= WD[7:0];
+            array[A+1] <= 8'b0;
+            array[A+2] <= 8'b0;
+            array[A+3] <= 8'b0;
+        end
+
+        else if (WE) begin // Write whole word
             array[A] <= WD[7:0];
             array[A+1] <= WD[15:8];
             array[A+2] <= WD[23:16];
