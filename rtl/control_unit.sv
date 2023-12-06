@@ -51,13 +51,11 @@ always_comb begin
                         // add
                         7'h00: begin
                             ALUctrl = `ALU_OPCODE_ADD;
-                            $display("add", op, " ", funct3);
                         end
                         
                         // sub
                         7'h20: begin
                             ALUctrl = `ALU_OPCODE_SUB;
-                            $display("sub", op, " ", funct3);
                         end
     
                         default: $display("Warning: undefined add/sub");
@@ -68,25 +66,21 @@ always_comb begin
                 // or
                 3'b110: begin
                     ALUctrl = `ALU_OPCODE_OR;
-                    $display("or", op, " ", funct3);
                 end
                 
                 // xor
                 3'b100: begin
                     ALUctrl = `ALU_OPCODE_XOR;
-                    $display("xor", op, " ", funct3);
                 end
 
                 // and
                 3'b111: begin
                     ALUctrl = `ALU_OPCODE_AND;
-                    $display("and", op, " ", funct3);
                 end
                 
                 // sll
                 3'b001: begin
                     ALUctrl = `ALU_OPCODE_LSL;
-                    $display("sll", op, " ", funct3);
                 end
 
                 // srl or sra
@@ -96,13 +90,11 @@ always_comb begin
                         // srl
                         7'h00: begin
                             ALUctrl = `ALU_OPCODE_LSR;
-                            $display("srl", op, " ", funct3);
                         end
                         
                         // sra
                         7'h20: begin
                             ALUctrl = `ALU_OPCODE_ASR;
-                            $display("sra", op, " ", funct3);
                         end
     
                         default: $display("Warning: undefined add/sub");
@@ -113,13 +105,11 @@ always_comb begin
                 // slt
                 3'b010: begin
                     ALUctrl = `ALU_OPCODE_SLT;
-                    $display("slt", op, " ", funct3);
                 end
 
                 // sltu
                 3'b011: begin
                     ALUctrl = `ALU_OPCODE_SLTU;
-                    $display("sltu", op, " ", funct3);
                 end
                 
                 default: begin
@@ -146,26 +136,22 @@ always_comb begin
                 // ori
                 3'b110: begin
                     ALUctrl = `ALU_OPCODE_OR;
-                    $display("ori", op, " ", funct3);
                 end
 
                 // xori
                 3'b100: begin
                     ALUctrl = `ALU_OPCODE_XOR;
-                    $display("xori", op, " ", funct3);
                 end
                 
                 // andi
                 3'b111: begin
                     ALUctrl = `ALU_OPCODE_AND;
-                    $display("andi", op, " ", funct3);
                 end
 
                 // slli
                 3'b001: begin
                     ImmSrc = `SIGN_EXTEND_I5;
                     ALUctrl = `ALU_OPCODE_LSL;
-                    $display("slli", op, " ", funct3);
                 end
 
                 // srli or srai
@@ -176,14 +162,11 @@ always_comb begin
                         // srli
                         7'h00: begin
                             ALUctrl = `ALU_OPCODE_LSR;
-                            $display("srli", op, " ", funct3);  
                         end
                         
                         // srai
                         7'h20: begin
                             ALUctrl = `ALU_OPCODE_ASR;
-                            // Need to take imm[0:4]
-                            $display("srai", op, " ", funct3);  
                         end
     
                         default: $display("Warning: undefined add/sub");
@@ -194,13 +177,11 @@ always_comb begin
                 // slti
                 3'b010: begin
                     ALUctrl = `ALU_OPCODE_SLT;
-                    $display("slti", op, " ", funct3);
                 end
 
                 // sltiu
                 3'b011: begin
                     ALUctrl = `ALU_OPCODE_SLTU;
-                    $display("slti", op, " ", funct3);
                 end
 
                 default: begin
@@ -218,11 +199,18 @@ always_comb begin
             ImmSrc = `SIGN_EXTEND_I;
             case(funct3)
                 
+                // lb
+                3'b000: begin
+                end
+
                 // lw
                 3'b010: begin
                     ALUsrc = 1;
                     RegWrite = 1;
-                    $display("lw", op, " ", funct3);
+                end
+
+                // lbu
+                3'b100: begin
                 end
 
                 default: begin
@@ -242,11 +230,14 @@ always_comb begin
             ImmSrc = `SIGN_EXTEND_S;
             case(funct3)
             
+            // sb
+            3'b000: begin
+            end
+
             // sw
             3'b010: begin 
                 RegWrite = 0;
                 MemWrite = 1;
-                $display("sw", op, " ", funct3);
             end
             
             default: begin
@@ -269,42 +260,36 @@ always_comb begin
             3'b000: begin
                 PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
                 ALUctrl = `ALU_OPCODE_SUB;
-                $display("beq", op, " ", funct3);
             end
             
             // bne
             3'b001: begin
                 PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
                 ALUctrl = `ALU_OPCODE_SUB;
-                $display("bne", op, " ", funct3);
             end
 
             // blt
             3'b100: begin
                 PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLT;
-                $display("blt", op, " ", funct3);
             end
 
             // bge
             3'b101: begin
                 PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
                 ALUctrl = `ALU_OPCODE_SLT;
-                $display("bge", op, " ", funct3);
             end
 
             // bltu
             3'b110: begin
                 PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLTU;
-                $display("bltu", op, " ", funct3);
             end
 
             // bgeu
             3'b111: begin
                 PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
                 ALUctrl = `ALU_OPCODE_SLTU;
-                $display("bgeu", op, " ", funct3);
             end
 
             default: begin
@@ -324,7 +309,6 @@ always_comb begin
             ALUsrc = 1;
             RegWrite = 1;
             ResultSrc = 2;
-            $display("jal", op, " ", funct3);
         end
 
         // I type instruction
@@ -335,7 +319,6 @@ always_comb begin
             ImmSrc = `SIGN_EXTEND_I;
             ALUsrc = 1;
             ResultSrc = 2;
-            $display("jalr", op, " ", funct3);
         end
 
         // U type instructions
@@ -346,7 +329,6 @@ always_comb begin
             RegWrite = 1;
             ALUctrl = `ALU_OPCODE_B;
             ImmSrc = `SIGN_EXTEND_U;
-            $display("lui", op, " ", funct3);
         end
 
         7'b0010111: begin
@@ -354,7 +336,6 @@ always_comb begin
             PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
-            $display("auipc", op, " ", funct3);
         end
 
         // Environment type instructions

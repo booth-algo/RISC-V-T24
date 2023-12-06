@@ -16,7 +16,8 @@
 #define OPCODE_LSR      0b0110
 #define OPCODE_ASR      0b0111
 #define OPCODE_SLT      0b1000
-#define OPCODE_B        0b1001
+#define OPCODE_SLTU     0b1001
+#define OPCODE_B        0b1010
 
 class ALUTestbench : public BaseTestbench
 {

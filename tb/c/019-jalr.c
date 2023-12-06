@@ -7,8 +7,18 @@
 
 #if !defined(__riscv)
 #include <stdio.h>
-#endif
+#else
 
+// entry point (0x0): compiler places earlier functions lower in memory.
+void _start()
+{
+    main();
+    
+    // Infinite loop to prevent undefined access to memory
+    while (1) {}
+}
+
+#endif
 
 // Function definition
 int add(int a, int b)

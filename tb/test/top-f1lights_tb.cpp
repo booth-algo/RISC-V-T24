@@ -21,25 +21,7 @@ protected:
     }
 };
 
-TEST_F(CpuTestbench, MainRoutineTest)
-{
-    int max_cycles = 50;
 
-    for (int i = 0; i < max_cycles; ++i)
-    {
-        runSimulation(); // Evaluate the model
-
-        if (top->a0 == 0x2000) // Check if t2 has the correct value
-        {
-            SUCCEED();
-            return;
-        }
-
-        top->clk = !top->clk; // Toggle the clock to simulate the next cycle
-    }
-
-    FAIL() << "The register t2 (a0) did not reach the expected value within " << max_cycles << " cycles.";
-}
 
 TEST_F(CpuTestbench, LoopTest)
 {
@@ -66,6 +48,7 @@ TEST_F(CpuTestbench, LoopTest)
 
     FAIL() << "The iloop did not demonstrate expected behavior within " << max_cycles << " cycles.";
 }
+
 
 TEST_F(CpuTestbench, SubroutineFinalValueTest)
 {

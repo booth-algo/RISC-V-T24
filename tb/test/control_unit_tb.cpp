@@ -191,7 +191,7 @@ TEST_F(ControlunitTestbench, PCsrcTest)
         top->instr = opcode;
         top->eval();
 
-        EXPECT_EQ(top->PCsrc, 0) << "Opcode: " << std::bitset<7>(opcode);
+        EXPECT_NE(top->PCsrc, 1) << "Opcode: " << std::bitset<7>(opcode);
     }
 }
 

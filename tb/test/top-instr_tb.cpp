@@ -213,14 +213,14 @@ TEST_F(CpuTestbench, JALRTest)
 }
 
 
-// TEST_F(CpuTestbench, FibonnaciTest)
-// {
-//     system("./compile.sh --input c/020-fibonnaci.c");
+TEST_F(CpuTestbench, FibonnaciTest)
+{
+    system("./compile.sh --input c/020-fibonnaci.c");
     
-//     runSimulation(2000);
+    runSimulation(50000);
     
-//     EXPECT_EQ((int)top->a0, 832040);
-// }
+    EXPECT_EQ((int)top->a0, 55);
+}
 
 
 int main(int argc, char **argv)

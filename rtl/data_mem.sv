@@ -14,6 +14,11 @@ module data_mem #(
     // Each bit is 1 byte (8 bits) wide, with 2^16 = 65536 bytes memory locations
     logic [MEM_WIDTH-1:0] array [2**16-1:0];
 
+    initial begin
+        $display("Loading data into data memory...");
+        $readmemh("../rtl/data.hex", array);
+    end
+
     assign RD = {array[A+3], array[A+2], array[A+1], array[A]}; // Read
 
     // Read and write operations

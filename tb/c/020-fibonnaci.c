@@ -6,7 +6,19 @@
 
 #if !defined(__riscv)
 #include <stdio.h>
+#else
+
+// entry point (0x0): compiler places earlier functions lower in memory.
+void _start()
+{
+    main();
+
+    // Infinite loop to prevent undefined access to memory
+    while (1) {}
+}
+
 #endif
+
 
 int fib(int n)
 {
@@ -21,7 +33,7 @@ int fib(int n)
 
 int main() 
 {
-    int ans = fib(30);
+    int ans = fib(10);
 
 #if !defined(__riscv)
     printf("%d\n", ans);
