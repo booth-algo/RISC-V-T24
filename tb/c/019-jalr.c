@@ -20,16 +20,16 @@ void _start()
 
 #endif
 
+
 // Function definition
 int add(int a, int b)
 {
     return a + b;
 }
 
-
 int main() 
 {
-    int result = add(0xFFF, 0x1);
+    int result = add(0x7FF, 0x1);
 
 #if !defined(__riscv)
     // Print the result

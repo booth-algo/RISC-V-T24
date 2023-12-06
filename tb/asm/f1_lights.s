@@ -15,5 +15,4 @@ subroutine:
     addi 	a0, zero, 0x1f
     addi 	a0, zero, 0x3f
     addi 	a0, zero, 0x7f
-    addi 	a0, zero, 0xff
     ret
