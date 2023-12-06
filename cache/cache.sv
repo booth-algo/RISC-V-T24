@@ -13,21 +13,21 @@ module cache #(
 );
 
 /* two-way set associative cache (54 bits x2)
-        | v | u | tag | data | v | u | tag | data |
-        | [1] | [1] | [20] | [32] | [1] | [1] | [20] | [32] |
+        |  v  |  u  |  tag |   data   |  v  |  u  | tag  |   data   |
+        | [1] | [1] | [25] | [32][32] | [1] | [1] | [25] | [32][32] |
     
-        Each cache entry is cache line / block, i.e. each way
+        // Two ways, and in each way there are 2 blocks
 
         Memory address: (byte addressing) (32 bits)
             | tag | set | block offset | byte offset |
-            | [20] | [4] | [6] | [2] |
-            | a[31:12] | a[11:8] | a[7:2] | a[1:0] |
+            | [25] | [4] | [1] | [2] |
+            | a[31:8] | a[7:4] | a[3:2] | a[1:0] |
 */
 
 typedef struct packed {
     logic valid;
     logic use;
-    logic [19:0] tag;
+    logic [24:0] tag;
     logic [31:0] data;
 } cache_entry_t;
 
@@ -75,19 +75,24 @@ always_comb begin
 
         if miss begin
             // Handle a cache miss
-            // Read from memory
+            // Read from main memory
             // Update cache
         end
     end
 
 // Cache write logic
+    // Write through cache
 
     if (write_en) begin
 
     end
 
 // Replacement policy
+    // Using U bit, so:
+    // If used, U bit = 2, if it is not used for the next cycle, 2-1 = 1, if not used for another cycle, 1-1 = 0, then overwrite in cache
+    // Basically compare and decrement U bits of different recently used memory addresses
 
+    // use 16 memory addresses of main memory to implement this
 end
 
 endmodule
