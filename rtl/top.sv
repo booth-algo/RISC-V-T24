@@ -46,8 +46,10 @@ module top #(
     logic [WIDTH-1:0] instr_D;
 
     // Regfile
-    logic [4:0] rs1;
-    logic [4:0] rs2;
+    logic [4:0] Rs1_D;
+    logic [4:0] Rs1_E;
+    logic [4:0] Rs2_D;
+    logic [4:0] Rs2_E;
 
     logic [4:0] Rd_D;
     logic [4:0] Rd_E;
@@ -84,6 +86,10 @@ module top #(
     logic [1:0] ResultSrc_M;
     logic [1:0] ResultSrc_W;
     logic [WIDTH-1:0] Result_W;
+
+    // Hazard Unit
+    logic [1:0] forwardA_E;
+    logic [1:0] forwardB_E;
 
     // Spacing intentional, seperates input and output
 
@@ -150,14 +156,14 @@ module top #(
         .ImmOp(ImmExt_D)
     );
 
-    assign rs1 = instr_D[19:15];
-    assign rs2 = instr_D[24:20];
+    assign Rs1_D = instr_D[19:15];
+    assign Rs2_D = instr_D[24:20];
     assign Rd_D = instr_D[11:7];
     
     regfile regfile_inst (
         .clk(clk),
-        .AD1(rs1),
-        .AD2(rs2),
+        .AD1(Rs1_D),
+        .AD2(Rs2_D),
         .AD3(Rd_W),
         .WE3(RegWrite_W),
         .WD3(Result_W),
@@ -172,6 +178,8 @@ module top #(
         .RD1_D(RD1_D),
         .RD2_D(RD2_D),
         .PC_D(PC_D),
+        .Rs1_D(Rs1_D),
+        .Rs2_D(Rs2_D),
         .Rd_D(Rd_D),
         .ImmExt_D(ImmExt_D),
         .PCP4_D(PCP4_D),
@@ -179,6 +187,8 @@ module top #(
         .RD1_E(RD1_E),
         .RD2_E(RD2_E),
         .PC_E(PC_E),
+        .Rs1_E(Rs1_E),
+        .Rs2_E(Rs2_E),
         .Rd_E(Rd_E),
         .ImmExt_E(ImmExt_E),
         .PCP4_E(PCP4_E),
@@ -200,16 +210,33 @@ module top #(
 
     // Pipeline 3 - Execute (EX)
 
-    mux #(WIDTH) mux_alu_inst (
+    mux4 #(WIDTH) mux_hazard_A_inst (
+        .in0(RD1_E),
+        .in1(Result_W),
+        .in2(ALUResult_M),
+        .in3(0),
+        .sel(forwardA_E),
+
+        .out(SrcA_E)
+    );
+
+    mux4 #(WIDTH) mux_hazard_B_inst (
         .in0(RD2_E),
+        .in1(Result_W),
+        .in2(ALUResult_M),
+        .in3(0),
+        .sel(forwardB_E),
+
+        .out(WriteData_E)
+    );
+
+    mux #(WIDTH) mux_alu_inst (
+        .in0(WriteData_E),
         .in1(ImmExt_E),
         .sel(ALUsrc_E),
 
         .out(SrcB_E)
     );
-
-    assign SrcA_E = RD1_E;
-    assign WriteData_E = RD2_E;
 
     alu alu_inst (
         .a(SrcA_E),
@@ -281,6 +308,20 @@ module top #(
         .sel(ResultSrc_W),
 
         .out(Result_W)
+    );
+
+    // Hazard Unit
+
+    hazard_unit hazard_unit_inst (
+        .Rs1_E(Rs1_E),
+        .Rs2_E(Rs2_E),
+        .Rd_M(Rd_M),
+        .Rd_W(Rd_W),
+        .RegWrite_M(RegWrite_M),
+        .RegWrite_W(RegWrite_W),
+
+        .forwardA_E(forwardA_E),
+        .forwardB_E(forwardB_E)
     );
 
 endmodule

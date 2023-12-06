@@ -5,12 +5,16 @@ module pipeline_ID_EX #(
     input logic [WIDTH - 1:0] RD1_D,
     input logic [WIDTH - 1:0] RD2_D,
     input logic [WIDTH - 1:0] PC_D,
+    input logic [4:0] Rs1_D,
+    input logic [4:0] Rs2_D,
     input logic [4:0] Rd_D,
     input logic [WIDTH - 1:0] ImmExt_D,
     input logic [WIDTH - 1:0] PCP4_D,
     output logic [WIDTH - 1:0] RD1_E,
     output logic [WIDTH - 1:0] RD2_E,
     output logic [WIDTH - 1:0] PC_E,
+    output logic [4:0] Rs1_E,
+    output logic [4:0] Rs2_E,
     output logic [4:0] Rd_E,
     output logic [WIDTH - 1:0] ImmExt_E,
     output logic [WIDTH - 1:0] PCP4_E,
@@ -43,6 +47,8 @@ module pipeline_ID_EX #(
         RD1_E <= RD1_D;
         RD2_E <= RD2_D;
         PC_E <= PC_D;
+        Rs1_E <= Rs1_D;
+        Rs2_E <= Rs2_D;
         Rd_E <= Rd_D;
         ImmExt_E <= ImmExt_D;
         PCP4_E <= PCP4_D;
