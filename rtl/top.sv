@@ -93,9 +93,9 @@ module top #(
 
     pcnext_selector #(WIDTH) PCnext_selector_inst ( 
         // Implements: PCnext = PCsrc ? PC + ImmOp : PC + 4;
-        .in0(PC_E),               // incPC = PC + 4
-        .in1(PC_E + ImmExt_E),       // branchPC = PC + ImmOp
-        .in2(ALUResult_E),               // jalr
+        .in0(PCP4_F),                         // incPC = PC + 4
+        .in1(PC_E + ImmExt_E),              // branchPC = PC + ImmOp
+        .in2(ALUResult_E),                  // jalr
         .EQ(Zero_E),
         .PCsrc(PCsrc_E),
 
