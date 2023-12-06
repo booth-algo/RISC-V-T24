@@ -11,13 +11,13 @@ module control_unit #(
    output logic [1:0] PCsrc,
    output logic RegWrite,
    output logic MemWrite,
+   output logic addr_mode, // Added for store and load byte instead of word of 4 bytes
    output logic [1:0] ResultSrc
 );
 
 logic [6:0] op;
 logic [2:0] funct3;
 logic [6:0] funct7;
-logic [1:0] ALUop; // Not used for now but might need later on
 
 assign op = instr[6:0];
 assign funct3 = instr[14:12];
@@ -197,25 +197,28 @@ always_comb begin
             ResultSrc = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_I;
+            ALUsrc = 1;
+            RegWrite = 1;
             case(funct3)
                 
                 // lb
                 3'b000: begin
+                    addr_mode = 1;
                 end
 
                 // lw
                 3'b010: begin
-                    ALUsrc = 1;
-                    RegWrite = 1;
+                    addr_mode = 0;
                 end
 
                 // lbu
                 3'b100: begin
+                    addr_mode= 1;
                 end
 
                 default: begin
                     ALUsrc = 1;
-                    RegWrite = 1; //might be 0, no 100% sure
+                    RegWrite = 1;
                     $display("L type default", op, " ", funct3);
                 end
             endcase
@@ -232,12 +235,16 @@ always_comb begin
             
             // sb
             3'b000: begin
+                RegWrite = 0;
+                MemWrite = 1;
+                addr_mode = 1;
             end
 
             // sw
             3'b010: begin 
                 RegWrite = 0;
                 MemWrite = 1;
+                addr_mode = 0;
             end
             
             default: begin
