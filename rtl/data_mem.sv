@@ -11,8 +11,8 @@ module data_mem #(
 );
 
     // Define the data array
-    // Each bit is 1 byte (8 bits) wide, with 2^16 = 65536 bytes memory locations
-    logic [MEM_WIDTH-1:0] array [2**16-1:0];
+    // Each bit is 1 byte (8 bits) wide, with 2^17 bytes memory locations
+    logic [MEM_WIDTH-1:0] array [2**17-1:0];
 
     initial begin
         $display("Loading data into data memory...");
