@@ -20,4 +20,8 @@
 `define SIGN_EXTEND_J               3'b100
 `define SIGN_EXTEND_I5              3'b101
 
+`define PC_NEXT                     2'b00
+`define PC_BRANCH                   2'b01
+`define PC_JALR                     2'b10
+
 `endif

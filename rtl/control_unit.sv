@@ -8,7 +8,7 @@ module control_unit #(
    output logic [3:0] ALUctrl,
    output logic ALUsrc,
    output logic [2:0] ImmSrc,
-   output logic PCsrc,
+   output logic [1:0] PCsrc,
    output logic RegWrite,
    output logic MemWrite,
    output logic [1:0] ResultSrc
@@ -28,7 +28,7 @@ assign RegWrite = 1'b0;
 assign ALUctrl = `ALU_OPCODE_ADD;
 assign ALUsrc = 1'b0;
 assign ImmSrc = 3'b000;
-assign PCsrc = 1'b0;
+assign PCsrc = `PC_NEXT;
 assign MemWrite = 1'b0;
 assign ResultSrc = 2'b00;
 
@@ -39,7 +39,7 @@ always_comb begin
 
         // R type instructions
         7'b0110011: begin
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             RegWrite = 1;
             ALUsrc = 0;
             case(funct3)
@@ -132,7 +132,7 @@ always_comb begin
 
         // I type instructions
         7'b0010011: begin
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
             ImmSrc = `SIGN_EXTEND_I;
@@ -212,7 +212,7 @@ always_comb begin
 
         // Load type instructions
         7'b0000011: begin
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             ResultSrc = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_I;
@@ -236,7 +236,7 @@ always_comb begin
 
         // S type instructions
         7'b0100011: begin
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_S;
@@ -267,48 +267,48 @@ always_comb begin
             
             // beq
             3'b000: begin
-                PCsrc = EQ ? 1 : 0;
+                PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
                 ALUctrl = `ALU_OPCODE_SUB;
                 $display("beq", op, " ", funct3);
             end
             
             // bne
             3'b001: begin
-                PCsrc = EQ ? 0 : 1;
+                PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
                 ALUctrl = `ALU_OPCODE_SUB;
                 $display("bne", op, " ", funct3);
             end
 
             // blt
             3'b100: begin
-                PCsrc = EQ ? 0 : 1;
+                PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLT;
                 $display("blt", op, " ", funct3);
             end
 
             // bge
             3'b101: begin
-                PCsrc = EQ ? 1 : 0;
+                PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
                 ALUctrl = `ALU_OPCODE_SLT;
                 $display("bge", op, " ", funct3);
             end
 
             // bltu
             3'b110: begin
-                PCsrc = EQ ? 0 : 1;
+                PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLTU;
                 $display("bltu", op, " ", funct3);
             end
 
             // bgeu
             3'b111: begin
-                PCsrc = EQ ? 1 : 0;
+                PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
                 ALUctrl = `ALU_OPCODE_SLTU;
                 $display("bgeu", op, " ", funct3);
             end
 
             default: begin
-                PCsrc = 0;
+                PCsrc = `PC_BRANCH;
                 RegWrite = 0;
                 ALUctrl = `ALU_OPCODE_SUB;
                 $display("B type default", op, " ", funct3);
@@ -319,7 +319,7 @@ always_comb begin
         // J type instructions
         7'b1101111: begin
             // jal
-            PCsrc = 1;
+            PCsrc = `PC_BRANCH;
             ImmSrc = `SIGN_EXTEND_J;
             ALUsrc = 1;
             RegWrite = 1;
@@ -330,8 +330,9 @@ always_comb begin
         // I type instruction
         7'b1100111: begin 
             // jalr
-            PCsrc = 0;
+            PCsrc = `PC_JALR;
             RegWrite = 1;
+            ImmSrc = `SIGN_EXTEND_I;
             ALUsrc = 1;
             ResultSrc = 2;
             $display("jalr", op, " ", funct3);
@@ -340,7 +341,7 @@ always_comb begin
         // U type instructions
         7'b0110111: begin
             // lui
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
             ALUctrl = `ALU_OPCODE_B;
@@ -350,7 +351,7 @@ always_comb begin
 
         7'b0010111: begin
             //auipc
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
             $display("auipc", op, " ", funct3);
@@ -358,7 +359,7 @@ always_comb begin
 
         // Environment type instructions
         7'b1110011: begin
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             RegWrite = 1;
             case(instr[7])
 
@@ -378,7 +379,7 @@ always_comb begin
 
         //Other instructions
         default: begin
-            PCsrc = 0;
+            PCsrc = `PC_NEXT;
             RegWrite = 0;
             ImmSrc = `SIGN_EXTEND_I;
             ALUsrc = 0;

@@ -22,8 +22,8 @@ protected:
             for (int clk = 0; clk < 2; ++clk)
             {
                 tfp->dump(2*ticks + clk);    // picoseconds
-                top->clk = !top->clk;
                 top->eval();
+                top->clk = !top->clk;
             }
 
             ticks++;

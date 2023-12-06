@@ -17,7 +17,8 @@ int add(int a, int b)
 }
 
 
-int main() {
+int main() 
+{
     int result = add(0xFFF, 0x1);
 
 #if !defined(__riscv)

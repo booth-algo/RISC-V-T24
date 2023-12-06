@@ -6,7 +6,7 @@ module top #(
     output logic [WIDTH-1:0] a0
 );
     // Program counter
-    logic PCsrc;
+    logic [1:0] PCsrc;
     logic [WIDTH-1:0] ImmOp;
 
     // ALU
@@ -19,6 +19,7 @@ module top #(
     logic EQ;
     logic [WIDTH-1:0] ALUout;
     logic [WIDTH-1:0] PC;
+    logic [WIDTH-1:0] PCnext;
     logic [WIDTH-1:0] PCPlus4;
 
     // Instruction Memory
@@ -43,25 +44,26 @@ module top #(
     logic [2:0] ImmSrc;
 
     // Result
-    // TODO this is going to be 2-bits
     logic [WIDTH-1:0] result;
     logic [1:0] ResultSrc;
 
+    // Spacing intentional, seperates input and output
     program_counter program_counter_inst (
         .clk(clk),
         .rst(rst),
-        .PCsrc(PCsrc),
-        .ImmOp(ImmOp),
+        .PCnext(PCnext),
 
         .PC(PC)
     );
 
-    mux #(WIDTH) mux_PC_inst ( 
+    mux4 #(WIDTH) mux_PC_inst ( 
         // Implements: PCnext = PCsrc ? PC + ImmOp : PC + 4;
-        .in0(PC+4), // incPC = PC + 4
-        .in1(PC+ImmOp), // branchPC = PC + ImmOp
+        .in0(PC + 4),       // incPC = PC + 4
+        .in1(PC + ImmOp),   // branchPC = PC + ImmOp
+        .in2(ALUout),       // jalr
+        .in3(0),
         .sel(PCsrc),
-        
+
         .out(PCnext)
     );
     
@@ -74,6 +76,7 @@ module top #(
     control_unit control_unit_inst (
         .instr(instr),
         .EQ(EQ),
+
         .RegWrite(RegWrite),
         .MemWrite(MemWrite),
         .ALUctrl(ALUctrl),
@@ -86,6 +89,7 @@ module top #(
     sign_extend sign_extend_inst (
         .instr(instr),
         .ImmSrc(ImmSrc),
+
         .ImmOp(ImmOp)
     );
 
@@ -93,6 +97,7 @@ module top #(
         .in0(regOp2),
         .in1(ImmOp),
         .sel(ALUsrc),
+
         .out(ALUin2)
     );
 
@@ -100,6 +105,7 @@ module top #(
         .a(ALUin1),
         .b(ALUin2),
         .ALUctrl(ALUctrl),
+
         .EQ(EQ),
         .ALUout(ALUout) 
     );
@@ -111,6 +117,7 @@ module top #(
         .AD3(rd),
         .WE3(RegWrite),
         .WD3(result),
+
         .RD1(ALUin1),
         .RD2(regOp2),
         .a0(a0)
@@ -121,15 +128,17 @@ module top #(
         .A(ALUout),
         .WD(regOp2),
         .WE(MemWrite),
+
         .RD(ReadData)
     );
 
     mux4 #(WIDTH) mux_result_inst (
         .in0(ALUout),
         .in1(ReadData),
-        .in2(PCPlus4),
+        .in2(PC + 4),
         .in3(0),
         .sel(ResultSrc),
+
         .out(result)
     );
 

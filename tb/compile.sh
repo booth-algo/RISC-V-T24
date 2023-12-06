@@ -80,7 +80,7 @@ rm c/*dis.txt 2>/dev/null
 # This generates a disassembly file in the respective folder
 # Memory in wrong place, but makes it easier to read (should be main = 0xbfc00000)
 riscv64-unknown-elf-objdump -f -d --source -m riscv \
-                            a.out > ${parent}/${basename}.dis.txt
+                            a.out.reloc > ${parent}/${basename}.dis.txt
 
 # Formats into a hex file
 od -v -An -t x1 "a.bin" | tr -s '\n' | awk '{$1=$1};1' > "${output_file}"

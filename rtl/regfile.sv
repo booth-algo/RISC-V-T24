@@ -16,7 +16,7 @@ logic [WIDTH - 1:0] reg_arr [WIDTH - 1:0]; // declare as array of 32 logic varia
 
 assign a0 = reg_arr[10]; // assign a0 outside the always_ff block
 
-always_ff @ (posedge clk) begin
+always_ff @ (negedge clk) begin
     if(WE3 & AD3 != 5'b0) 
         reg_arr[AD3] <= WD3;
 end

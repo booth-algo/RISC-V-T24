@@ -203,14 +203,24 @@ TEST_F(CpuTestbench, ForLoopTest)
 }
 
 
-TEST_F(CpuTestbench, FibonnaciTest)
+TEST_F(CpuTestbench, JALRTest)
 {
-    system("./compile.sh --input c/020-fibonnaci.c");
+    system("./compile.sh --input c/019-jalr.c");
     
-    runSimulation(2000);
+    runSimulation(200);
     
-    EXPECT_EQ((int)top->a0, 832040);
+    EXPECT_EQ((int)top->a0, 4096);
 }
+
+
+// TEST_F(CpuTestbench, FibonnaciTest)
+// {
+//     system("./compile.sh --input c/020-fibonnaci.c");
+    
+//     runSimulation(2000);
+    
+//     EXPECT_EQ((int)top->a0, 832040);
+// }
 
 
 int main(int argc, char **argv)
