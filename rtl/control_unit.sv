@@ -231,19 +231,17 @@ always_comb begin
             ALUsrc = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_S;
+            RegWrite = 0;
+            MemWrite = 1;
             case(funct3)
             
             // sb
             3'b000: begin
-                RegWrite = 0;
-                MemWrite = 1;
                 addr_mode = 1;
             end
 
             // sw
-            3'b010: begin 
-                RegWrite = 0;
-                MemWrite = 1;
+            3'b010: begin
                 addr_mode = 0;
             end
             

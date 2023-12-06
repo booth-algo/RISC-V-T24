@@ -33,6 +33,7 @@ module top #(
     // Data memory
     logic MemWrite;
     logic [WIDTH-1:0] ReadData;
+    logic addr_mode;
 
     assign rs1 = instr[19:15];
     assign rs2 = instr[24:20];
@@ -76,6 +77,7 @@ module top #(
     control_unit control_unit_inst (
         .instr(instr),
         .EQ(EQ),
+        .addr_mode(addr_mode),
 
         .RegWrite(RegWrite),
         .MemWrite(MemWrite),
@@ -125,6 +127,7 @@ module top #(
     
     data_mem data_mem_inst (
         .clk(clk),
+        .addr_mode(addr_mode),
         .A(ALUout),
         .WD(regOp2),
         .WE(MemWrite),

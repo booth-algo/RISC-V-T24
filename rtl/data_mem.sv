@@ -30,8 +30,11 @@ module data_mem #(
 
     // Read and write operations
     always_ff @(posedge clk) begin
-        if (WE && addr_mode) begin // Write only first byte (8 bits)
+        if (WE && addr_mode) begin // Write only least significant byte (8 bits)
             array[A] <= WD[7:0];
+            array[A+1] <= 8'b0;
+            array[A+2] <= 8'b0;
+            array[A+3] <= 8'b0;
         end
 
         else if (WE) begin // Write whole word
