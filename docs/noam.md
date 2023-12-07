@@ -36,3 +36,6 @@ I was in charge of designing the **Sign Extension** unit, as well as the **Contr
 
 ### 06/12
     - Worked on implementation for store word, load word and load word unsigned instructions. Created a testbench in assembly for it, modified the data mem unit, the cotrol unit and the top module. It all works ! This concludes the Single Cycle for the RISC-V
+
+### 07/12
+    - Worked on first draft of cache with JAMIE. Finished first draft version, compiles fine, not tested
