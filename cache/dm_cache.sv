@@ -20,7 +20,7 @@ module cache #(
 
         Memory address: (byte addressing) (32 bits)
             | tag | set | byte offset |
-            | [27] | [3] | [2] |
+            | [27]| [3] |     [2]     |
             | a[31:5] | a[4:2] | a[1:0] |
             // is the number of cache registers = 32 so they are referenced like this?
 */
@@ -37,7 +37,7 @@ typedef struct packed {
     logic [1:0] byte_offset = addr[1:0]
 }
 
-logic [60-1:0] cache_store [16];
+logic [60-1:0] cache_store [8];
 
 always_comb begin
 
@@ -48,9 +48,9 @@ always_comb begin
         logic [2:0] set = addr[4:2];
         logic [1:0] byte_offset = addr[1:0];
         logic hit;
-        if (cache_store[60] && cache_store[56:32] == tag) begin
+        if (cache_store[addr[4:2]][60] && cache_store[addr[4:2]][56:32] == tag) begin
             hit = 1;
-            read_data = cache_store[31:0];
+            read_data = cache_store[addr[4:2]][31:0];
         end
         else begin
             miss = 1;
@@ -65,7 +65,10 @@ always_comb begin
 
     if (write_en) begin
         cache_store[60] = 1;
-        cache_store = {1'b1, addr[31:5], };
+        cache_store[addr[4:2]] = {1'b1, addr[31:5], write_data};
+        cache_store[addr[4:2]].valid = 1;
+        cache_store[addr[4:2]].tag = addr[31:5];
+        cache_store[addr[4:2]].data = write_data;
         // write to some section of main memory to 
     end
 
