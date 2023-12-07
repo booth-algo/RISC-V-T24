@@ -68,3 +68,12 @@ Kevin's logbook
     - After that, JALR worked fine. I noticed this error by looking at the waveform loop indefinitely within the `add` function addresses.
     - Further discussions in the morning allowed us to fix the testbenches and code which now runs perfectly.
 ## 6/12 Afternoon
+  - Worked on the pipeline and hazard unit
+  - Updated the `team.md`
+  - For details, refer to the group meeting noted down in `team.md`
+## 7/12 Midnight
+  - Completed forwarding for RAW hazards
+  - Started stalling for lw data dependency hazards
+    - Added new ports for the `hazard unit`
+    - Added a new `MemRead` from control unit for stalling
+    - Haven't done: Implement a stall in `control unit` / other modules based on the `stall` signal from the `hazard unit`

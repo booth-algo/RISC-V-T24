@@ -65,6 +65,8 @@ module top #(
     logic MemWrite_D;
     logic MemWrite_E;
     logic MemWrite_M;
+    logic MemRead_D;
+    logic MemRead_E;
 
     logic [WIDTH-1:0] WriteData_E;
     logic [WIDTH-1:0] WriteData_M;
@@ -141,6 +143,7 @@ module top #(
 
         .RegWrite(RegWrite_D),
         .MemWrite(MemWrite_D),
+        .MemRead(MemRead_D),
         .ALUctrl(ALUctrl_D),
         .ALUsrc(ALUsrc_D),
         .ImmSrc(ImmSrc_D),
@@ -196,6 +199,7 @@ module top #(
         .RegWrite_D(RegWrite_D),
         .ResultSrc_D(ResultSrc_D),
         .MemWrite_D(MemWrite_D),
+        .MemRead_D(MemRead_D),
         .PCsrc_D(PCsrc_D),
         .ALUctrl_D(ALUctrl_D),
         .ALUsrc_D(ALUsrc_D),
@@ -203,6 +207,7 @@ module top #(
         .RegWrite_E(RegWrite_E),
         .ResultSrc_E(ResultSrc_E),
         .MemWrite_E(MemWrite_E),
+        .MemRead_E(MemRead_E),
         .PCsrc_E(PCsrc_E),
         .ALUctrl_E(ALUctrl_E),
         .ALUsrc_E(ALUsrc_E)
@@ -312,16 +317,22 @@ module top #(
 
     // Hazard Unit
 
+    logic stall;
+
     hazard_unit hazard_unit_inst (
         .Rs1_E(Rs1_E),
         .Rs2_E(Rs2_E),
+        .Rs1_D(Rs1_D),
+        .Rs2_D(Rs2_D),
         .Rd_M(Rd_M),
         .Rd_W(Rd_W),
         .RegWrite_M(RegWrite_M),
         .RegWrite_W(RegWrite_W),
+        .MemRead_E(MemRead_E),
 
         .forwardA_E(forwardA_E),
-        .forwardB_E(forwardB_E)
+        .forwardB_E(forwardB_E),
+        .stall(stall)
     );
 
 endmodule

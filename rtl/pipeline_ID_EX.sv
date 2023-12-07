@@ -23,12 +23,14 @@ module pipeline_ID_EX #(
     input logic RegWrite_D,
     input logic [1:0] ResultSrc_D,
     input logic MemWrite_D,
+    input logic MemRead_D,
     input logic [2:0] PCsrc_D,
     input logic [3:0] ALUctrl_D,
     input logic ALUsrc_D,
     output logic RegWrite_E,
     output logic [1:0] ResultSrc_E,
     output logic MemWrite_E,
+    output logic MemRead_E,
     output logic [2:0] PCsrc_E,
     output logic [3:0] ALUctrl_E,
     output logic ALUsrc_E
@@ -39,6 +41,7 @@ module pipeline_ID_EX #(
         RegWrite_E <= RegWrite_D;
         ResultSrc_E <= ResultSrc_D;
         MemWrite_E <= MemWrite_D;
+        MemRead_E <= MemRead_D;
         PCsrc_E <= PCsrc_D;
         ALUctrl_E <= ALUctrl_D;
         ALUsrc_E <= ALUsrc_D;

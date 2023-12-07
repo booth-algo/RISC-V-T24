@@ -12,6 +12,7 @@ module control_unit #(
    output logic [2:0] PCsrc,
    output logic RegWrite,
    output logic MemWrite,
+   output logic MemRead,
    output logic [1:0] ResultSrc
 );
 
@@ -30,10 +31,12 @@ assign ALUsrc = 1'b0;
 assign ImmSrc = 3'b000;
 assign PCsrc = `PC_NEXT;
 assign MemWrite = 1'b0;
+assign MemRead = 1'b0;
 assign ResultSrc = 2'b00;
 
 always_comb begin
     MemWrite = 0;
+    MemRead = 0;
     ResultSrc = 0;
     PCsrc = `PC_NEXT;
     case(op)
@@ -193,6 +196,7 @@ always_comb begin
         // Load type instructions
         7'b0000011: begin
             ResultSrc = 1;
+            MemRead = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_I;
             case(funct3)
@@ -359,6 +363,7 @@ always_comb begin
             ALUsrc = 0;
             ALUctrl = `ALU_OPCODE_ADD;
             MemWrite = 0;
+            MemRead = 0;
         end
     endcase
 end
