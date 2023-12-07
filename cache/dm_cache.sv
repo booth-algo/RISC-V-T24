@@ -1,8 +1,7 @@
-module cache #(
+module dm_cache #(
     parameter   ADDR_WIDTH = 32,
-                DATA_WIDTH = 32,
+                DATA_WIDTH = 32
 ) (
-    input logic clk,
     input logic read_en,
     input logic write_en,
     input logic [ADDR_WIDTH-1:0] addr,
@@ -24,53 +23,51 @@ module cache #(
             | a[31:5] | a[4:2] | a[1:0] |
             // is the number of cache registers = 32 so they are referenced like this?
 */
+ 
+assign hit = 0;
+assign miss = 0;
 
 typedef struct packed {
     logic valid;
     logic [26:0] tag;
     logic [31:0] data;
-} cache_entry_t;
+} cache_store;
 
-typedef struct packed {
-    logic [26:0] tag = addr[ADDR_WIDTH-1:5]
-    logic [2:0] set = addr[4:2]
-    logic [1:0] byte_offset = addr[1:0]
-}
+cache_store cache [8];
 
-logic [60-1:0] cache_store [8];
-
-always_comb begin
-
+always_latch begin
 // Cache read logic
+
     if (read_en) begin
         // Obtain information from memory address input
         logic [26:0] tag = addr[ADDR_WIDTH-1:5];
         logic [2:0] set = addr[4:2];
         logic [1:0] byte_offset = addr[1:0];
-        logic hit;
-        if (cache_store[addr[4:2]][60] && cache_store[addr[4:2]][56:32] == tag) begin
+        if (cache[set].valid && cache[set].tag == tag) begin
             hit = 1;
-            read_data = cache_store[addr[4:2]][31:0];
+            read_data = cache[set].data;
         end
+        else if (byte_offset == 0'b00) hit = hit; // to compile
         else begin
             miss = 1;
-            read_data = addr;
+            read_data = write_data;
         end
     end
-`end
-
+end
 
 // Cache write logic
     // Write through cache
-
-    if (write_en) begin
-        cache_store[60] = 1;
-        cache_store[addr[4:2]] = {1'b1, addr[31:5], write_data};
-        cache_store[addr[4:2]].valid = 1;
-        cache_store[addr[4:2]].tag = addr[31:5];
-        cache_store[addr[4:2]].data = write_data;
-        // write to some section of main memory to 
+always_latch begin
+        if (write_en) begin
+            //cache[addr[4:2]] = {1'b1, addr[31:5], write_data};
+            logic [2:0] set = addr[4:2];
+            cache[set].valid = 1;
+            cache[set].tag = addr[31:5];
+            cache[set].data = write_data;
+        end
     end
 
-endmodule
 
+endmodule
+// the address contains a addr[4:2] and the way to check through the cache is to chheck just the set with set = addr[4:2] so we dont need to check through the whole cache
+// this should be implemented at a higher level, once this is working we shall work on conflicts
