@@ -28,7 +28,6 @@ module top #(
     logic ALUsrc_D;
     logic ALUsrc_E;
     
-    /* verilator lint_off UNOPTFLAT */
     logic Zero_E;
     
     logic [WIDTH-1:0] PC_F;
@@ -140,7 +139,6 @@ module top #(
 
     // Pipeline 2 - Decode (ID)
 
-    /* verilator lint_off UNUSED */
     control_unit control_unit_inst (
         .instr(instr_D),
         .stall(stall),
@@ -154,7 +152,6 @@ module top #(
         .PCsrc(PCsrc_D),
         .ResultSrc(ResultSrc_D)
     );
-    /* verilator lint_on UNUSED */
 
     sign_extend sign_extend_inst (
         .instr(instr_D),

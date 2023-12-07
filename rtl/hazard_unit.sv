@@ -80,9 +80,7 @@ module hazard_unit (
 
         // Branch taken --> Flush the pipeline
         // Branch not taken --> Do nothing
-        // Jump --> Flush the pipeline
-        // Jump and link --> Flush the pipeline
-        // Jump register --> Flush the pipeline
-        // Jump and link register --> Flush the pipeline
+        // JAL --> Flush the pipeline
+        // JALR --> Flush the pipeline
 
 endmodule

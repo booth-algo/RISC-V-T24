@@ -25,17 +25,13 @@ assign op = instr[6:0];
 assign funct3 = instr[14:12];
 assign funct7 = instr[31:25];
 
-// Setting all the default control signals values
-assign RegWrite = 1'b0;
-assign ALUctrl = `ALU_OPCODE_ADD;
-assign ALUsrc = 1'b0;
-assign ImmSrc = 3'b000;
-assign PCsrc = `PC_NEXT;
-assign MemWrite = 1'b0;
-assign MemRead = 1'b0;
-assign ResultSrc = 2'b00;
 
 always_comb begin
+    // Setting all the default control signals values
+    ALUctrl = `ALU_OPCODE_ADD;
+    ALUsrc = 1'b0;
+    ImmSrc = 3'b000;
+    RegWrite = 0;
     MemWrite = 0;
     MemRead = 0;
     ResultSrc = 0;
@@ -201,6 +197,7 @@ always_comb begin
             MemRead = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_I;
+            RegWrite = 1;
             case(funct3)
                 
                 // lb
@@ -210,7 +207,6 @@ always_comb begin
                 // lw
                 3'b010: begin
                     ALUsrc = 1;
-                    RegWrite = 1;
                 end
 
                 // lbu
@@ -231,6 +227,7 @@ always_comb begin
             ALUsrc = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_S;
+            RegWrite = 0;
             case(funct3)
             
             // sb
@@ -239,7 +236,6 @@ always_comb begin
 
             // sw
             3'b010: begin 
-                RegWrite = 0;
                 MemWrite = 1;
             end
             

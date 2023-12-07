@@ -36,9 +36,6 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     Verilated::mkdir("logs");
     auto res = RUN_ALL_TESTS();
-    VerilatedCov::write(
-        ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
-    );
-
+    
     return res;
 }
