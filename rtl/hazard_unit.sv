@@ -3,6 +3,7 @@ module hazard_unit (
     input logic [4:0] Rs2_E,
     input logic [4:0] Rs1_D, // not in diagram
     input logic [4:0] Rs2_D, // not in diagram
+    input logic [4:0] Rd_E,
     input logic [4:0] Rd_M,
     input logic [4:0] Rd_W,
     input logic RegWrite_M,
@@ -33,8 +34,7 @@ module hazard_unit (
         if (RegWrite_M && (Rd_M != 0) && (Rd_M == Rs1_E)) begin
             forwardA_E = 2'b10;
         end 
-        else if (RegWrite_W && (Rd_W != 0) && (Rd_W == Rs1_E)
-                && !(RegWrite_M && (Rd_M != 0) && (Rd_M == Rs1_E))) begin
+        else if (RegWrite_W && (Rd_W != 0) && (Rd_W == Rs1_E)) begin
             forwardA_E = 2'b01;
         end 
         else begin
@@ -49,8 +49,7 @@ module hazard_unit (
         if (RegWrite_M && (Rd_M != 0) && (Rd_M == Rs2_E)) begin
             forwardB_E = 2'b10;
         end 
-        else if (RegWrite_W && (Rd_W != 0) && (Rd_W == Rs2_E)
-                && !(RegWrite_M && (Rd_M != 0) && (Rd_M == Rs2_E))) begin
+        else if (RegWrite_W && (Rd_W != 0) && (Rd_W == Rs2_E)) begin
             forwardB_E = 2'b01;
         end 
         else begin
@@ -68,9 +67,10 @@ module hazard_unit (
             // Is the instruction in the EX stage using the same register as the instruction in the ID stage?
             // If both are true, then stall the pipeline
 
-        if (MemRead_E && ((Rs2_E == Rs1_D) || (Rs2_E == Rs2_D))) begin
+        if (MemRead_E && ((Rd_E == Rs1_D) || (Rd_E == Rs2_D))) begin
             stall = 1'b1;
-        end else begin
+        end 
+        else begin
             stall = 1'b0;
         end
 

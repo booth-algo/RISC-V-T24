@@ -92,6 +92,7 @@ module top #(
     // Hazard Unit
     logic [1:0] forwardA_E;
     logic [1:0] forwardB_E;
+    logic stall;
 
     // Spacing intentional, seperates input and output
 
@@ -113,6 +114,7 @@ module top #(
     program_counter program_counter_inst (
         .clk(clk),
         .rst(rst),
+        .stall(stall),
         .PCnext(PCnext),
 
         .PC(PC_F)
@@ -126,6 +128,7 @@ module top #(
 
     pipeline_IF_ID pipeline_IF_ID_inst (
         .clk(clk),
+        .stall(stall),
         .instr_F(instr_F),
         .PC_F(PC_F),
         .PCP4_F(PCP4_F),
@@ -140,6 +143,7 @@ module top #(
     /* verilator lint_off UNUSED */
     control_unit control_unit_inst (
         .instr(instr_D),
+        .stall(stall),
 
         .RegWrite(RegWrite_D),
         .MemWrite(MemWrite_D),
@@ -317,13 +321,13 @@ module top #(
 
     // Hazard Unit
 
-    logic stall;
 
     hazard_unit hazard_unit_inst (
         .Rs1_E(Rs1_E),
         .Rs2_E(Rs2_E),
         .Rs1_D(Rs1_D),
         .Rs2_D(Rs2_D),
+        .Rd_E(Rd_E),
         .Rd_M(Rd_M),
         .Rd_W(Rd_W),
         .RegWrite_M(RegWrite_M),

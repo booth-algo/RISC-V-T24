@@ -6,6 +6,7 @@ module control_unit #(
     parameter DATA_WIDTH = 32
 ) (
    input logic [DATA_WIDTH-1:0] instr,
+   input logic stall,
    output logic [3:0] ALUctrl,
    output logic ALUsrc,
    output logic [2:0] ImmSrc,
@@ -39,6 +40,7 @@ always_comb begin
     MemRead = 0;
     ResultSrc = 0;
     PCsrc = `PC_NEXT;
+    
     case(op)
 
         // R type instructions
@@ -366,6 +368,13 @@ always_comb begin
             MemRead = 0;
         end
     endcase
+    
+    // Taken outside for nesting reasons.
+    // Will overwrite any signal in case-endcase block
+    if (stall) begin
+        MemWrite = 0;
+        RegWrite = 0;
+    end
 end
 
 endmodule
