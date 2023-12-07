@@ -79,6 +79,7 @@ always_comb begin
             // Update cache
         end
     end
+end
 
 // Cache write logic
     // Write through cache
@@ -87,13 +88,39 @@ always_comb begin
 
     end
 
-// Replacement policy
-    // Using U bit, so:
-    // If used, U bit = 2, if it is not used for the next cycle, 2-1 = 1, if not used for another cycle, 1-1 = 0, then overwrite in cache
-    // Basically compare and decrement U bits of different recently used memory addresses
+typedef enum {S0, S1, S2}
+    my_state current_state, next_state;
 
-    // use 16 memory addresses of main memory to implement this
-end
+    always_ff @(posedge clk)
+        current_state <= next_state;
+
+    always_comb
+        case (current_state)
+            S0: if(hit = 1) begin
+                    cache[Ubit] = 2;
+                    next_state = S0;
+            end
+                else begin
+                    cache[Ubit] = 1;
+                    next_state = S1;
+                end
+             S1: if(hit = 1) begin
+                    cache[Ubit] = 2;
+                    next_state = S0;
+             end
+                else begin
+                    cache[Ubit] = 1;
+                    next_state = S2;
+                end
+             S2: if(hit = 1) begin
+                    cache[Ubit] = 2;
+                    next_state = S0;
+             end
+                else
+                  //  rewrite cache with current mem
+            default: next_state = S0;
+        endcase
+
 
 endmodule
 
