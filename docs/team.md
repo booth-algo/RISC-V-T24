@@ -63,4 +63,19 @@ This file will note down major meetups and breakdown the progress completed by t
     - A `direct mapped` version of the cache was being created by Jamie and Noam, where the structure was defined and read/write logic was being discussed
     - There was much discussion about the implementation of the cache - since we don't actually have a physical silicon cache, should we create a cache array to just point to memory in data memory, or should we define one of the areas in unused space as a cache memory
 
-## Group meeting (?/12)
+## Group meeting (7/12)
+  - Brief meetup between lectures for 2 hours
+    - Cache
+      - Progress has been made to the cache - the direct mapped cache has been fully created (including the read write logic) and is currently being verified
+    - Pipelining
+      - Stalling for lw data dependency has now been added to the IF/ID stage through using the `stall` signal from the hazard unit
+      - Code modifications for other relevant parts such as the `program counter`, `control unit`, etc.
+      - The lw data dependency has been tested and verified to be working
+      - Next meetup: Control hazards
+      - Decision after discussion:
+        - There are three methods to deal with control hazards:
+          1. Flushing instructions by assuming branch isn't taken
+          2. Branch decision detection at an earlier stage to reduce number of instructions to flush
+          3. Branch prediction using 1-bit branch prediction buffer 
+        - Our decision is to prioritise finishing the data cache first before going for our own stretched goal
+        - Hence we will implement instruction flushing first, finish the cache, then work on branch prediction if we have time 

@@ -83,4 +83,11 @@ module hazard_unit (
         // JAL --> Flush the pipeline
         // JALR --> Flush the pipeline
 
+        // Branch detected in ? stage
+        // Assume that the branch isn't taken
+            // Let the pipeline continue
+        // If the branch is taken, then flush the instructions in the pipeline datapath (3-4 cycles)
+            // Flush by setting the control lines to 0 when they reach the EX stage
+
+
 endmodule

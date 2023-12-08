@@ -77,3 +77,6 @@ Kevin's logbook
     - Added new ports for the `hazard unit`
     - Added a new `MemRead` from control unit for stalling
     - Haven't done: Implement a stall in `control unit` / other modules based on the `stall` signal from the `hazard unit`
+## 7/12 Afternoon
+  - Completed and verified lw data dependency hazard solution by stalling
+## 8/12 Afternoon
