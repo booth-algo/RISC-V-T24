@@ -1,17 +1,19 @@
 module hazard_unit (
     input logic [4:0] Rs1_E,
     input logic [4:0] Rs2_E,
-    input logic [4:0] Rs1_D, // not in diagram
-    input logic [4:0] Rs2_D, // not in diagram
+    input logic [4:0] Rs1_D, 
+    input logic [4:0] Rs2_D, 
     input logic [4:0] Rd_E,
     input logic [4:0] Rd_M,
     input logic [4:0] Rd_W,
     input logic RegWrite_M,
     input logic RegWrite_W,
-    input logic MemRead_E, // new
+    input logic MemRead_E, 
+    input logic branch,
     output logic [1:0] forwardA_E,
     output logic [1:0] forwardB_E,
-    output logic stall
+    output logic stall,
+    output logic flush
 
 );
 
@@ -21,6 +23,7 @@ module hazard_unit (
         // Initializing signals
 
         stall = 1'b0;
+        flush = 1'b0;
         forwardA_E = 2'b00;
         forwardB_E = 2'b00;
 
@@ -74,9 +77,7 @@ module hazard_unit (
             stall = 1'b0;
         end
 
-    end
-
-    // Control hazard
+        // Control hazard
 
         // Branch taken --> Flush the pipeline
         // Branch not taken --> Do nothing
@@ -89,5 +90,11 @@ module hazard_unit (
         // If the branch is taken, then flush the instructions in the pipeline datapath (3-4 cycles)
             // Flush by setting the control lines to 0 when they reach the EX stage
 
+        if (branch) begin
+            flush = 1;
+        end
+
+    end
+     
 
 endmodule

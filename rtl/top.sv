@@ -92,6 +92,8 @@ module top #(
     logic [1:0] forwardA_E;
     logic [1:0] forwardB_E;
     logic stall;
+    logic flush;
+    logic branch;
 
     // Spacing intentional, seperates input and output
 
@@ -107,6 +109,7 @@ module top #(
         .EQ(Zero_E),
         .PCsrc(PCsrc_E),
 
+        .branch(branch),
         .out(PCnext)                // PC_F'
     );
     
@@ -127,6 +130,7 @@ module top #(
 
     pipeline_IF_ID pipeline_IF_ID_inst (
         .clk(clk),
+        .flush(flush),
         .stall(stall),
         .instr_F(instr_F),
         .PC_F(PC_F),
@@ -179,6 +183,7 @@ module top #(
 
     pipeline_ID_EX pipeline_ID_EX_inst (
         .clk(clk),
+        .flush(flush),
         .RD1_D(RD1_D),
         .RD2_D(RD2_D),
         .PC_D(PC_D),
@@ -330,10 +335,12 @@ module top #(
         .RegWrite_M(RegWrite_M),
         .RegWrite_W(RegWrite_W),
         .MemRead_E(MemRead_E),
+        .branch(branch),
 
         .forwardA_E(forwardA_E),
         .forwardB_E(forwardB_E),
-        .stall(stall)
+        .stall(stall),
+        .flush(flush)
     );
 
 endmodule

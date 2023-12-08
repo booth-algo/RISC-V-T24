@@ -3,6 +3,7 @@ module pipeline_IF_ID #(
 )(
     input logic clk,
     input logic stall,
+    input logic flush,
     input logic [WIDTH - 1:0] instr_F, // from instruction memory port RD
     input logic [WIDTH - 1:0] PC_F,
     input logic [WIDTH - 1:0] PCP4_F, // PC plus 4
@@ -15,6 +16,9 @@ module pipeline_IF_ID #(
             instr_D <= instr_F;
             PC_D <= PC_F;
             PCP4_D <= PCP4_F;
+        end
+        if (flush) begin
+            instr_D <= 0;
         end     
     end
 
