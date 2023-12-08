@@ -209,7 +209,7 @@ TEST_F(CpuTestbench, JALRTest)
     
     runSimulation(20000);
     
-    EXPECT_EQ((int)top->a0, 4096);
+    EXPECT_EQ((int)top->a0, 2048);
 }
 
 

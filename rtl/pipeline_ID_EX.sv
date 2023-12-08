@@ -43,14 +43,15 @@ module pipeline_ID_EX #(
         if (!flush) begin
             RegWrite_E <= RegWrite_D;
             MemWrite_E <= MemWrite_D;
+            PCsrc_E <= PCsrc_D;
         end
         else begin
             RegWrite_E <= 0;
             MemWrite_E <= 0;
+            PCsrc_E <= `PC_NEXT;
         end
         ResultSrc_E <= ResultSrc_D;
         MemRead_E <= MemRead_D;
-        PCsrc_E <= PCsrc_D;
         ALUctrl_E <= ALUctrl_D;
         ALUsrc_E <= ALUsrc_D;
 

@@ -39,6 +39,6 @@ int main()
     printf("Result: %d\n", result);
 #endif
 
-    // EXPECTED OUTPUT = 4096
+    // EXPECTED OUTPUT = 2048
     return result;
 }
