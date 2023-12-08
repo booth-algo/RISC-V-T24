@@ -4,6 +4,7 @@
 */
 
 #include "sync_testbench.h"
+#include <iostream>
 #include <cstdlib>
 
 #define NAME            "top-pdf"
@@ -25,7 +26,18 @@ protected:
 
 TEST_F(CpuTestbench, InitialStateTest)
 {
-    runSimulation(1000);
+    // Before the simulation takes place, place correct data in right place
+    system("cp data/gaussian.mem ../rtl");
+
+    for (int i = 0; i < 10000; ++i)
+    {
+        runSimulation(1);
+        if (top->a0 != 0)
+        {
+            std::cout << top->a0 << std::endl;
+        }
+    }
+
     SUCCEED();
 }
 

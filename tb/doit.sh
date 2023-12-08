@@ -38,8 +38,6 @@ rm -rf obj_dir
 for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
-    $coverage="--coverage"
-
     # Translate Verilog -> C++ including testbench
     verilator   -Wall --coverage --coverage-max-width 1 --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
@@ -52,6 +50,9 @@ for file in "${files[@]}"; do
 
     # Build C++ project with automatically generated Makefile
     make -j -C obj_dir/ -f Vdut.mk
+
+    # Clear data.hex file. Can be overwritten in tests, via system calls
+    truncate -s 0 ${RTL_FOLDER}/data.hex
 
     # Run executable simulation file
     ./obj_dir/Vdut
