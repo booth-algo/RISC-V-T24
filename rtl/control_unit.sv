@@ -269,25 +269,25 @@ always_comb begin
 
             // blt
             3'b100: begin
-                PCsrc = `PC_COND_BRANCH;
+                PCsrc = `PC_INV_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLT;
             end
 
             // bge
             3'b101: begin
-                PCsrc = `PC_INV_COND_BRANCH;
+                PCsrc = `PC_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLT;
             end
 
             // bltu
             3'b110: begin
-                PCsrc = `PC_COND_BRANCH;
+                PCsrc = `PC_INV_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLTU;
             end
 
             // bgeu
             3'b111: begin
-                PCsrc = `PC_INV_COND_BRANCH;
+                PCsrc = `PC_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLTU;
             end
 
