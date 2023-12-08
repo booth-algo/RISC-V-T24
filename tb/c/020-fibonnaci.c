@@ -9,6 +9,9 @@
 #else
 
 // entry point (0x0): compiler places earlier functions lower in memory.
+int main();
+
+
 void _start()
 {
     main();

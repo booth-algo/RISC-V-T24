@@ -1,16 +1,19 @@
 `include "def.sv"
 
+/* verilator lint_off UNUSED */
+
 module control_unit #(
     parameter DATA_WIDTH = 32
 ) (
    input logic [DATA_WIDTH-1:0] instr,
-   input logic EQ,
+   input logic stall,
    output logic [3:0] ALUctrl,
    output logic ALUsrc,
    output logic [2:0] ImmSrc,
-   output logic [1:0] PCsrc,
+   output logic [2:0] PCsrc,
    output logic RegWrite,
    output logic MemWrite,
+   output logic MemRead,
    output logic addr_mode, // Added for store and load byte instead of word of 4 bytes
    output logic [1:0] ResultSrc
 );
@@ -23,23 +26,22 @@ assign op = instr[6:0];
 assign funct3 = instr[14:12];
 assign funct7 = instr[31:25];
 
-// Setting all the default control signals values
-assign RegWrite = 1'b0;
-assign ALUctrl = `ALU_OPCODE_ADD;
-assign ALUsrc = 1'b0;
-assign ImmSrc = 3'b000;
-assign PCsrc = `PC_NEXT;
-assign MemWrite = 1'b0;
-assign ResultSrc = 2'b00;
 
 always_comb begin
+    // Setting all the default control signals values
+    ALUctrl = `ALU_OPCODE_ADD;
+    ALUsrc = 1'b0;
+    ImmSrc = 3'b000;
+    RegWrite = 0;
     MemWrite = 0;
+    MemRead = 0;
     ResultSrc = 0;
+    PCsrc = `PC_NEXT;
+    
     case(op)
 
         // R type instructions
         7'b0110011: begin
-            PCsrc = `PC_NEXT;
             RegWrite = 1;
             ALUsrc = 0;
             case(funct3)
@@ -122,7 +124,6 @@ always_comb begin
 
         // I type instructions
         7'b0010011: begin
-            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
             ImmSrc = `SIGN_EXTEND_I;
@@ -193,8 +194,8 @@ always_comb begin
 
         // Load type instructions
         7'b0000011: begin
-            PCsrc = `PC_NEXT;
             ResultSrc = 1;
+            MemRead = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_I;
             ALUsrc = 1;
@@ -227,7 +228,6 @@ always_comb begin
 
         // S type instructions
         7'b0100011: begin
-            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             ALUctrl = `ALU_OPCODE_ADD;
             ImmSrc = `SIGN_EXTEND_S;
@@ -263,42 +263,42 @@ always_comb begin
             
             // beq
             3'b000: begin
-                PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
+                PCsrc = `PC_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SUB;
             end
             
             // bne
             3'b001: begin
-                PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
+                PCsrc = `PC_INV_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SUB;
             end
 
             // blt
             3'b100: begin
-                PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
+                PCsrc = `PC_INV_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLT;
             end
 
             // bge
             3'b101: begin
-                PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
+                PCsrc = `PC_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLT;
             end
 
             // bltu
             3'b110: begin
-                PCsrc = EQ ? `PC_NEXT : `PC_BRANCH;
+                PCsrc = `PC_INV_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLTU;
             end
 
             // bgeu
             3'b111: begin
-                PCsrc = EQ ? `PC_BRANCH : `PC_NEXT;
+                PCsrc = `PC_COND_BRANCH;
                 ALUctrl = `ALU_OPCODE_SLTU;
             end
 
             default: begin
-                PCsrc = `PC_BRANCH;
+                PCsrc = `PC_COND_BRANCH;
                 RegWrite = 0;
                 ALUctrl = `ALU_OPCODE_SUB;
                 $display("B type default", op, " ", funct3);
@@ -309,7 +309,7 @@ always_comb begin
         // J type instructions
         7'b1101111: begin
             // jal
-            PCsrc = `PC_BRANCH;
+            PCsrc = `PC_ALWAYS_BRANCH;
             ImmSrc = `SIGN_EXTEND_J;
             ALUsrc = 1;
             RegWrite = 1;
@@ -329,7 +329,6 @@ always_comb begin
         // U type instructions
         7'b0110111: begin
             // lui
-            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
             ALUctrl = `ALU_OPCODE_B;
@@ -338,14 +337,12 @@ always_comb begin
 
         7'b0010111: begin
             //auipc
-            PCsrc = `PC_NEXT;
             ALUsrc = 1;
             RegWrite = 1;
         end
 
         // Environment type instructions
         7'b1110011: begin
-            PCsrc = `PC_NEXT;
             RegWrite = 1;
             case(instr[7])
 
@@ -365,14 +362,21 @@ always_comb begin
 
         //Other instructions
         default: begin
-            PCsrc = `PC_NEXT;
             RegWrite = 0;
             ImmSrc = `SIGN_EXTEND_I;
             ALUsrc = 0;
             ALUctrl = `ALU_OPCODE_ADD;
             MemWrite = 0;
+            MemRead = 0;
         end
     endcase
+    
+    // Taken outside for nesting reasons.
+    // Will overwrite any signal in case-endcase block
+    if (stall) begin
+        MemWrite = 0;
+        RegWrite = 0;
+    end
 end
 
 endmodule

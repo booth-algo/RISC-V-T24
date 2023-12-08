@@ -17,7 +17,7 @@ module data_mem #(
 
     initial begin
         $display("Loading data into data memory...");
-        $readmemh("../rtl/data.hex", array);
+        $readmemh("../rtl/data.hex", array, 17'h10000);
     end
 
     always_ff @* begin

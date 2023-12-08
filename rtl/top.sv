@@ -6,143 +6,344 @@ module top #(
     output logic [WIDTH-1:0] a0
 );
     // Program counter
-    logic [1:0] PCsrc;
-    logic [WIDTH-1:0] ImmOp;
+    logic [2:0] PCsrc_D;
+    logic [2:0] PCsrc_E;
 
-    // ALU
-    logic [WIDTH-1:0] ALUin1;
-    logic [WIDTH-1:0] ALUin2;
-    logic [3:0] ALUctrl;
-    logic [WIDTH-1:0] regOp2;
-    logic ALUsrc;
-    /* verilator lint_off UNOPTFLAT */
-    logic EQ;
-    logic [WIDTH-1:0] ALUout;
-    logic [WIDTH-1:0] PC;
+    logic [WIDTH-1:0] ImmExt_D;
+    logic [WIDTH-1:0] ImmExt_E;
+
+    logic [WIDTH-1:0] PCP4_F;
+    logic [WIDTH-1:0] PCP4_D;
+    logic [WIDTH-1:0] PCP4_E;
+    logic [WIDTH-1:0] PCP4_M;
+    logic [WIDTH-1:0] PCP4_W;
+
+    // ALU    
+    logic [3:0] ALUctrl_D;
+    logic [3:0] ALUctrl_E;
+    
+    logic [WIDTH-1:0] SrcA_E;
+    logic [WIDTH-1:0] SrcB_E;
+    
+    logic ALUsrc_D;
+    logic ALUsrc_E;
+    
+    logic Zero_E;
+    
+    logic [WIDTH-1:0] PC_F;
+    logic [WIDTH-1:0] PC_D;
+    logic [WIDTH-1:0] PC_E;
+    
     logic [WIDTH-1:0] PCnext;
-    logic [WIDTH-1:0] PCPlus4;
+    
+    logic [WIDTH-1:0] ALUResult_E;
+    logic [WIDTH-1:0] ALUResult_M;
+    logic [WIDTH-1:0] ALUResult_W;
 
     // Instruction Memory
-    logic [WIDTH-1:0] instr;
+    logic [WIDTH-1:0] instr_F;
+    logic [WIDTH-1:0] instr_D;
 
     // Regfile
-    logic [4:0] rs1;
-    logic [4:0] rs2;
-    logic [4:0] rd;
+    logic [4:0] Rs1_D;
+    logic [4:0] Rs1_E;
+    logic [4:0] Rs2_D;
+    logic [4:0] Rs2_E;
+
+    logic [4:0] Rd_D;
+    logic [4:0] Rd_E;
+    logic [4:0] Rd_M;
+    logic [4:0] Rd_W;
+
+    logic [WIDTH-1:0] RD1_D;
+    logic [WIDTH-1:0] RD1_E;
+    logic [WIDTH-1:0] RD2_D;
+    logic [WIDTH-1:0] RD2_E;
 
     // Data memory
-    logic MemWrite;
-    logic [WIDTH-1:0] ReadData;
     logic addr_mode;
+    logic MemWrite_D;
+    logic MemWrite_E;
+    logic MemWrite_M;
+    logic MemRead_D;
+    logic MemRead_E;
 
-    assign rs1 = instr[19:15];
-    assign rs2 = instr[24:20];
-    assign rd = instr[11:7];
+    logic [WIDTH-1:0] WriteData_E;
+    logic [WIDTH-1:0] WriteData_M;
+    
+    logic [WIDTH-1:0] ReadData_M;
+    logic [WIDTH-1:0] ReadData_W;
 
-    logic RegWrite;
+    logic RegWrite_D;
+    logic RegWrite_E;
+    logic RegWrite_M;
+    logic RegWrite_W;
 
     // Sign Extend
-    logic [2:0] ImmSrc;
+    logic [2:0] ImmSrc_D;
 
     // Result
-    logic [WIDTH-1:0] result;
-    logic [1:0] ResultSrc;
+    logic [1:0] ResultSrc_D;
+    logic [1:0] ResultSrc_E;
+    logic [1:0] ResultSrc_M;
+    logic [1:0] ResultSrc_W;
+    logic [WIDTH-1:0] Result_W;
+
+    // Hazard Unit
+    logic [1:0] forwardA_E;
+    logic [1:0] forwardB_E;
+    logic stall;
+    logic flush;
+    logic branch;
 
     // Spacing intentional, seperates input and output
+
+    // Pipeline 1 - Fetch (IF)
+    
+    assign PCP4_F = PC_F + 4;
+
+    pcnext_selector #(WIDTH) PCnext_selector_inst ( 
+        // Implements: PCnext = PCsrc ? PC + ImmOp : PC + 4;
+        .in0(PCP4_F),                         // incPC = PC + 4
+        .in1(PC_E + ImmExt_E),              // branchPC = PC + ImmOp
+        .in2(ALUResult_E),                  // jalr
+        .EQ(Zero_E),
+        .PCsrc(PCsrc_E),
+
+        .branch(branch),
+        .out(PCnext)                // PC_F'
+    );
+    
     program_counter program_counter_inst (
         .clk(clk),
         .rst(rst),
+        .stall(stall),
         .PCnext(PCnext),
 
-        .PC(PC)
+        .PC(PC_F)
     );
 
-    mux4 #(WIDTH) mux_PC_inst ( 
-        // Implements: PCnext = PCsrc ? PC + ImmOp : PC + 4;
-        .in0(PC + 4),       // incPC = PC + 4
-        .in1(PC + ImmOp),   // branchPC = PC + ImmOp
-        .in2(ALUout),       // jalr
-        .in3(0),
-        .sel(PCsrc),
-
-        .out(PCnext)
-    );
-    
     instr_mem instr_mem_inst (
-        .A(PC),
+        .A(PC_F),
 
-        .RD(instr)
+        .RD(instr_F)
     );
+
+    pipeline_IF_ID pipeline_IF_ID_inst (
+        .clk(clk),
+        .flush(flush),
+        .stall(stall),
+        .instr_F(instr_F),
+        .PC_F(PC_F),
+        .PCP4_F(PCP4_F),
+
+        .instr_D(instr_D),
+        .PC_D(PC_D),
+        .PCP4_D(PCP4_D)
+    );
+
+    // Pipeline 2 - Decode (ID)
 
     control_unit control_unit_inst (
-        .instr(instr),
-        .EQ(EQ),
+        .instr(instr_D),
+        .stall(stall),
         .addr_mode(addr_mode),
 
-        .RegWrite(RegWrite),
-        .MemWrite(MemWrite),
-        .ALUctrl(ALUctrl),
-        .ALUsrc(ALUsrc),
-        .ImmSrc(ImmSrc),
-        .PCsrc(PCsrc),
-        .ResultSrc(ResultSrc)
+        .RegWrite(RegWrite_D),
+        .MemWrite(MemWrite_D),
+        .MemRead(MemRead_D),
+        .ALUctrl(ALUctrl_D),
+        .ALUsrc(ALUsrc_D),
+        .ImmSrc(ImmSrc_D),
+        .PCsrc(PCsrc_D),
+        .ResultSrc(ResultSrc_D)
     );
-    
-    sign_extend sign_extend_inst (
-        .instr(instr),
-        .ImmSrc(ImmSrc),
 
-        .ImmOp(ImmOp)
+    sign_extend sign_extend_inst (
+        .instr(instr_D),
+        .ImmSrc(ImmSrc_D),
+
+        .ImmOp(ImmExt_D)
+    );
+
+    assign Rs1_D = instr_D[19:15];
+    assign Rs2_D = instr_D[24:20];
+    assign Rd_D = instr_D[11:7];
+    
+    regfile regfile_inst (
+        .clk(clk),
+        .AD1(Rs1_D),
+        .AD2(Rs2_D),
+        .AD3(Rd_W),
+        .WE3(RegWrite_W),
+        .WD3(Result_W),
+
+        .RD1(RD1_D),
+        .RD2(RD2_D),
+        .a0(a0)
+    );
+
+    pipeline_ID_EX pipeline_ID_EX_inst (
+        .clk(clk),
+        .flush(flush),
+        .RD1_D(RD1_D),
+        .RD2_D(RD2_D),
+        .PC_D(PC_D),
+        .Rs1_D(Rs1_D),
+        .Rs2_D(Rs2_D),
+        .Rd_D(Rd_D),
+        .ImmExt_D(ImmExt_D),
+        .PCP4_D(PCP4_D),
+
+        .RD1_E(RD1_E),
+        .RD2_E(RD2_E),
+        .PC_E(PC_E),
+        .Rs1_E(Rs1_E),
+        .Rs2_E(Rs2_E),
+        .Rd_E(Rd_E),
+        .ImmExt_E(ImmExt_E),
+        .PCP4_E(PCP4_E),
+
+        .RegWrite_D(RegWrite_D),
+        .ResultSrc_D(ResultSrc_D),
+        .MemWrite_D(MemWrite_D),
+        .MemRead_D(MemRead_D),
+        .PCsrc_D(PCsrc_D),
+        .ALUctrl_D(ALUctrl_D),
+        .ALUsrc_D(ALUsrc_D),
+
+        .RegWrite_E(RegWrite_E),
+        .ResultSrc_E(ResultSrc_E),
+        .MemWrite_E(MemWrite_E),
+        .MemRead_E(MemRead_E),
+        .PCsrc_E(PCsrc_E),
+        .ALUctrl_E(ALUctrl_E),
+        .ALUsrc_E(ALUsrc_E)
+    );
+
+    // Pipeline 3 - Execute (EX)
+
+    mux4 #(WIDTH) mux_hazard_A_inst (
+        .in0(RD1_E),
+        .in1(Result_W),
+        .in2(ALUResult_M),
+        .in3(0),
+        .sel(forwardA_E),
+
+        .out(SrcA_E)
+    );
+
+    mux4 #(WIDTH) mux_hazard_B_inst (
+        .in0(RD2_E),
+        .in1(Result_W),
+        .in2(ALUResult_M),
+        .in3(0),
+        .sel(forwardB_E),
+
+        .out(WriteData_E)
     );
 
     mux #(WIDTH) mux_alu_inst (
-        .in0(regOp2),
-        .in1(ImmOp),
-        .sel(ALUsrc),
+        .in0(WriteData_E),
+        .in1(ImmExt_E),
+        .sel(ALUsrc_E),
 
-        .out(ALUin2)
+        .out(SrcB_E)
     );
 
     alu alu_inst (
-        .a(ALUin1),
-        .b(ALUin2),
-        .ALUctrl(ALUctrl),
+        .a(SrcA_E),
+        .b(SrcB_E),
+        .ALUctrl(ALUctrl_E),
 
-        .EQ(EQ),
-        .ALUout(ALUout) 
+        .EQ(Zero_E),
+        .ALUout(ALUResult_E)
     );
 
-    regfile regfile_inst (
+    pipeline_EX_MEM pipeline_EX_MEM_inst (
         .clk(clk),
-        .AD1(rs1),
-        .AD2(rs2),
-        .AD3(rd),
-        .WE3(RegWrite),
-        .WD3(result),
+        .ALUResult_E(ALUResult_E),
+        .WriteData_E(WriteData_E),
+        .Rd_E(Rd_E),
+        .PCP4_E(PCP4_E),
 
-        .RD1(ALUin1),
-        .RD2(regOp2),
-        .a0(a0)
+        .ALUResult_M(ALUResult_M),
+        .WriteData_M(WriteData_M),
+        .Rd_M(Rd_M),
+        .PCP4_M(PCP4_M),
+
+        .RegWrite_E(RegWrite_E),
+        .ResultSrc_E(ResultSrc_E),
+        .MemWrite_E(MemWrite_E),
+
+        .RegWrite_M(RegWrite_M),
+        .ResultSrc_M(ResultSrc_M),
+        .MemWrite_M(MemWrite_M)
     );
+
+    // Pipeline 4 - Memory (MEM)
     
     data_mem data_mem_inst (
         .clk(clk),
         .addr_mode(addr_mode),
-        .A(ALUout),
-        .WD(regOp2),
-        .WE(MemWrite),
+        .A(ALUResult_M),
+        .WD(WriteData_M),
+        .WE(MemWrite_M),
 
-        .RD(ReadData)
+        .RD(ReadData_M)
     );
 
-    mux4 #(WIDTH) mux_result_inst (
-        .in0(ALUout),
-        .in1(ReadData),
-        .in2(PC + 4),
-        .in3(0),
-        .sel(ResultSrc),
+    pipeline_MEM_WB pipeline_MEM_WB_inst (
+        .clk(clk),
+        .ALUResult_M(ALUResult_M),
+        .ReadData_M(ReadData_M),
+        .Rd_M(Rd_M),
+        .PCP4_M(PCP4_M),
 
-        .out(result)
+        .ALUResult_W(ALUResult_W),
+        .ReadData_W(ReadData_W),
+        .Rd_W(Rd_W),
+        .PCP4_W(PCP4_W),
+
+        .RegWrite_M(RegWrite_M),
+        .ResultSrc_M(ResultSrc_M),
+
+        .RegWrite_W(RegWrite_W),
+        .ResultSrc_W(ResultSrc_W)
+    );
+
+    // Pipeline 5 - Writeback (WB)
+
+    mux4 #(WIDTH) mux_result_inst (
+        .in0(ALUResult_W),
+        .in1(ReadData_W),
+        .in2(PCP4_W),
+        .in3(0),
+        .sel(ResultSrc_W),
+
+        .out(Result_W)
+    );
+
+    // Hazard Unit
+
+
+    hazard_unit hazard_unit_inst (
+        .Rs1_E(Rs1_E),
+        .Rs2_E(Rs2_E),
+        .Rs1_D(Rs1_D),
+        .Rs2_D(Rs2_D),
+        .Rd_E(Rd_E),
+        .Rd_M(Rd_M),
+        .Rd_W(Rd_W),
+        .RegWrite_M(RegWrite_M),
+        .RegWrite_W(RegWrite_W),
+        .MemRead_E(MemRead_E),
+        .branch(branch),
+
+        .forwardA_E(forwardA_E),
+        .forwardB_E(forwardB_E),
+        .stall(stall),
+        .flush(flush)
     );
 
 endmodule

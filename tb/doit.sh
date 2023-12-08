@@ -39,17 +39,20 @@ for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
     # Translate Verilog -> C++ including testbench
-    verilator   -Wall --coverage --trace \
+    verilator   -Wall --coverage --coverage-max-width 1 --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
                 --exe ${file} \
                 -y ${RTL_FOLDER} \
                 --prefix "Vdut" \
                 -o Vdut \
-                -CFLAGS "-fprofile-generate" \
+                -CFLAGS "-fprofile-generate -fprofile-correction" \
                 -LDFLAGS "-lgtest -lpthread -fprofile-generate" \
 
     # Build C++ project with automatically generated Makefile
     make -j -C obj_dir/ -f Vdut.mk
+
+    # Clear data.hex file. Can be overwritten in tests, via system calls
+    truncate -s 0 ${RTL_FOLDER}/data.hex
 
     # Run executable simulation file
     ./obj_dir/Vdut

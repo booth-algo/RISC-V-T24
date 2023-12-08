@@ -167,7 +167,7 @@ TEST_F(CpuTestbench, BLTTest)
 {
     system("./compile.sh --input c/014-blt.c");
     
-    runSimulation(2000);
+    runSimulation(20000);
     
     EXPECT_EQ((int)top->a0, 273);
 }
@@ -177,7 +177,7 @@ TEST_F(CpuTestbench, BGETest)
 {
     system("./compile.sh --input c/015-bge.c");
     
-    runSimulation(2000);
+    runSimulation(20000);
     
     EXPECT_EQ((int)top->a0, 300);
 }
@@ -187,7 +187,7 @@ TEST_F(CpuTestbench, BLTUTest)
 {
     system("./compile.sh --input c/016-bltu.c");
     
-    runSimulation(300);
+    runSimulation(20000);
     
     EXPECT_EQ((int)top->a0, 0);
 }
@@ -197,7 +197,7 @@ TEST_F(CpuTestbench, ForLoopTest)
 {
     system("./compile.sh --input c/018-for_loop.c");
     
-    runSimulation(2000);
+    runSimulation(20000);
     
     EXPECT_EQ((int)top->a0, 5050);
 }
@@ -207,7 +207,7 @@ TEST_F(CpuTestbench, JALRTest)
 {
     system("./compile.sh --input c/019-jalr.c");
     
-    runSimulation(200);
+    runSimulation(20000);
     
     EXPECT_EQ((int)top->a0, 2048);
 }
@@ -217,7 +217,7 @@ TEST_F(CpuTestbench, FibonnaciTest)
 {
     system("./compile.sh --input c/020-fibonnaci.c");
     
-    runSimulation(50000);
+    runSimulation(200000);
     
     EXPECT_EQ((int)top->a0, 55);
 }
@@ -239,9 +239,6 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     Verilated::mkdir("logs");
     auto res = RUN_ALL_TESTS();
-    VerilatedCov::write(
-        ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
-    );
 
     return res;
 }

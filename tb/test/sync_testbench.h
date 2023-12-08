@@ -21,8 +21,8 @@ protected:
             // dump variables into VCD file and toggle clock
             for (int clk = 0; clk < 2; ++clk)
             {
-                tfp->dump(2*ticks + clk);    // picoseconds
                 top->eval();
+                tfp->dump(2*ticks + clk);    // picoseconds
                 top->clk = !top->clk;
             }
 
