@@ -252,6 +252,15 @@ TEST_F(CpuTestbench, ByteArrayTest)
     EXPECT_EQ((int)top->a0, 255);
 }
 
+TEST_F(CpuTestbench, Combined)
+{
+    system("./compile.sh --input c/022-combined.c");
+    
+    runSimulation(5000);
+    
+    EXPECT_EQ((int)top->a0, 34);
+}
+
 
 // TEST_F(CpuTestbench, PDFTest)
 // {
