@@ -61,10 +61,14 @@ module top #(
     logic [WIDTH-1:0] RD2_E;
 
     // Data memory
-    logic addr_mode;
+    logic [2:0] AddrMode_D;
+    logic [2:0] AddrMode_E;
+    logic [2:0] AddrMode_M;
+
     logic MemWrite_D;
     logic MemWrite_E;
     logic MemWrite_M;
+    
     logic MemRead_D;
     logic MemRead_E;
 
@@ -147,8 +151,8 @@ module top #(
     control_unit control_unit_inst (
         .instr(instr_D),
         .stall(stall),
-        .addr_mode(addr_mode),
 
+        .AddrMode(AddrMode_D),
         .RegWrite(RegWrite_D),
         .MemWrite(MemWrite_D),
         .MemRead(MemRead_D),
@@ -208,6 +212,7 @@ module top #(
         .ResultSrc_D(ResultSrc_D),
         .MemWrite_D(MemWrite_D),
         .MemRead_D(MemRead_D),
+        .AddrMode_D(AddrMode_D),
         .PCsrc_D(PCsrc_D),
         .ALUctrl_D(ALUctrl_D),
         .ALUsrc_D(ALUsrc_D),
@@ -216,6 +221,7 @@ module top #(
         .ResultSrc_E(ResultSrc_E),
         .MemWrite_E(MemWrite_E),
         .MemRead_E(MemRead_E),
+        .AddrMode_E(AddrMode_E),
         .PCsrc_E(PCsrc_E),
         .ALUctrl_E(ALUctrl_E),
         .ALUsrc_E(ALUsrc_E)
@@ -275,17 +281,19 @@ module top #(
         .RegWrite_E(RegWrite_E),
         .ResultSrc_E(ResultSrc_E),
         .MemWrite_E(MemWrite_E),
+        .AddrMode_E(AddrMode_E),
 
         .RegWrite_M(RegWrite_M),
         .ResultSrc_M(ResultSrc_M),
-        .MemWrite_M(MemWrite_M)
+        .MemWrite_M(MemWrite_M),
+        .AddrMode_M(AddrMode_M)
     );
 
     // Pipeline 4 - Memory (MEM)
     
     data_mem data_mem_inst (
         .clk(clk),
-        .addr_mode(addr_mode),
+        .AddrMode(AddrMode_M),
         .A(ALUResult_M),
         .WD(WriteData_M),
         .WE(MemWrite_M),

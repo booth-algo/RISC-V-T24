@@ -5,7 +5,7 @@ main:
     addi a1, zero, 32
     sb t1, 1(a1)
     addi t1, zero, 0
-    lb a0, 1(a1)
+    lbu a0, 1(a1)
     addi a0, a0, -61
     
-	# EXPECTED OUTPUT = -122
+	# EXPECTED OUTPUT = 134

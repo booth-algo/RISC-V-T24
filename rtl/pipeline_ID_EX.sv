@@ -26,6 +26,7 @@ module pipeline_ID_EX #(
     input logic [1:0] ResultSrc_D,
     input logic MemWrite_D,
     input logic MemRead_D,
+    input logic [2:0] AddrMode_D,
     input logic [2:0] PCsrc_D,
     input logic [3:0] ALUctrl_D,
     input logic ALUsrc_D,
@@ -33,6 +34,7 @@ module pipeline_ID_EX #(
     output logic [1:0] ResultSrc_E,
     output logic MemWrite_E,
     output logic MemRead_E,
+    output logic [2:0] AddrMode_E,
     output logic [2:0] PCsrc_E,
     output logic [3:0] ALUctrl_E,
     output logic ALUsrc_E
@@ -54,6 +56,7 @@ module pipeline_ID_EX #(
         MemRead_E <= MemRead_D;
         ALUctrl_E <= ALUctrl_D;
         ALUsrc_E <= ALUsrc_D;
+        AddrMode_E <= AddrMode_D;
 
         // Data path
         RD1_E <= RD1_D;

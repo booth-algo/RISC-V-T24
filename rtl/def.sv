@@ -26,4 +26,15 @@
 `define PC_INV_COND_BRANCH          3'b100
 `define PC_COND_BRANCH              3'b101
 
+// Explanation of bit allocation:
+// 1. 000 = Word
+// 2. 01X = Byte
+// 3. 10X = Half
+// then if X is the unsigned bit (unsigned = 1)
+`define DATA_ADDR_MODE_W            3'b000
+`define DATA_ADDR_MODE_B            3'b010
+`define DATA_ADDR_MODE_BU           3'b011
+`define DATA_ADDR_MODE_H            3'b100
+`define DATA_ADDR_MODE_HU           3'b101
+
 `endif

@@ -14,7 +14,7 @@ module control_unit #(
    output logic RegWrite,
    output logic MemWrite,
    output logic MemRead,
-   output logic addr_mode, // Added for store and load byte instead of word of 4 bytes
+   output logic [2:0] AddrMode, // Added for store and load byte instead of word of 4 bytes
    output logic [1:0] ResultSrc
 );
 
@@ -36,6 +36,7 @@ always_comb begin
     MemWrite = 0;
     MemRead = 0;
     ResultSrc = 0;
+    AddrMode = 0;
     PCsrc = `PC_NEXT;
     
     case(op)
@@ -204,17 +205,17 @@ always_comb begin
                 
                 // lb
                 3'b000: begin
-                    addr_mode = 1;
+                    AddrMode = `DATA_ADDR_MODE_B;
                 end
 
                 // lw
                 3'b010: begin
-                    addr_mode = 0;
+                    AddrMode = `DATA_ADDR_MODE_W;
                 end
 
                 // lbu
                 3'b100: begin
-                    addr_mode= 1;
+                    AddrMode= `DATA_ADDR_MODE_BU;
                 end
 
                 default: begin
@@ -237,12 +238,12 @@ always_comb begin
             
             // sb
             3'b000: begin
-                addr_mode = 1;
+                AddrMode = `DATA_ADDR_MODE_B;
             end
 
             // sw
             3'b010: begin
-                addr_mode = 0;
+                AddrMode = `DATA_ADDR_MODE_W;
             end
             
             default: begin

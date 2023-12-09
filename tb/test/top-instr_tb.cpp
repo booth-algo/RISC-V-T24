@@ -229,7 +229,27 @@ TEST_F(CpuTestbench, LB_and_SB_Test)
     
     runSimulation(50000);
     
+    EXPECT_EQ((int)top->a0, -122);
+}
+
+
+TEST_F(CpuTestbench, LB_and_SB_Test2)
+{
+    system("./compile.sh --input asm/007-lbu-sb.s");
+    
+    runSimulation(50000);
+    
     EXPECT_EQ((int)top->a0, 134);
+}
+
+
+TEST_F(CpuTestbench, ByteArrayTest)
+{
+    system("./compile.sh --input c/021-byte_array.c");
+    
+    runSimulation(5000);
+    
+    EXPECT_EQ((int)top->a0, 255);
 }
 
 

@@ -4,6 +4,7 @@
 */
 
 #include "sync_testbench.h"
+#include "vbuddy.cpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -27,14 +28,33 @@ protected:
 TEST_F(CpuTestbench, InitialStateTest)
 {
     // Before the simulation takes place, place correct data in right place
-    system("cp data/gaussian.mem ../rtl");
+    system("cp data/gaussian.mem ../rtl/data.hex");
 
-    for (int i = 0; i < 10000; ++i)
+    // Initialise VBuddy
+    // if (vbdOpen() != 1)
+    // {
+    //     SUCCEED() << "Not actually lol";
+    // }
+    // vbdHeader("PDF plotting");
+    
+    int plot = 0;
+    
+    for (int i = 0; i < 1'000'000; ++i)
     {
         runSimulation(1);
-        if (top->a0 != 0)
+        if (plot == false && top->a0 != 0)
+        {
+            plot = 1;
+        }
+        if (plot)
         {
             std::cout << top->a0 << std::endl;
+            // vbdPlot(int(top->a0), 0, 255);
+            plot++;
+        }
+        if (plot > 512)
+        {
+            break;
         }
     }
 
