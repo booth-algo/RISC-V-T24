@@ -282,6 +282,17 @@ TEST_F(CpuTestbench, LinkedListTest)
 }
 
 
+TEST_F(CpuTestbench, PointerTest)
+{
+    system("./compile.sh --input c/024-pointer_deref.c");
+    
+    runSimulation(50000);
+    
+    EXPECT_EQ((int)top->a0, 17);
+
+}
+
+
 int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);
