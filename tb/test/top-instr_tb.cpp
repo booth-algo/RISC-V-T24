@@ -253,6 +253,26 @@ TEST_F(CpuTestbench, ByteArrayTest)
 }
 
 
+// TEST_F(CpuTestbench, PDFTest)
+// {
+//     system("./compile.sh --input c/022-pdf.c");
+    
+//     runSimulation(1'000'000);
+    
+//     EXPECT_EQ((int)top->a0, 255);
+// }
+
+TEST_F(CpuTestbench, LinkedListTest)
+{
+    system("./compile.sh --input c/023-linked_list.c");
+    
+    runSimulation(50000);
+    
+    EXPECT_EQ((int)top->a0, 158);
+
+}
+
+
 int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);
