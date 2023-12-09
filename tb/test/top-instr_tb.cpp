@@ -281,6 +281,16 @@ TEST_F(CpuTestbench, LinkedListTest)
 
 }
 
+TEST_F(CpuTestbench, LwTest008)
+{
+    system("./compile.sh --input asm/008-lw_test_1.s");
+    
+    runSimulation(50);
+    
+    EXPECT_EQ((int)top->a0, 0);
+
+}
+
 
 TEST_F(CpuTestbench, PointerTest)
 {
