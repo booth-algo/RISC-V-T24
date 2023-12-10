@@ -80,3 +80,35 @@ Kevin's logbook
 ## 7/12 Afternoon
   - Completed and verified lw data dependency hazard solution by stalling
 ## 8/12 Afternoon
+  - Completed and verified all control hazards solution through flushing, working with William in room 404 in EEE building
+## 9/12 and 10/12
+  - This is a long story:
+    - William tried to run the pipelined code on the vbuddy to see the PDF, however it was spitting random bits out instead of what we expected
+    - There was obviously an issue with the code, so we conjured up a list of new tests in both `c` and `asm`
+    - There was three main bugs that were discovered and solved with the combined effort of William and me:
+      1. A double `lw` data dependency bug in the hazard unit
+      2. A hazard unit bug with pointer dereferencing not properly
+      3. Improper loading of data memory
+    - How did we solve all three bugs?
+    - **Observations**
+      - Firstly, we noticed that the PDF was not right - William went back to tag v0.2.0, which was the single cycle, and found out that the single cycle was also not working - this was later found by me to be an issue with the data memory, which somehow managed to dodge all our tests
+      - Secondly, William created a `linked-list test` which consistently failed on the pipeline
+    - **Debugging bug #1**
+      - Following these clues, I attempted to isolate the instruction (on Saturday). I found out there was an issue specifically with the instructions:
+        `lw a5, -20(s0)`
+        `lw a5, 4(a5)`
+      - Specifically, the bug ONLY occured when in this specific format, where there was an initial load word into a register, and the same register would be used for both the access and destination address
+      - In the end, William found out that he did not properly stall all the signals, causing this specific dependency hazard to occur.
+    - **Debugging bug #2**
+      - This was solved on Sunday afternoon. The `linked-list test` still failed, so I hopped into another Discord call with William
+      - From a discussion with a friend from another team, I recalled that the other team had issues with synchronising his stalls and flushes
+      - I realised that there could be potential issues with our stalling for solving the `lw data dependency hazard`
+      - So I read the recommended textbook and realised that, while we wrote the conditions for stall correctly, we did not flush the pipeline register after the stalled stage to prevent bogus information from propagating forward
+      - We implemented a flush specifically for this called `LWflush`, and the `linked-list test` passed successfully afterwards
+    - **Debugging bug #3**
+      - The PDF was still not working, and from the observations above as noted by William, I was highly certain it was a loading mem issue with either the `data_mem` or `instr_mem`
+      - I double checked both files and found nothing wrong with their respective `readmemh` commands, but I noticed an inconsistency with the `addr_mode` function implemented
+      - For the byte addressing mode, it seems to be setting all bytes other than the LS byte to 0 - however, it should not be doing that - it should be writing only the LS byte, but not set all the other bytes of the word to 0
+      - The change below was implemented to remove this error and then the PDF program ran correctly
+      - ![Alt text](./../images/data_mem_bug.png)
+      - What is most surprising to me is that none of the tests written in both asm and C were able to catch this error, which shows holes in our testbenching skills which have room for improvement

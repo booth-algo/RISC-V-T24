@@ -79,3 +79,9 @@ This file will note down major meetups and breakdown the progress completed by t
           3. Branch prediction using 1-bit branch prediction buffer 
         - Our decision is to prioritise finishing the data cache first before going for our own stretched goal
         - Hence we will implement instruction flushing first, finish the cache, then work on branch prediction if we have time 
+
+## Tag v0.3.0 and issue regarding v0.2.0
+  - Snapshot with tag `v0.3.0` has been fully tested - it runs through all tests and runs the reference program `pdf.s` perfectly
+  - A bug was found with the previous single-cycle version `v0.2.0`, however the snapshot cannot be modified so here is a remark:
+    - There was a bug with the `data_mem.sv` which caused the 3 MS bytes of a word to be set to zero when using byte addressing mode - this is unintended behaviour and has been corrected in the pipelined version `v0.3.0`
+    - Further details can be found in the debugging notes in `kevin.md`
