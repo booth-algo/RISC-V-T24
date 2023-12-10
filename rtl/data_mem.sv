@@ -37,9 +37,6 @@ module data_mem #(
     always_ff @(posedge clk) begin
         if (WE && AddrMode == 3'b01x) begin // Write only least significant byte (8 bits)
             array[A] <= WD[7:0];
-            array[A+1] <= 8'b0;
-            array[A+2] <= 8'b0;
-            array[A+3] <= 8'b0;
         end
 
         else if (WE) begin // Write whole word

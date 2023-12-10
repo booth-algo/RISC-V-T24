@@ -52,7 +52,7 @@ TEST_F(CpuTestbench, InitialStateTest)
             // vbdPlot(int(top->a0), 0, 255);
             plot++;
         }
-        if (plot > 512)
+        if (plot > 1024)
         {
             break;
         }

@@ -282,34 +282,44 @@ TEST_F(CpuTestbench, LinkedListTest)
 }
 
 
-// TEST_F(CpuTestbench, LwTest008)
-// {
-//     system("./compile.sh --input asm/008-lw_test_1.s");
+TEST_F(CpuTestbench, LwTest008)
+{
+    system("./compile.sh --input asm/008-lw_test_1.s");
     
-//     runSimulation(50);
+    runSimulation(50);
     
-//     EXPECT_EQ((int)top->a0, 2);
-// }
+    EXPECT_EQ((int)top->a0, 2);
+}
 
 
-// TEST_F(CpuTestbench, LwTest008)
-// {
-//     system("./compile.sh --input asm/008-lw_test_1.s");
+TEST_F(CpuTestbench, PointerTest)
+{
+    system("./compile.sh --input c/024-pointer_deref.c");
     
-//     runSimulation(50);
+    runSimulation(50000);
     
-//     EXPECT_EQ((int)top->a0, 2);
-// }
+    EXPECT_EQ((int)top->a0, 17);
+}
 
 
-// TEST_F(CpuTestbench, PointerTest)
-// {
-//     system("./compile.sh --input c/024-pointer_deref.c");
+TEST_F(CpuTestbench, CounterTest)
+{
+    system("./compile.sh --input asm/009-counter.s");
     
-//     runSimulation(50000);
+    runSimulation(500);
     
-//     EXPECT_EQ((int)top->a0, 17);
-// }
+    EXPECT_EQ((int)top->a0, 1);
+}
+
+
+TEST_F(CpuTestbench, PDFTest)
+{
+    system("./compile.sh --input c/025-pdf.c");
+    
+    runSimulation(100000);
+    
+    EXPECT_EQ((int)top->a0, 2560);
+}
 
 
 int main(int argc, char **argv)

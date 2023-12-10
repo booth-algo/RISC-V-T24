@@ -33,6 +33,9 @@ allow for working single cycle (with addi and bne). Created a load of tests in
 
 ### Week 3 (commencing 04/12/2023)
 
+Finished single cycle and pipeline with Kevin. The reference program, `pdf.s`
+now runs, as intended.
+
 ### Week 4 (commencing 11/12/2023)
 
 
