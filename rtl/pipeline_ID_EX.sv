@@ -3,6 +3,7 @@ module pipeline_ID_EX #(
 )(
     input logic clk,
     input logic flush,
+    input logic LWflush,
 
     input logic [WIDTH - 1:0] RD1_D,
     input logic [WIDTH - 1:0] RD2_D,
@@ -42,7 +43,7 @@ module pipeline_ID_EX #(
 
     always_ff @(posedge clk) begin
         // Control unit
-        if (!flush) begin
+        if (!flush && !LWflush) begin
             RegWrite_E <= RegWrite_D;
             MemWrite_E <= MemWrite_D;
             PCsrc_E <= PCsrc_D;

@@ -190,6 +190,7 @@ module top #(
     pipeline_ID_EX pipeline_ID_EX_inst (
         .clk(clk),
         .flush(flush),
+        .LWflush(stall),    // LW is proprogated via stall. It will flush.
         .RD1_D(RD1_D),
         .RD2_D(RD2_D),
         .PC_D(PC_D),

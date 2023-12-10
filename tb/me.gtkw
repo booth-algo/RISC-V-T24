@@ -1,6 +1,6 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Dec 10 15:03:10 2023
+[*] Sun Dec 10 15:26:13 2023
 [*]
 [dumpfile] "/home/saturn691/projects/university/iac/RISC-V-T24/tb/waveform.vcd"
 [dumpfile_mtime] "Sun Dec 10 13:58:06 2023"
@@ -8,8 +8,8 @@
 [savefile] "/home/saturn691/projects/university/iac/RISC-V-T24/tb/me.gtkw"
 [timestart] 406
 [size] 1250 1206
-[pos] -101 28
-*-2.000000 412 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -440 105
+*-2.000000 410 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.top.
 [sst_width] 254
@@ -57,9 +57,13 @@ TOP.top.mux_hazard_A_inst.in1[31:0]
 TOP.top.mux_hazard_A_inst.in2[31:0]
 @200
 -
-@23
-TOP.top.data_mem_inst.A[31:0]
 @22
+TOP.top.data_mem_inst.A[31:0]
 TOP.top.data_mem_inst.RD[31:0]
+@200
+-
+@28
+TOP.top.hazard_unit_inst.stall
+TOP.top.hazard_unit_inst.flush
 [pattern_trace] 1
 [pattern_trace] 0

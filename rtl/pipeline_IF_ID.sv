@@ -18,7 +18,7 @@ module pipeline_IF_ID #(
             PCP4_D <= PCP4_F;
         end
         if (flush) begin
-            instr_D <= 0;
+            instr_D <= 0;           // nop
         end     
     end
 
