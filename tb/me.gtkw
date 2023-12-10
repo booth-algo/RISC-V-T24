@@ -1,0 +1,65 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Dec 10 15:03:10 2023
+[*]
+[dumpfile] "/home/saturn691/projects/university/iac/RISC-V-T24/tb/waveform.vcd"
+[dumpfile_mtime] "Sun Dec 10 13:58:06 2023"
+[dumpfile_size] 35053705
+[savefile] "/home/saturn691/projects/university/iac/RISC-V-T24/tb/me.gtkw"
+[timestart] 406
+[size] 1250 1206
+[pos] -101 28
+*-2.000000 412 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.top.
+[sst_width] 254
+[signals_width] 194
+[sst_expanded] 1
+[sst_vpaned_height] 360
+@28
+TOP.top.program_counter_inst.clk
+@22
+TOP.top.program_counter_inst.PC[31:0]
+@24
+TOP.a0[31:0]
+@200
+-
+@420
++{sp} TOP.top.regfile_inst.reg_arr[2][31:0]
+@22
++{s0} TOP.top.regfile_inst.reg_arr[8][31:0]
++{a0} TOP.top.regfile_inst.reg_arr[10][31:0]
++{a1} TOP.top.regfile_inst.reg_arr[11][31:0]
++{a2} TOP.top.regfile_inst.reg_arr[12][31:0]
++{a3} TOP.top.regfile_inst.reg_arr[13][31:0]
++{a4} TOP.top.regfile_inst.reg_arr[14][31:0]
++{a5} TOP.top.regfile_inst.reg_arr[15][31:0]
++{a6} TOP.top.regfile_inst.reg_arr[16][31:0]
+@200
+-
+@28
+TOP.top.control_unit_inst.PCsrc[2:0]
+TOP.top.PCnext_selector_inst.EQ
+@200
+-
+@28
+TOP.top.alu_inst.ALUctrl[3:0]
+@420
+TOP.top.alu_inst.a[31:0]
+TOP.top.alu_inst.b[31:0]
+TOP.top.alu_inst.ALUout[31:0]
+@28
+TOP.top.mux_hazard_A_inst.sel[1:0]
+@22
+TOP.top.PCnext_selector_inst.out[31:0]
+TOP.top.mux_hazard_A_inst.in0[31:0]
+TOP.top.mux_hazard_A_inst.in1[31:0]
+TOP.top.mux_hazard_A_inst.in2[31:0]
+@200
+-
+@23
+TOP.top.data_mem_inst.A[31:0]
+@22
+TOP.top.data_mem_inst.RD[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

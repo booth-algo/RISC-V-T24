@@ -37,5 +37,5 @@ int main()
 #endif
 
     // EXPECTED OUTPUT = 17
-    return 0;
+    return ans;
 }

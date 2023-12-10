@@ -95,5 +95,5 @@ int main()
 #endif
 
     // EXPECTED OUTPUT = 158
-    return 0;
+    return ans;
 }

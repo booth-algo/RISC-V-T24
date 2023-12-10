@@ -376,6 +376,7 @@ always_comb begin
     // Will overwrite any signal in case-endcase block
     if (stall) begin
         MemWrite = 0;
+        MemRead = 0;
         RegWrite = 0;
     end
 end

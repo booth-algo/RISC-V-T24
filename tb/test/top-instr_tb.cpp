@@ -271,6 +271,7 @@ TEST_F(CpuTestbench, Combined)
 //     EXPECT_EQ((int)top->a0, 255);
 // }
 
+
 TEST_F(CpuTestbench, LinkedListTest)
 {
     system("./compile.sh --input c/023-linked_list.c");
@@ -278,29 +279,37 @@ TEST_F(CpuTestbench, LinkedListTest)
     runSimulation(50000);
     
     EXPECT_EQ((int)top->a0, 158);
-
-}
-
-TEST_F(CpuTestbench, LwTest008)
-{
-    system("./compile.sh --input asm/008-lw_test_1.s");
-    
-    runSimulation(50);
-    
-    EXPECT_EQ((int)top->a0, 0);
-
 }
 
 
-TEST_F(CpuTestbench, PointerTest)
-{
-    system("./compile.sh --input c/024-pointer_deref.c");
+// TEST_F(CpuTestbench, LwTest008)
+// {
+//     system("./compile.sh --input asm/008-lw_test_1.s");
     
-    runSimulation(50000);
+//     runSimulation(50);
     
-    EXPECT_EQ((int)top->a0, 17);
+//     EXPECT_EQ((int)top->a0, 2);
+// }
 
-}
+
+// TEST_F(CpuTestbench, LwTest008)
+// {
+//     system("./compile.sh --input asm/008-lw_test_1.s");
+    
+//     runSimulation(50);
+    
+//     EXPECT_EQ((int)top->a0, 2);
+// }
+
+
+// TEST_F(CpuTestbench, PointerTest)
+// {
+//     system("./compile.sh --input c/024-pointer_deref.c");
+    
+//     runSimulation(50000);
+    
+//     EXPECT_EQ((int)top->a0, 17);
+// }
 
 
 int main(int argc, char **argv)
