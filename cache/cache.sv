@@ -32,8 +32,8 @@ typedef struct packed {
 } cache_entry_t;
 
 typedef struct packed {
-    cache_entry_t entry1;
-    cache_entry_t entry0;
+    cache_entry_t entry1; // way 1
+    cache_entry_t entry0; // way 0
 } cache_set_t;
 
 always_comb begin

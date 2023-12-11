@@ -321,6 +321,41 @@ TEST_F(CpuTestbench, PDFTest)
     EXPECT_EQ((int)top->a0, 2560);
 }
 
+TEST_F(CpuTestbench, dm_cache_test)
+{
+    system("./compile.sh --input asm/009-dm_cache.s");
+    
+    runSimulation(100000);
+    
+    EXPECT_EQ((int)top->a0, 0);
+}
+
+TEST_F(CpuTestbench, cache_read_test)
+{
+    system("./compile.sh --input asm/010-dm_cache_read.s");
+    
+    runSimulation(100000);
+    
+    EXPECT_EQ((int)top->a0, 0);
+}
+
+TEST_F(CpuTestbench, cache_write_test)
+{
+    system("./compile.sh --input asm/011-dm_cache_write.s");
+    
+    runSimulation(100000);
+    
+    EXPECT_EQ((int)top->a0, 0);
+}
+
+TEST_F(CpuTestbench, cache_temporal_locality_test)
+{
+    system("./compile.sh --input asm/012-dm_cache_temp_locality.s");
+    
+    runSimulation(100000);
+    
+    EXPECT_EQ((int)top->a0, 0);
+}
 
 int main(int argc, char **argv)
 {

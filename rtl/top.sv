@@ -335,7 +335,6 @@ module top #(
 
     // Hazard Unit
 
-
     hazard_unit hazard_unit_inst (
         .Rs1_E(Rs1_E),
         .Rs2_E(Rs2_E),
@@ -353,6 +352,22 @@ module top #(
         .forwardB_E(forwardB_E),
         .stall(stall),
         .flush(flush)
+    );
+
+    // Direct mapped cache
+
+    logic hit;
+    logic miss;
+
+    dm_cache dm_cache_inst (
+        .read_en(MemRead_E),
+        .write_en(MemWrite_E),
+        .addr(ALUResult_E),
+        .write_data(WriteData_E),
+
+        .read_data(ReadData_M),
+        .hit(hit),
+        .miss(miss) // these signals need to be fed to control unit AND hazard unit
     );
 
 endmodule
