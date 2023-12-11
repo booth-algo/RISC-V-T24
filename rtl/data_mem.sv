@@ -10,8 +10,6 @@ module data_mem #(
         input  logic [ADDR_WIDTH-1:0]   A, // address
         input  logic [DATA_WIDTH-1:0]   WD, // write data
         input  logic                    WE, // write enable (memwrite from control_unit)
-        input  logic                    miss,
-        output logic                    cache_en,
         output logic [DATA_WIDTH-1:0]   RD // read data
 );
 
@@ -34,7 +32,6 @@ module data_mem #(
         endcase
     end
 
-
     // Read and write operations
     always_ff @(posedge clk) begin
         if (WE && AddrMode == 3'b01x) begin // Write only least significant byte (8 bits)
@@ -47,8 +44,6 @@ module data_mem #(
             array[A+2] <= WD[23:16];
             array[A+3] <= WD[31:24];
         end
-        
-        cache_en <= miss;
     end
 
 endmodule

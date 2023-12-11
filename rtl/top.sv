@@ -294,42 +294,13 @@ module top #(
     
     // Direct mapped cache
 
-    logic hit;
-    logic miss;
-    logic cache_en;
-    logic data_out;
-    logic write_data;
-
     dm_cache dm_cache_inst (
         .clk(clk),
-        .write_en(cache_en),
+        .write_en(MemWrite_M),
+        .addr_mode(AddrMode_M),
         .addr(ALUResult_M),
-        .write_data(write_data),
+        .write_data(WriteData_M),
         
-        .data_out(data_out),
-        .hit(hit),
-        .miss(miss)
-    );
-
-    logic [31:0] ReadDataMem_M;
-
-    data_mem data_mem_inst (
-        .clk(clk),
-        .AddrMode(AddrMode_M),
-        .A(ALUResult_M),
-        .WD(WriteData_M),
-        .WE(MemWrite_M),
-        .miss(miss),
-
-        .cache_en(cache_en),
-        .RD(ReadDataMem_M)
-    );
-
-    mux #(WIDTH) mux_cache_inst (
-        .in0(data_out),
-        .in1(ReadDataMem_M),
-        .sel(miss),
-
         .out(ReadData_M)
     );
 

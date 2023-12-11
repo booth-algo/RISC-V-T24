@@ -1,17 +1,18 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Mon Dec 11 15:36:08 2023
+[*] Mon Dec 11 21:24:34 2023
 [*]
 [dumpfile] "/home/saturn691/projects/university/iac/RISC-V-T24/tb/waveform.vcd"
-[dumpfile_mtime] "Mon Dec 11 15:20:56 2023"
-[dumpfile_size] 179863
+[dumpfile_mtime] "Mon Dec 11 21:23:03 2023"
+[dumpfile_size] 1938823
 [savefile] "/home/saturn691/projects/university/iac/RISC-V-T24/tb/me.gtkw"
-[timestart] 0
+[timestart] 11
 [size] 2377 1206
-[pos] 5796 220
-*-4.000000 11 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 5831 239
+*-3.000000 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.top.
+[treeopen] TOP.top.dm_cache_inst.
 [sst_width] 214
 [signals_width] 214
 [sst_expanded] 1
@@ -25,6 +26,8 @@ TOP.top.program_counter_inst.PC[31:0]
 TOP.a0[31:0]
 @200
 -
+@22
++{x1} TOP.top.regfile_inst.reg_arr[1][31:0]
 @420
 +{sp} TOP.top.regfile_inst.reg_arr[2][31:0]
 @22
@@ -60,24 +63,19 @@ TOP.top.mux_hazard_A_inst.in1[31:0]
 TOP.top.mux_hazard_A_inst.in2[31:0]
 @200
 -
-@28
-TOP.top.data_mem_inst.AddrMode[2:0]
-TOP.top.data_mem_inst.WE
-@22
-TOP.top.data_mem_inst.WD[31:0]
-TOP.top.data_mem_inst.A[31:0]
-TOP.top.data_mem_inst.RD[31:0]
-@200
 -
 @28
 TOP.top.hazard_unit_inst.stall
 TOP.top.hazard_unit_inst.flush
-@201
+@200
 -
+@22
+TOP.top.dm_cache_inst.addr[31:0]
 @28
 TOP.top.dm_cache_inst.hit
-TOP.top.dm_cache_inst.miss
+@23
+TOP.top.dm_cache_inst.read_data[31:0]
 @22
-TOP.top.dm_cache_inst.data_out[31:0]
+TOP.top.dm_cache_inst.out[31:0]
 [pattern_trace] 1
 [pattern_trace] 0
