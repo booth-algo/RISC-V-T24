@@ -41,29 +41,32 @@ assign tag = addr[ADDR_WIDTH-1:5];
 assign set = addr[4:2];
 assign byte_offset = addr[1:0];
 assign hit = 0;
-assign miss = 0;
+assign miss = 1;
 
 always_latch begin
 // Cache read logic
+
     if (cache[set].valid && cache[set].tag == tag) begin
         hit = 1;
+        miss = 0;
         data_out = cache[set].data;
     end
-    else if (byte_offset == 0'b00) hit = hit; // to compile
+    
     else begin
         miss = 1;
+        hit = 0;
         data_out = write_data;
     end
+    if (byte_offset == 0'b00) hit = hit; // to compile
 end
 
 // Cache write logic
     // Write through cache
 always_ff @(posedge clk) begin
         if (write_en) begin
-            logic [2:0] set = addr[4:2];
-            cache[set].valid = 1;
-            cache[set].tag = addr[31:5];
-            cache[set].data = write_data;
+            cache[set].valid <= 1;
+            cache[set].tag <= addr[31:5];
+            cache[set].data <= write_data;
         end
     end
 
