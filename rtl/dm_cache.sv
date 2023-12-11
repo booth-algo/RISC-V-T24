@@ -2,13 +2,14 @@ module dm_cache #(
     parameter   ADDR_WIDTH = 32,
                 DATA_WIDTH = 32
 ) (
-    input logic read_en,
+    input logic clk,
     input logic write_en,
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] write_data,
-    output logic [DATA_WIDTH-1:0] read_data,
+    output logic [DATA_WIDTH-1:0] data_out,
     output logic hit,
     output logic miss
+
 );
 
 /* direct mapped cache 
@@ -24,9 +25,6 @@ module dm_cache #(
             // is the number of cache registers = 32 so they are referenced like this?
 */
  
-assign hit = 0;
-assign miss = 0;
-
 typedef struct packed {
     logic valid;
     logic [26:0] tag;
@@ -35,31 +33,33 @@ typedef struct packed {
 
 cache_store cache [8];
 
+logic [26:0] tag;
+logic [2:0] set;
+logic [1:0] byte_offset;
+
+assign tag = addr[ADDR_WIDTH-1:5];
+assign set = addr[4:2];
+assign byte_offset = addr[1:0];
+assign hit = 0;
+assign miss = 0;
+
 always_latch begin
 // Cache read logic
-
-    if (read_en) begin
-        // Obtain information from memory address input
-        logic [26:0] tag = addr[ADDR_WIDTH-1:5];
-        logic [2:0] set = addr[4:2];
-        logic [1:0] byte_offset = addr[1:0];
-        if (cache[set].valid && cache[set].tag == tag) begin
-            hit = 1;
-            read_data = cache[set].data;
-        end
-        else if (byte_offset == 0'b00) hit = hit; // to compile
-        else begin
-            miss = 1;
-            read_data = write_data;
-        end
+    if (cache[set].valid && cache[set].tag == tag) begin
+        hit = 1;
+        data_out = cache[set].data;
+    end
+    else if (byte_offset == 0'b00) hit = hit; // to compile
+    else begin
+        miss = 1;
+        data_out = write_data;
     end
 end
 
 // Cache write logic
     // Write through cache
-always_latch begin
+always_ff @(posedge clk) begin
         if (write_en) begin
-            //cache[addr[4:2]] = {1'b1, addr[31:5], write_data};
             logic [2:0] set = addr[4:2];
             cache[set].valid = 1;
             cache[set].tag = addr[31:5];

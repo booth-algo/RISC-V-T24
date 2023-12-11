@@ -292,14 +292,45 @@ module top #(
 
     // Pipeline 4 - Memory (MEM)
     
+    // Direct mapped cache
+
+    logic hit;
+    logic miss;
+    logic cache_en;
+    logic data_out;
+    logic write_data;
+
+    dm_cache dm_cache_inst (
+        .clk(clk),
+        .write_en(cache_en),
+        .addr(ALUResult_M),
+        .write_data(write_data),
+        
+        .data_out(data_out),
+        .hit(hit),
+        .miss(miss)
+    );
+
+    logic [31:0] ReadDataMem_M;
+
     data_mem data_mem_inst (
         .clk(clk),
         .AddrMode(AddrMode_M),
         .A(ALUResult_M),
         .WD(WriteData_M),
         .WE(MemWrite_M),
+        .miss(miss),
 
-        .RD(ReadData_M)
+        .cache_en(cache_en),
+        .RD(ReadDataMem_M)
+    );
+
+    mux #(WIDTH) mux_cache_inst (
+        .in0(data_out),
+        .in1(ReadDataMem_M),
+        .sel(miss),
+
+        .out(ReadData_M)
     );
 
     pipeline_MEM_WB pipeline_MEM_WB_inst (
@@ -354,20 +385,5 @@ module top #(
         .flush(flush)
     );
 
-    // Direct mapped cache
-
-    logic hit;
-    logic miss;
-
-    dm_cache dm_cache_inst (
-        .read_en(MemRead_E),
-        .write_en(MemWrite_E),
-        .addr(ALUResult_E),
-        .write_data(WriteData_E),
-
-        .read_data(ReadData_M),
-        .hit(hit),
-        .miss(miss) // these signals need to be fed to control unit AND hazard unit
-    );
 
 endmodule

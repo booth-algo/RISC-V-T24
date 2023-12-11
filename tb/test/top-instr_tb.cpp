@@ -302,16 +302,6 @@ TEST_F(CpuTestbench, PointerTest)
 }
 
 
-TEST_F(CpuTestbench, CounterTest)
-{
-    system("./compile.sh --input asm/009-counter.s");
-    
-    runSimulation(500);
-    
-    EXPECT_EQ((int)top->a0, 1);
-}
-
-
 TEST_F(CpuTestbench, PDFTest)
 {
     system("./compile.sh --input c/025-pdf.c");

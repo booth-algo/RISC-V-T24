@@ -10,6 +10,8 @@ module data_mem #(
         input  logic [ADDR_WIDTH-1:0]   A, // address
         input  logic [DATA_WIDTH-1:0]   WD, // write data
         input  logic                    WE, // write enable (memwrite from control_unit)
+        input  logic                    miss,
+        output logic                    cache_en,
         output logic [DATA_WIDTH-1:0]   RD // read data
 );
 
@@ -26,7 +28,7 @@ module data_mem #(
         case (AddrMode)  
             `DATA_ADDR_MODE_B:      RD = {{24{array[A][7]}}, array[A]};
             `DATA_ADDR_MODE_BU:     RD = {24'b0, array[A]};
-            // `DATA_ADDR_MODE_H:      RD = {{12{array[A][7]}}, array[A+1], array[A]};
+            // `DATA_ADDR_MODE_H:      RD = {{12{array[A][15]}}, array[A+1], array[A]};
             // `DATA_ADDR_MODE_HU:     RD = {12'b0, array[A+1], array[A]};
             default:                RD = {array[A+3], array[A+2], array[A+1], array[A]};
         endcase
@@ -45,6 +47,8 @@ module data_mem #(
             array[A+2] <= WD[23:16];
             array[A+3] <= WD[31:24];
         end
+        
+        cache_en <= miss;
     end
 
 endmodule
