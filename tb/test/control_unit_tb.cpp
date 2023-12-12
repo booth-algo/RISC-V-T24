@@ -32,7 +32,8 @@ protected:
     void initializeInputs() override
     {
         top->instr = 0;
-        top->EQ = 0;
+        top->stall = 0;
+        
         // outputs: 
         // ALUctrl - controls the alu
         // ALUsrc - selects between rd2 (0) and ImmOp (1)
@@ -40,6 +41,8 @@ protected:
         // PCsrc - selects next PC (0) or branch (1)
         // RegWrite - enables writing of register
         // MemWrite - enables writing of data memory
+        // MemRead - notifies hazard unit of stall
+        // AddrMode - chooses between different modes (byte/half/word)
         // ResultSrc - chooses ALUout (0) or memory read (1)
     }
 };
