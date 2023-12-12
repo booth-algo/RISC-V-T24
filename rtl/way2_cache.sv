@@ -5,11 +5,9 @@ module way2_cache #(
                 DATA_WIDTH = 32
 ) (
     input logic clk,
-    input logic write_en,
     input logic [2:0] addr_mode,
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] write_data,
-
     output logic [DATA_WIDTH-1:0] out
 );
 
@@ -53,12 +51,13 @@ logic [3:0] set;
 logic [1:0] byte_offset;
 logic [1:0] Ubits;
 logic select_way_1;
+logic write_en;
 
-typedef enum {just_hit0, recently_hit0, long_hit0} my_state_0;
-    my_state logic current_state0, next_state0;
+typedef enum logic [1:0] {just_hit0, recently_hit0, long_hit0} my_state_0;
+    my_state_0 current_state0, next_state0;
 
-typedef enum {just_hit1, recently_hit1, long_hit1} my_state_1;
-    my_state logic current_state1, next_state1;
+typedef enum logic [1:0] {just_hit1, recently_hit1, long_hit1} my_state_1;
+    my_state_1 current_state1, next_state1;
 
 always_comb begin
     tag = addr[ADDR_WIDTH-1:6];
@@ -68,7 +67,7 @@ always_comb begin
 // Cache read logic
 
         if (cache[set].entry1.valid && cache[set].entry1.tag == tag) begin
-            $display("hit1");
+            $display("hit_1");
             hit_1 = 1;
             out = {
                 cache[set].entry1.byte3, 
@@ -102,7 +101,7 @@ always_comb begin
         hit = hit_1 | hit_0;
 
         if (hit) begin
-            read_data = hit1 ? cache[set].entry1.data : cache[set].entry0.data;
+            read_data = hit_1 ? {cache[set].entry1.byte3, cache[set].entry1.byte2, cache[set].entry1.byte1, cache[set].entry1.byte0} : {cache[set].entry1.byte3, cache[set].entry1.byte2, cache[set].entry1.byte1, cache[set].entry1.byte0};
         end
     end
 
