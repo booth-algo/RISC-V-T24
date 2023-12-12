@@ -129,5 +129,3 @@ data_mem data_mem_inst (
 );
 
 endmodule
-// the address contains a addr[4:2] and the way to check through the cache is to check just the set with set = addr[4:2] so we dont need to check through the whole cache
-// this should be implemented at a higher level, once this is working we shall work on conflicts

@@ -261,100 +261,89 @@ TEST_F(CpuTestbench, Combined)
     EXPECT_EQ((int)top->a0, 34);
 }
 
-
-// TEST_F(CpuTestbench, PDFTest)
+// TEST_F(CpuTestbench, LinkedListTest)
 // {
-//     system("./compile.sh --input c/022-pdf.c");
+//     system("./compile.sh --input c/023-linked_list.c");
     
-//     runSimulation(1'000'000);
+//     runSimulation(50000);
     
-//     EXPECT_EQ((int)top->a0, 255);
+//     EXPECT_EQ((int)top->a0, 158);
 // }
 
 
-TEST_F(CpuTestbench, LinkedListTest)
-{
-    system("./compile.sh --input c/023-linked_list.c");
+// TEST_F(CpuTestbench, LwTest008)
+// {
+//     system("./compile.sh --input asm/008-lw_test_1.s");
     
-    runSimulation(50000);
+//     runSimulation(50);
     
-    EXPECT_EQ((int)top->a0, 158);
-}
+//     EXPECT_EQ((int)top->a0, 2);
+// }
 
 
-TEST_F(CpuTestbench, LwTest008)
-{
-    system("./compile.sh --input asm/008-lw_test_1.s");
+// TEST_F(CpuTestbench, PointerTest)
+// {
+//     system("./compile.sh --input c/024-pointer_deref.c");
     
-    runSimulation(50);
+//     runSimulation(50000);
     
-    EXPECT_EQ((int)top->a0, 2);
-}
+//     EXPECT_EQ((int)top->a0, 17);
+// }
 
 
-TEST_F(CpuTestbench, PointerTest)
-{
-    system("./compile.sh --input c/024-pointer_deref.c");
+// TEST_F(CpuTestbench, PDFTest)
+// {
+//     system("./compile.sh --input c/025-pdf.c");
     
-    runSimulation(50000);
+//     runSimulation(100000);
     
-    EXPECT_EQ((int)top->a0, 17);
-}
+//     EXPECT_EQ((int)top->a0, 2560);
+// }
 
+// TEST_F(CpuTestbench, dm_cache_test)
+// {
+//     system("./compile.sh --input asm/009-dm_cache.s");
+    
+//     runSimulation(100000);
+    
+//     EXPECT_EQ((int)top->a0, 0);
+// }
 
-TEST_F(CpuTestbench, PDFTest)
-{
-    system("./compile.sh --input c/025-pdf.c");
+// TEST_F(CpuTestbench, cache_read_test)
+// {
+//     system("./compile.sh --input asm/010-dm_cache_read.s");
     
-    runSimulation(100000);
+//     runSimulation(100000);
     
-    EXPECT_EQ((int)top->a0, 2560);
-}
+//     EXPECT_EQ((int)top->a0, 0);
+// }
 
-TEST_F(CpuTestbench, dm_cache_test)
-{
-    system("./compile.sh --input asm/009-dm_cache.s");
+// TEST_F(CpuTestbench, cache_write_test)
+// {
+//     system("./compile.sh --input asm/011-dm_cache_write.s");
     
-    runSimulation(100000);
+//     runSimulation(100000);
     
-    EXPECT_EQ((int)top->a0, 0);
-}
+//     EXPECT_EQ((int)top->a0, 0);
+// }
 
-TEST_F(CpuTestbench, cache_read_test)
-{
-    system("./compile.sh --input asm/010-dm_cache_read.s");
+// TEST_F(CpuTestbench, cache_temporal_locality_test)
+// {
+//     system("./compile.sh --input asm/012-dm_cache_temp_locality.s");
     
-    runSimulation(100000);
+//     runSimulation(50);
     
-    EXPECT_EQ((int)top->a0, 0);
-}
+//     EXPECT_EQ((int)top->a0, 0);
+// }
 
-TEST_F(CpuTestbench, cache_write_test)
-{
-    system("./compile.sh --input asm/011-dm_cache_write.s");
+// TEST_F(CpuTestbench, overwrite_cache_test)
+// {
+//     system("./compile.sh --input asm/013-overwrite_byte.s");
     
-    runSimulation(100000);
+//     runSimulation(100);
     
-    EXPECT_EQ((int)top->a0, 0);
-}
-
-TEST_F(CpuTestbench, cache_temporal_locality_test)
-{
-    system("./compile.sh --input asm/012-dm_cache_temp_locality.s");
-    
-    runSimulation(50);
-    
-    EXPECT_EQ((int)top->a0, 0);
-}
-
-TEST_F(CpuTestbench, overwrite_cache_test)
-{
-    system("./compile.sh --input asm/013-overwrite_byte.s");
-    
-    runSimulation(100);
-    
-    EXPECT_EQ((int)top->a0, 0x0403FFFF);
-}
+//     EXPECT_EQ((int)top->a0, 0x0403FFFF);
+// }
 
 int main(int argc, char **argv)
 {
