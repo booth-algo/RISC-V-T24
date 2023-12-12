@@ -1,12 +1,17 @@
-.section .text
-.global main
-
 main:
-    la t0, array
-    lw t1, 0(t0)
-    lw t2, 4(t0)
-    lw t1, 0(t0)
-    # Need some signal that tests cache miss and hit
+    addi x13, x13, 0x1
+    sw x13, 0(x10)
 
-.section .data
-array: .word 0x11111111, 0x22222222, 0x33333333, 0x44444444
+    addi x13, x13, 0x1
+    sw x13, 4(x10)
+
+    addi x13, x13, 0x1
+    sw x13, 8(x10)
+
+    addi x13, x13, 0x1
+    sw x13, 12(x10)
+
+    # Read Test
+    lb x11, 0(x10)   # Read first word, expect cache miss
+    lb x11, 1(x10)   # Read second word, expect cache miss
+    lb x11, 0(x10)   # Read first word again, expect cache hit

@@ -10,8 +10,6 @@ module data_mem #(
         input  logic [ADDR_WIDTH-1:0]   A, // address
         input  logic [DATA_WIDTH-1:0]   WD, // write data
         input  logic                    WE, // write enable (memwrite from control_unit)
-        input  logic                    miss,
-        output logic                    cache_en,
         output logic [DATA_WIDTH-1:0]   RD // read data
 );
 
@@ -25,15 +23,15 @@ module data_mem #(
     end
 
     always_ff @* begin
-        case (AddrMode)  
-            `DATA_ADDR_MODE_B:      RD = {{24{array[A][7]}}, array[A]};
-            `DATA_ADDR_MODE_BU:     RD = {24'b0, array[A]};
-            // `DATA_ADDR_MODE_H:      RD = {{12{array[A][15]}}, array[A+1], array[A]};
-            // `DATA_ADDR_MODE_HU:     RD = {12'b0, array[A+1], array[A]};
-            default:                RD = {array[A+3], array[A+2], array[A+1], array[A]};
-        endcase
+        // Needs to be addressed in multiples of 4
+        // 17 bits of addressing
+        RD = {
+            array[{A[16:2], 2'b11}],
+            array[{A[16:2], 2'b10}], 
+            array[{A[16:2], 2'b01}],    
+            array[{A[16:2], 2'b00}] 
+        };
     end
-
 
     // Read and write operations
     always_ff @(posedge clk) begin
@@ -42,13 +40,11 @@ module data_mem #(
         end
 
         else if (WE) begin // Write whole word
-            array[A] <= WD[7:0];
-            array[A+1] <= WD[15:8];
-            array[A+2] <= WD[23:16];
-            array[A+3] <= WD[31:24];
+            array[{A[16:2], 2'b00}] <= WD[7:0];
+            array[{A[16:2], 2'b01}] <= WD[15:8];
+            array[{A[16:2], 2'b10}] <= WD[23:16];
+            array[{A[16:2], 2'b11}] <= WD[31:24];
         end
-        
-        cache_en <= miss;
     end
 
 endmodule

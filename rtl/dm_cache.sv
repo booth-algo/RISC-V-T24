@@ -4,20 +4,17 @@ module dm_cache #(
 ) (
     input logic clk,
     input logic write_en,
+    input logic [2:0] addr_mode,
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] write_data,
-    output logic [DATA_WIDTH-1:0] data_out,
-    output logic hit,
-    output logic miss
 
+    output logic [DATA_WIDTH-1:0] out
 );
 
 /* direct mapped cache 
         |  v  | tag  | data | 
         | [1] | [27] | [32] | 
     
-        // Two ways, and in each way there are 2 blocks
-
         Memory address: (byte addressing) (32 bits)
             | tag | set | byte offset |
             | [27]| [3] |     [2]     |
@@ -28,46 +25,97 @@ module dm_cache #(
 typedef struct packed {
     logic valid;
     logic [26:0] tag;
-    logic [31:0] data;
+    logic [7:0] byte0;
+    logic [7:0] byte1;
+    logic [7:0] byte2;
+    logic [7:0] byte3;
 } cache_store;
 
 cache_store cache [8];
 
+logic [DATA_WIDTH-1:0] read_data;
 logic [26:0] tag;
 logic [2:0] set;
 logic [1:0] byte_offset;
+logic hit;
 
-assign tag = addr[ADDR_WIDTH-1:5];
-assign set = addr[4:2];
-assign byte_offset = addr[1:0];
-assign hit = 0;
-assign miss = 0;
 
-always_latch begin
-// Cache read logic
+always_comb begin
+    tag = addr[ADDR_WIDTH-1:5];
+    set = addr[4:2];
+    byte_offset = addr[1:0];
+
+    // Cache read logic
     if (cache[set].valid && cache[set].tag == tag) begin
+        // $display("hit");
         hit = 1;
-        data_out = cache[set].data;
+        out = {
+            cache[set].byte3, 
+            cache[set].byte2, 
+            cache[set].byte1, 
+            cache[set].byte0
+        };
     end
-    else if (byte_offset == 0'b00) hit = hit; // to compile
+    
     else begin
-        miss = 1;
-        data_out = write_data;
+        // $display("miss");
+
+        // NOTE:
+        // This requires a read to and from main memory
+        // Normally this would be done by stalling for some clock cycles
+        // However, in this model, we will not stall.
+        
+        hit = 0;
+        out = read_data;
     end
 end
 
-// Cache write logic
-    // Write through cache
+// Cache write logic: Write through cache
 always_ff @(posedge clk) begin
-        if (write_en) begin
-            logic [2:0] set = addr[4:2];
-            cache[set].valid = 1;
-            cache[set].tag = addr[31:5];
-            cache[set].data = write_data;
-        end
+    if (write_en) begin
+        // Pulls data in from sw/sb
+        cache[set].valid <= 1;
+        cache[set].tag <= addr[31:5];
+        
+        case (addr_mode)
+            // Byte addressing
+            `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
+                case (byte_offset)
+                    2'b00:  cache[set].byte0 <= write_data[7:0];
+                    2'b01:  cache[set].byte1 <= write_data[7:0];
+                    2'b10:  cache[set].byte2 <= write_data[7:0];
+                    2'b11:  cache[set].byte3 <= write_data[7:0];
+                endcase
+            end
+            // Word addressing
+            default: begin
+                cache[set].byte0 <= write_data[7:0];
+                cache[set].byte1 <= write_data[15:8];
+                cache[set].byte2 <= write_data[23:16];
+                cache[set].byte3 <= write_data[31:24];
+            end
+        endcase
     end
+    
+    else if (!cache[set].valid || !(cache[set].tag == tag)) begin
+        // Pulls data in from main memory
+        cache[set].valid <= 1;
+        cache[set].tag <= addr[31:5];
+        cache[set].byte0 <= read_data[7:0];
+        cache[set].byte1 <= read_data[15:8];
+        cache[set].byte2 <= read_data[23:16];
+        cache[set].byte3 <= read_data[31:24];
+    end
+end
 
+
+data_mem data_mem_inst (
+    .clk(clk),
+    .AddrMode(addr_mode), 
+    .A(addr),
+    .WD(write_data),
+    .WE(write_en),
+    .RD(read_data) 
+);
 
 endmodule
-// the address contains a addr[4:2] and the way to check through the cache is to check just the set with set = addr[4:2] so we dont need to check through the whole cache
-// this should be implemented at a higher level, once this is working we shall work on conflicts
