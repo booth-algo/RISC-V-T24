@@ -26,10 +26,10 @@ module data_mem #(
         // Needs to be addressed in multiples of 4
         // 17 bits of addressing
         RD = {
-            array[{A[16:2], 2'b00}], 
-            array[{A[16:2], 2'b01}],    
+            array[{A[16:2], 2'b11}],
             array[{A[16:2], 2'b10}], 
-            array[{A[16:2], 2'b11}]
+            array[{A[16:2], 2'b01}],    
+            array[{A[16:2], 2'b00}] 
         };
     end
 
