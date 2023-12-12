@@ -3,32 +3,37 @@ module cache #(
                 DATA_WIDTH = 32,
 ) (
     input logic clk,
-    input logic read_en,
     input logic write_en,
+    input logic [2:0] addr_mode,
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] write_data,
-    output logic [DATA_WIDTH-1:0] read_data,
-    output logic hit,
-    output logic miss
+
+    output logic [DATA_WIDTH-1:0] out
 );
 
-/* two-way set associative cache (54 bits x2)
+/* two-way set associative cache (61 bits x2 so 122 total)
         |  v  |  u  |  tag |   data   |  v  |  u  | tag  |   data   |
-        | [1] | [1] | [25] | [32][32] | [1] | [1] | [25] | [32][32] |
+        | [1] | [2] | [26] |   [32]   | [1] | [2] | [26] |   [32]   |
     
-        // Two ways, and in each way there are 2 blocks
+        // Two ways, and in each way there is 1 block
 
         Memory address: (byte addressing) (32 bits)
-            | tag | set | block offset | byte offset |
-            | [25] | [4] | [1] | [2] |
-            | a[31:8] | a[7:4] | a[3:2] | a[1:0] |
+            | tag     | set    | byte offset |
+            | [26]    | [4]    |      [2]    |
+            | a[31:6] | a[5:2] | a[1:0]      |
 */
+
+// need to write to different tags 
 
 typedef struct packed {
     logic valid;
-    logic use;
-    logic [24:0] tag;
-    logic [31:0] data;
+    logic [1:0] use;
+    logic [25:0] tag;
+    logic [7:0] byte0;
+    logic [7:0] byte1;
+    logic [7:0] byte2;
+    logic [7:0] byte3;
+
 } cache_entry_t;
 
 typedef struct packed {
@@ -36,59 +41,134 @@ typedef struct packed {
     cache_entry_t entry0; // way 0
 } cache_set_t;
 
+cache_set_t cache [16];
+
+logic [DATA_WIDTH-1:0] read_data;
+logic hit; // hit0 | hit 1
+
 always_comb begin
+    tag = addr[ADDR_WIDTH-1:6];
+    set = addr[5:2];
+    byte_offset = addr[1:0];
+
+    logic hit_1;
+    logic hit_0;
 
 // Cache read logic
-    if (read_en) begin
-        // Obtain information from memory address input
-        logic [19:0] tag = addr[ADDR_WIDTH-1:ADDR_WIDTH-20]
-        logic [3:0] set = addr[ADDR_WIDTH-21:ADDR_WIDTH-24]
-        logic [5:0] block_offset = addr[ADDR_WIDTH-25:ADDR_WIDTH-30]
-        logic [1:0] byte_offset = addr[ADDR_WIDTH-31:ADDR_WIDTH-32]
 
-        // Check if the requested data is present in the cache
-        logic hit_1;
-        logic hit_0;
-
-        if (cache_set[set_index].entry1.valid && cache_set[set_index].entry1.tag == tag) begin
+        if (cache[set].entry1.valid && cache[set].entry1.tag == tag) begin
+            $display("hit1");
             hit_1 = 1;
-        end else begin
+            out = {
+                cache[set].entry1.byte3, 
+                cache[set].entry1.byte2, 
+                cache[set].entry1.byte1, 
+                cache[set].entry1.byte0
+            };
+        end 
+        else begin
+            $display("misrecently_hit");
             hit_1 = 0;
+            out = read_data;
         end
 
-        if (cache_set[set_index].entry0.valid && cache_set[set_index].entry0.tag == tag) begin
+        if (cache[set].entry0.valid && cache[set].entry0.tag == tag) begin
+            $display("hit0");
             hit_0 = 1;
-        end else begin
+            out = {
+                cache[set].entry0.byte3, 
+                cache[set].entry0.byte2, 
+                cache[set].entry0.byte1, 
+                cache[set].entry0.byte0
+            };
+        end 
+        else begin
+            $display("misjust_hit");
             hit_0 = 0;
+            out = read_data;
         end
 
-        assign hit = hit_1 | hit_0;
+        hit = hit_1 | hit_0;
 
-        if hit_1 begin
-            read_data = cache_set[set_index].entry1.data;
-        end else if hit_0 begin
-            read_data = cache_set[set_index].entry0.data;
-        end else begin
-            hit = 0;
-            miss = 1;
-        end
-
-        if miss begin
-            // Handle a cache miss
-            // Read from main memory
-            // Update cache
+        if (hit) begin
+            read_data = hit1 ? cache[set].entry1.data : cache[set].entry0.data;
         end
     end
-end
 
-// Cache write logic
-    // Write through cache
-
+// Cache write logic: Write through cache
+always_ff @(posedge clk) begin
     if (write_en) begin
+        // Pulls data in from sw/sb
+        if(select_way_1) begin
+            cache[set].entry1.valid <= 1;
+            cache[set].entry1.tag <= addr[31:6];
 
+            case (addr_mode)
+            // Byte addressing
+            `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
+                case (byte_offset)
+                    2'b00:  cache[set].entry1.byte0 <= write_data[7:0];
+                    2'b01:  cache[set].entry1.byte1 <= write_data[7:0];
+                    2'b10:  cache[set].entry1.byte2 <= write_data[7:0];
+                    2'b11:  cache[set].entry1.byte3 <= write_data[7:0];
+                endcase
+            end
+            // Word addressing
+            default: begin
+                cache[set].entry1.byte0 <= write_data[7:0];
+                cache[set].entry1.byte1 <= write_data[15:8];
+                cache[set].entry1.byte2 <= write_data[23:16];
+                cache[set].entry1.byte3 <= write_data[31:24];
+            end
+        endcase
+        end
+
+        else begin
+            cache[set].entry0.valid <= 1;
+            cache[set].entry0.tag <= addr[31:6];
+
+             case (addr_mode)
+            // Byte addressing
+            `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
+                case (byte_offset)
+                    2'b00:  cache[set].entry0.byte0 <= write_data[7:0];
+                    2'b01:  cache[set].entry0.byte1 <= write_data[7:0];
+                    2'b10:  cache[set].entry0.byte2 <= write_data[7:0];
+                    2'b11:  cache[set].entry0.byte3 <= write_data[7:0];
+                endcase
+            end
+            // Word addressing
+            default: begin
+                cache[set].entry0.byte0 <= write_data[7:0];
+                cache[set].entry0.byte1 <= write_data[15:8];
+                cache[set].entry0.byte2 <= write_data[23:16];
+                cache[set].entry0.byte3 <= write_data[31:24];
+            end
+            endcase
+        end
     end
 
-typedef enum {S0, S1, S2}
+    else if (!cache[set].entry1.valid || !(cache[set].entry1.tag == tag)) begin
+        // Pulls data in from main memory
+        cache[set].entry1.valid <= 1;
+        cache[set].entry1.tag <= addr[31:5];
+        cache[set].entry1.byte0 <= read_data[7:0];
+        cache[set].entry1.byte1 <= read_data[15:8];
+        cache[set].entry1.byte2 <= read_data[23:16];
+        cache[set].entry1.byte3 <= read_data[31:24];
+    end
+
+    else if (!cache[set].entry0.valid || !(cache[set].entry0.tag == tag)) begin
+        // Pulls data in from main memory
+        cache[set].entry0.valid <= 1;
+        cache[set].entry0.tag <= addr[31:5];
+        cache[set].entry0.byte0 <= read_data[7:0];
+        cache[set].entry0.byte1 <= read_data[15:8];
+        cache[set].entry0.byte2 <= read_data[23:16];
+        cache[set].entry0.byte3 <= read_data[31:24];
+    end
+
+typedef enum {just_hit, recently_hit, long_miss}
     my_state current_state, next_state;
 
     always_ff @(posedge clk)
@@ -96,31 +176,33 @@ typedef enum {S0, S1, S2}
 
     always_comb
         case (current_state)
-            S0: if(hit = 1) begin
-                    cache[Ubit] = 2;
-                    next_state = S0;
+            just_hit: if(hit = 1) begin
+                    cache[Ubit].use = 2;
+                    next_state = just_hit;
             end
                 else begin
-                    cache[Ubit] = 1;
-                    next_state = S1;
+                    cache[Ubit].use = 1;
+                    next_state = recently_hit;
                 end
-             S1: if(hit = 1) begin
-                    cache[Ubit] = 2;
-                    next_state = S0;
+             recently_hit: if(hit = 1) begin
+                    cache[Ubit].use = 2;
+                    next_state = just_hit;
              end
                 else begin
-                    cache[Ubit] = 1;
-                    next_state = S2;
+                    cache[Ubit].use = 1;
+                    next_state = long_miss;
                 end
-             S2: if(hit = 1) begin
-                    cache[Ubit] = 2;
-                    next_state = S0;
+             long_miss: if(hit = 1) begin
+                    cache[Ubit].use = 2;
+                    next_state = just_hit;
              end
                 else
                   //  rewrite cache with current mem
-            default: next_state = S0;
+                  // need logic for select_way_1
+            default: next_state = long_miss;
         endcase
+    end
 
+// import a mux
 
 endmodule
-
