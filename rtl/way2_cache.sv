@@ -49,7 +49,7 @@ logic hit_0;
 logic [25:0] tag;
 logic [3:0] set;
 logic [1:0] byte_offset;
-logic [1:0] Ubits;
+logic [1:0] Ubits; // causing false positive warnings (I think)
 logic select_way_1;
 logic write_en;
 
@@ -222,7 +222,7 @@ always_comb begin
     case (current_state1)
         just_hit1: begin
             if (hit) begin
-                    cache[set].entry1.Ubits = `JUST_HIT;
+                    cache[set].entry1.Ubits = `JUST_HIT; // think about Ubits purpose
                     next_state1 = just_hit1;
             end
             else begin
