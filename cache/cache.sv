@@ -1,3 +1,5 @@
+`include "def.sv"
+
 module cache #(
     parameter   ADDR_WIDTH = 32,
                 DATA_WIDTH = 32,
@@ -168,41 +170,86 @@ always_ff @(posedge clk) begin
         cache[set].entry0.byte3 <= read_data[31:24];
     end
 
-typedef enum {just_hit, recently_hit, long_miss}
-    my_state current_state, next_state;
+typedef enum {just_hit0, recently_hit0, long_hit0}
+    my_state current_state0, next_state0;
 
-    always_ff @(posedge clk)
-        current_state <= next_state;
+always_ff @(posedge clk)
+    current_state0 <= next_state0;
 
-    always_comb
-        case (current_state)
-            just_hit: if(hit = 1) begin
-                    cache[Ubit].use = 2;
-                    next_state = just_hit;
+always_comb
+    case (current_state)
+        just_hit: begin
+            if(hit) begin
+                    cache[set].entry0.use = `JUST_HIT;
+                    next_state0 = just_hit0;
             end
-                else begin
-                    cache[Ubit].use = 1;
-                    next_state = recently_hit;
-                end
-             recently_hit: if(hit = 1) begin
-                    cache[Ubit].use = 2;
-                    next_state = just_hit;
-             end
-                else begin
-                    cache[Ubit].use = 1;
-                    next_state = long_miss;
-                end
-             long_miss: if(hit = 1) begin
-                    cache[Ubit].use = 2;
-                    next_state = just_hit;
-             end
-                else
-                  //  rewrite cache with current mem
-                  // need logic for select_way_1
-            default: next_state = long_miss;
-        endcase
-    end
+            else begin
+                cache[set].entry0.use = `RECENTLY_HIT;
+                next_state0 = recently_hit0;
+            end
+        end
+        recently_hit: begin
+            if(hit) begin
+                    cache[set].entry0.use = `JUST_HIT;
+                    next_state0 = just_hit0;
+            end
+            else begin
+                cache[set].entry0.use = `RECENTLY_HIT;
+                next_state0 = long_hit0;
+            end
+        end
+        long_hit: begin
+            if(hit) begin
+                    cache[set].entry0.use = `JUST_HIT;
+                    next_state0 = just_hit0;
+            end
+            else
+                //  rewrite cache with current mem
+                // need logic for select_way_1
+        end
+        default: next_state0 = long_hit0;
+    endcase
+end
 
-// import a mux
+
+typedef enum {just_hit0, recently_hit0, long_hit0}
+    my_state current_state0, next_state0;
+
+always_ff @(posedge clk)
+    current_state0 <= next_state0;
+
+always_comb
+    case (current_state)
+        just_hit: begin
+            if(hit) begin
+                    cache[set].entry1.use = `JUST_HIT;
+                    next_state1 = just_hit1;
+            end
+            else begin
+                cache[set].entry1.use = `RECENTLY_HIT;
+                next_state1 = recently_hit1;
+            end
+        end
+        recently_hit: begin
+            if(hit) begin
+                    cache[set].entry1.use = `JUST_HIT;
+                    next_state1 = just_hit1;
+            end
+            else begin
+                    cache[set].entry1.use = `RECENTLY_HIT;
+                    next_state1 = long_hit1;
+            end
+        end
+        long_hit: begin
+            if(hit) begin
+                cache[set].entry1.use = `JUST_HIT;
+                next_state1 = just_hit1;
+            end
+            else
+            //  rewrite cache with current mem
+            // need logic for select_way_1
+        end
+        default: next_state1 = long_hit1;
+    endcase
 
 endmodule

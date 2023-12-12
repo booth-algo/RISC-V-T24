@@ -37,4 +37,8 @@
 `define DATA_ADDR_MODE_H            3'b100
 `define DATA_ADDR_MODE_HU           3'b101
 
+`define JUST_HIT                    2'b10
+`define RECENTLY_HIT                2'b01
+`define LONG_HIT                    2'b00
+
 `endif
