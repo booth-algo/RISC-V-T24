@@ -70,12 +70,12 @@ TOP.top.hazard_unit_inst.flush
 @200
 -
 @22
-TOP.top.dm_cache_inst.addr[31:0]
+TOP.top.top_memory_inst.dm_cache_inst.addr[31:0]
 @28
-TOP.top.dm_cache_inst.hit
+TOP.top.top_memory_inst.dm_cache_inst.hit
 @23
-TOP.top.dm_cache_inst.read_data[31:0]
+TOP.top.top_memory_inst.dm_cache_inst.read_data[31:0]
 @22
-TOP.top.dm_cache_inst.out[31:0]
+TOP.top.top_memory_inst.dm_cache_inst.out[31:0]
 [pattern_trace] 1
 [pattern_trace] 0

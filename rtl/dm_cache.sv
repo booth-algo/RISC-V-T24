@@ -49,26 +49,12 @@ always_comb begin
     if (cache[set].valid && cache[set].tag == tag) begin
         // $display("hit");
         hit = 1;
-        case (addr_mode)
-            `DATA_ADDR_MODE_BU: begin
-                case (byte_offset)
-                    2'b00:  out = {24'b0, cache[set].byte0};
-                    2'b01:  out = {24'b0, cache[set].byte1};
-                    2'b10:  out = {24'b0, cache[set].byte2};
-                    2'b11:  out = {24'b0, cache[set].byte3};
-                endcase;
-            end
-            `DATA_ADDR_MODE_B: begin
-                case (byte_offset)
-                    2'b00:  out = {{24{cache[set].byte0[7]}}, cache[set].byte0};
-                    2'b01:  out = {{24{cache[set].byte1[7]}}, cache[set].byte1};
-                    2'b10:  out = {{24{cache[set].byte2[7]}}, cache[set].byte2};
-                    2'b11:  out = {{24{cache[set].byte3[7]}}, cache[set].byte3};
-                endcase;
-            end
-            `DATA_ADDR_MODE_W: out = {cache[set].byte3, cache[set].byte2, cache[set].byte1, cache[set].byte0};
-            default:    $display("Undefined!!");
-        endcase
+        out = {
+            cache[set].byte3, 
+            cache[set].byte2, 
+            cache[set].byte1, 
+            cache[set].byte0
+        };
     end
     
     else begin
@@ -87,24 +73,28 @@ end
 // Cache write logic: Write through cache
 always_ff @(posedge clk) begin
     if (write_en) begin
-        // Pulls data in from sw
+        // Pulls data in from sw/sb
         cache[set].valid <= 1;
         cache[set].tag <= addr[31:5];
         
-        if (addr_mode) begin // Write only least significant byte (8 bits)
-            case(byte_offset)
-                2'b00:  cache[set].byte0 <= write_data[7:0];
-                2'b01:  cache[set].byte1 <= write_data[7:0];
-                2'b10:  cache[set].byte2 <= write_data[7:0];
-                2'b11:  cache[set].byte3 <= write_data[7:0];
-            endcase
-        end
-        else begin // Write whole word
-            cache[set].byte0 <= write_data[7:0];
-            cache[set].byte1 <= write_data[15:8];
-            cache[set].byte2 <= write_data[23:16];
-            cache[set].byte3 <= write_data[31:24];
-        end
+        case (addr_mode)
+            // Byte addressing
+            `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
+                case (byte_offset)
+                    2'b00:  cache[set].byte0 <= write_data[7:0];
+                    2'b01:  cache[set].byte1 <= write_data[7:0];
+                    2'b10:  cache[set].byte2 <= write_data[7:0];
+                    2'b11:  cache[set].byte3 <= write_data[7:0];
+                endcase
+            end
+            // Word addressing
+            default: begin
+                cache[set].byte0 <= write_data[7:0];
+                cache[set].byte1 <= write_data[15:8];
+                cache[set].byte2 <= write_data[23:16];
+                cache[set].byte3 <= write_data[31:24];
+            end
+        endcase
     end
     
     else if (!cache[set].valid || !(cache[set].tag == tag)) begin

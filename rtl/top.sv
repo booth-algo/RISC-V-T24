@@ -294,7 +294,7 @@ module top #(
     
     // Direct mapped cache
 
-    dm_cache dm_cache_inst (
+    top_memory top_memory_inst (
         .clk(clk),
         .write_en(MemWrite_M),
         .addr_mode(AddrMode_M),
