@@ -14,8 +14,10 @@ class PCTestbench : public SyncTestbench
     {
         top->clk = 1;
         top->rst = 0;
-        top->PCsrc = 0;
-        top->ImmOp = 0;
+        top->stall = 0;
+        top->PCnext = 0;
+        
+        // output logic [WIDTH-1:0] PC
     }
 };
 
@@ -29,6 +31,7 @@ TEST_F(PCTestbench, InitialStateTest)
 TEST_F(PCTestbench, ResetStateTest)
 {
     // Can be random number
+    top->PCnext = 0x5555'5555;
     runSimulation(60);
 
     top->rst = 1;
@@ -38,38 +41,19 @@ TEST_F(PCTestbench, ResetStateTest)
 }
 
 
-TEST_F(PCTestbench, PCSrcEqualsZeroTest)
+TEST_F(PCTestbench, StallTest)
 {
-    // No branching
+    top->PCnext = 0xAAAA'AAAA;
+    runSimulation(2);
+
+    top->PCnext = 0x1234;
+    top->stall = 1;
+
     // Can be random number
-    runSimulation(60);
+    runSimulation(100);
 
-    int PC = top->PC;
-    EXPECT_EQ(top->PCPlus4, PC + 4);
-
-    top->PCsrc = 0;
-    runSimulation(1);
-
-    EXPECT_EQ(top->PC, PC + 4);             // Uses byte addressing
-}
-
-
-TEST_F(PCTestbench, PCSrcEqualsOneAndImmSrcWorksTest)
-{
-    // Can be random number
-    runSimulation(60);
-
-    // Also can be random number
-    int immediate = 45;
-
-    int branchPC = top->PC + immediate;
-    
-    top->ImmOp = immediate;
-    top->PCsrc = 1;
-    
-    runSimulation(1);
-
-    EXPECT_EQ(top->PC, branchPC);
+    // PC doesn't change as it is stalled
+    EXPECT_EQ(top->PC, 0xAAAA'AAAA);
 }
 
 

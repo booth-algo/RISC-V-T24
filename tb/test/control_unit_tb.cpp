@@ -10,21 +10,33 @@
 #include "base_testbench.h"
 #include <bitset>
 
-#define NAME            "control_unit"
+#define NAME                "control_unit"
 
-#define OPCODE_I1       0b001'0011          // addi, xori, ori... (ALU imm)
-#define OPCODE_I2       0b000'0011          // lb, lh, lw... (load imm)
-#define OPCODE_I3       0b110'0111          // jalr
-#define OPCODE_I4       0b111'0011          // ecall, ebreak
+#define OPCODE_I1           0b001'0011          // addi, xori, ori... (ALU imm)
+#define OPCODE_I2           0b000'0011          // lb, lh, lw... (load imm)
+#define OPCODE_I3           0b110'0111          // jalr
+#define OPCODE_I4           0b111'0011          // ecall, ebreak
 
-#define OPCODE_U1       0b011'0111          // lui (load upper imm)
-#define OPCODE_U2       0b001'0111          // auipc (add imm to pc)
+#define OPCODE_U1           0b011'0111          // lui (load upper imm)
+#define OPCODE_U2           0b001'0111          // auipc (add imm to pc)
 
-#define OPCODE_S        0b010'0011          // sb, sh, sw (store)
-#define OPCODE_B        0b110'0011          // beq, bne, blt (branch)
-#define OPCODE_R        0b011'0011          // add, sub, xor... (register)
-#define OPCODE_J        0b110'1111          // jal  (jump and link)
+#define OPCODE_S            0b010'0011          // sb, sh, sw (store)
+#define OPCODE_B            0b110'0011          // beq, bne, blt (branch)
+#define OPCODE_R            0b011'0011          // add, sub, xor... (register)
+#define OPCODE_J            0b110'1111          // jal  (jump and link)
 
+#define PC_NEXT             0b000
+#define PC_ALWAYS_BRANCH    0b001
+#define PC_JALR             0b010
+#define PC_INV_COND_BRANCH  0b100
+#define PC_COND_BRANCH      0b101
+
+
+#define DATA_ADDR_MODE_W    0b000
+#define DATA_ADDR_MODE_B    0b010
+#define DATA_ADDR_MODE_BU   0b011
+#define DATA_ADDR_MODE_H    0b100
+#define DATA_ADDR_MODE_HU   0b101
 
 class ControlunitTestbench : public BaseTestbench
 {
@@ -38,7 +50,7 @@ protected:
         // ALUctrl - controls the alu
         // ALUsrc - selects between rd2 (0) and ImmOp (1)
         // ImmSrc - selects between I (0), S (1) and B (2) type
-        // PCsrc - selects next PC (0) or branch (1)
+        // PCsrc - selects next PC (0) or branch (1-5)
         // RegWrite - enables writing of register
         // MemWrite - enables writing of data memory
         // MemRead - notifies hazard unit of stall
@@ -158,44 +170,35 @@ TEST_F(ControlunitTestbench, ALUsrcTest)
 
 TEST_F(ControlunitTestbench, PCsrcTest)
 {
-    // PCsrc = 1: FLAG_ZERO & (B-Type or J-type)
-    // Pcsrc = 0: Otherwise
-    
-    top->EQ = 1;
-    top->instr = OPCODE_B;
+    // beq should always be a conditional branch
+    top->instr = OPCODE_B + (0b000 << 12);
     top->eval();
+    EXPECT_EQ(top->PCsrc, PC_COND_BRANCH);
 
-    EXPECT_EQ(top->PCsrc, 1) << "Test 1";
-    
-    top->EQ = 1;
-    top->instr = OPCODE_J;
+    // bne should always be an inverse conditional branch
+    top->instr = OPCODE_B + (0b001 << 12);
     top->eval();
+    EXPECT_EQ(top->PCsrc, PC_INV_COND_BRANCH);
 
-    EXPECT_EQ(top->PCsrc, 1) << "Test 2";
-    
-    // EQ is OFF now
-    top->EQ = 0;
-    top->instr = OPCODE_B;
+    // bge should always be a conditional branch
+    top->instr = OPCODE_B + (0b101 << 12);
     top->eval();
-
-    EXPECT_EQ(top->PCsrc, 0) << "Test 3";
+    EXPECT_EQ(top->PCsrc, PC_COND_BRANCH);
     
-    // EQ is on but OPCODE is wrong now
-    for (int opcode : { 
-        OPCODE_I1, OPCODE_I2, OPCODE_I3, OPCODE_I4, 
-        OPCODE_U1, OPCODE_U2, OPCODE_R, OPCODE_S
-    }) {
-        // Make sure PCsrc pulls DOWN instead of leave hanging
-        top->EQ = 1;
-        top->instr = OPCODE_B;
-        top->eval();
-
-        top->EQ = 1;
-        top->instr = opcode;
-        top->eval();
-
-        EXPECT_NE(top->PCsrc, 1) << "Opcode: " << std::bitset<7>(opcode);
-    }
+    // blt should always be an inverse conditional branch
+    top->instr = OPCODE_B + (0b100 << 12);
+    top->eval();
+    EXPECT_EQ(top->PCsrc, PC_INV_COND_BRANCH);
+    
+    // bgeu should always be a conditional branch
+    top->instr = OPCODE_B + (0b111 << 12);
+    top->eval();
+    EXPECT_EQ(top->PCsrc, PC_COND_BRANCH);
+    
+    // bltu should always be an inverse conditional branch
+    top->instr = OPCODE_B + (0b110 << 12);
+    top->eval();
+    EXPECT_EQ(top->PCsrc, PC_INV_COND_BRANCH);
 }
 
 
@@ -258,6 +261,39 @@ TEST_F(ControlunitTestbench, MemWriteTest)
 }
 
 
+TEST_F(ControlunitTestbench, AddrModeTest)
+{   
+    // AddrMode = word: sw, lw
+    // AddrMode = byte: sb, lb, lbu
+
+    // sb
+    top->instr = OPCODE_S + (0b000 << 12);
+    top->eval();
+    EXPECT_EQ(top->AddrMode, DATA_ADDR_MODE_B);
+    
+    // sw
+    top->instr = OPCODE_S + (0b010 << 12);
+    top->eval();
+    EXPECT_EQ(top->AddrMode, DATA_ADDR_MODE_W);
+    
+    // lb
+    top->instr = OPCODE_I2 + (0b000 << 12);
+    top->eval();
+    EXPECT_EQ(top->AddrMode, DATA_ADDR_MODE_B);
+    
+    // lbu
+    top->instr = OPCODE_I2 + (0b100 << 12);
+    top->eval();
+    EXPECT_EQ(top->AddrMode, DATA_ADDR_MODE_BU);
+    
+    // lw
+    top->instr = OPCODE_I2 + (0b010 << 12);
+    top->eval();
+    EXPECT_EQ(top->AddrMode, DATA_ADDR_MODE_W);
+
+}
+
+
 TEST_F(ControlunitTestbench, ResultSrcTest)
 {   
     // TODO : ResultSrc = 2: jal, jalr
@@ -282,6 +318,18 @@ TEST_F(ControlunitTestbench, ResultSrcTest)
 
         EXPECT_EQ(top->ResultSrc, 0) << "Opcode: " << std::bitset<7>(opcode);
     }
+}
+
+
+TEST_F(ControlunitTestbench, StallTest)
+{   
+    top->stall = 1;
+    top->eval();
+
+    // Must not affect CPU state
+    EXPECT_EQ(top->MemRead, 0);
+    EXPECT_EQ(top->MemWrite, 0);
+    EXPECT_EQ(top->RegWrite, 0);
 }
 
 

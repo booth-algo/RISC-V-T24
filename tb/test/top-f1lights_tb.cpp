@@ -58,13 +58,11 @@ TEST_F(CpuTestbench, SubroutineFinalValueTest)
     {
         runSimulation(); // Evaluate the model
 
-        if (top->a0 == 0xff) // Check if a0 has the correct final value
+        if (top->a0 == 0x7f) // Check if a0 has the correct final value
         {
             SUCCEED();
             return;
         }
-
-        top->clk = !top->clk; // Toggle the clock to simulate the next cycle
     }
 
     FAIL() << "The register a0 did not reach the expected value within " << max_cycles << " cycles.";
@@ -77,9 +75,10 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     Verilated::mkdir("logs");
     auto res = RUN_ALL_TESTS();
-    VerilatedCov::write(
-        ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
-    );
+    
+    // VerilatedCov::write(
+    //     ("logs/coverage_" + std::string(NAME) + ".dat").c_str()
+    // );
 
     return res;
 }

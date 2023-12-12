@@ -40,7 +40,7 @@ for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
     # Translate Verilog -> C++ including testbench
-    verilator   -Wall --coverage --coverage-max-width 1 --trace \
+    verilator   -Wall --coverage --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
                 --exe ${file} \
                 -y ${RTL_FOLDER} \

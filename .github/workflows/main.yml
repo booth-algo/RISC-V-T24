@@ -28,10 +28,3 @@ jobs:
               run: |
                 cd tb
                 ./doit.sh
-            
-            - name: upload-code-coverage-report
-              if: always()
-              uses: actions/upload-artifact@v2
-              with:
-                name: code-coverage-report
-                path: tb/logs/html

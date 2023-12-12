@@ -48,7 +48,7 @@ TEST_F(CpuTestbench, InitialStateTest)
         }
         if (plot)
         {
-            std::cout << top->a0 << std::endl;
+            // std::cout << top->a0 << std::endl;
             // vbdPlot(int(top->a0), 0, 255);
             plot++;
         }
