@@ -4,6 +4,7 @@
 
 # Usage: ./doit.sh <file1.cpp> <file2.cpp>
 # If no files are specified, it will run the whole test suite.
+# See the documentation on more information about the testbench.
 
 # Author: William Huynh <wh1022@ic.ac.uk>
 
