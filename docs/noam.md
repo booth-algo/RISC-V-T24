@@ -39,3 +39,6 @@ I was in charge of designing the **Sign Extension** unit, as well as the **Contr
 
 ### 07/12
     - Worked on first draft of cache with JAMIE. Finished first draft version, compiles fine, not tested
+
+### 11/12
+    - Worked with whole team  on debugging direct mapped cache. Debbuged most tests, 3 still not passsing. Worked on a new implementation of cache because previous one was flawed
