@@ -59,13 +59,13 @@ typedef enum logic [1:0] {just_hit0, recently_hit0, long_hit0} my_state_0;
 typedef enum logic [1:0] {just_hit1, recently_hit1, long_hit1} my_state_1;
     my_state_1 current_state1, next_state1;
 
-always_comb begin
+always_latch begin // debug terminal wanted change to always_latch
+   
     tag = addr[ADDR_WIDTH-1:6];
     set = addr[5:2];
     byte_offset = addr[1:0];
 
 // Cache read logic
-
         if (cache[set].entry1.valid && cache[set].entry1.tag == tag) begin
             $display("hit_1");
             hit_1 = 1;
@@ -101,7 +101,7 @@ always_comb begin
         hit = hit_1 | hit_0;
 
         if (hit) begin
-            read_data = hit_1 ? {cache[set].entry1.byte3, cache[set].entry1.byte2, cache[set].entry1.byte1, cache[set].entry1.byte0} : {cache[set].entry1.byte3, cache[set].entry1.byte2, cache[set].entry1.byte1, cache[set].entry1.byte0};
+            read_data = hit_1 ? {cache[set].entry1.byte3, cache[set].entry1.byte2, cache[set].entry1.byte1, cache[set].entry1.byte0} : {cache[set].entry0.byte3, cache[set].entry0.byte2, cache[set].entry0.byte1, cache[set].entry0.byte0};
         end
     end
 
@@ -161,7 +161,7 @@ always_ff @(posedge clk) begin
     else if (!cache[set].entry1.valid || !(cache[set].entry1.tag == tag)) begin
         // Pulls data in from main memory
         cache[set].entry1.valid <= 1;
-        cache[set].entry1.tag <= addr[31:5];
+        cache[set].entry1.tag <= addr[31:6];
         cache[set].entry1.byte0 <= read_data[7:0];
         cache[set].entry1.byte1 <= read_data[15:8];
         cache[set].entry1.byte2 <= read_data[23:16];
@@ -171,7 +171,7 @@ always_ff @(posedge clk) begin
     else if (!cache[set].entry0.valid || !(cache[set].entry0.tag == tag)) begin
         // Pulls data in from main memory
         cache[set].entry0.valid <= 1;
-        cache[set].entry0.tag <= addr[31:5];
+        cache[set].entry0.tag <= addr[31:6];
         cache[set].entry0.byte0 <= read_data[7:0];
         cache[set].entry0.byte1 <= read_data[15:8];
         cache[set].entry0.byte2 <= read_data[23:16];
@@ -185,7 +185,7 @@ end
 always_comb begin
     case (current_state0)
         just_hit0: begin
-            if(hit) begin
+            if (hit) begin
                     cache[set].entry0.Ubits = `JUST_HIT;
                     next_state0 = just_hit0;
             end
@@ -195,7 +195,7 @@ always_comb begin
             end
         end
         recently_hit0: begin
-            if(hit) begin
+            if (hit) begin
                     cache[set].entry0.Ubits = `JUST_HIT;
                     next_state0 = just_hit0;
             end
@@ -205,7 +205,7 @@ always_comb begin
             end
         end
         long_hit0: begin
-            if(hit) begin
+            if (hit) begin
                     cache[set].entry0.Ubits = `JUST_HIT;
                     next_state0 = just_hit0;
             end
@@ -221,7 +221,7 @@ end
 always_comb begin
     case (current_state1)
         just_hit1: begin
-            if(hit) begin
+            if (hit) begin
                     cache[set].entry1.Ubits = `JUST_HIT;
                     next_state1 = just_hit1;
             end
@@ -231,7 +231,7 @@ always_comb begin
             end
         end
         recently_hit1: begin
-            if(hit) begin
+            if (hit) begin
                     cache[set].entry1.Ubits = `JUST_HIT;
                     next_state1 = just_hit1;
             end
@@ -241,7 +241,7 @@ always_comb begin
             end
         end
         long_hit1: begin
-            if(hit) begin
+            if (hit) begin
                 cache[set].entry1.Ubits = `JUST_HIT;
                 next_state1 = just_hit1;
             end
