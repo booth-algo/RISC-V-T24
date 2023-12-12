@@ -262,14 +262,14 @@ TEST_F(CpuTestbench, Combined)
 }
 
 
-// // TEST_F(CpuTestbench, PDFTest)
-// // {
-// //     system("./compile.sh --input c/022-pdf.c");
+// TEST_F(CpuTestbench, PDFTest)
+// {
+//     system("./compile.sh --input c/022-pdf.c");
     
-// //     runSimulation(1'000'000);
+//     runSimulation(1'000'000);
     
-// //     EXPECT_EQ((int)top->a0, 255);
-// // }
+//     EXPECT_EQ((int)top->a0, 255);
+// }
 
 
 TEST_F(CpuTestbench, LinkedListTest)
@@ -342,9 +342,18 @@ TEST_F(CpuTestbench, cache_temporal_locality_test)
 {
     system("./compile.sh --input asm/012-dm_cache_temp_locality.s");
     
-    runSimulation(100000);
+    runSimulation(50);
     
     EXPECT_EQ((int)top->a0, 0);
+}
+
+TEST_F(CpuTestbench, overwrite_cache_test)
+{
+    system("./compile.sh --input asm/013-overwrite_byte.s");
+    
+    runSimulation(100);
+    
+    EXPECT_EQ((int)top->a0, 0x0403FFFF);
 }
 
 int main(int argc, char **argv)

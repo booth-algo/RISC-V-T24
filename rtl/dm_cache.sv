@@ -15,8 +15,6 @@ module dm_cache #(
         |  v  | tag  | data | 
         | [1] | [27] | [32] | 
     
-        // Two ways, and in each way there are 2 blocks
-
         Memory address: (byte addressing) (32 bits)
             | tag | set | byte offset |
             | [27]| [3] |     [2]     |
@@ -93,8 +91,13 @@ always_ff @(posedge clk) begin
         cache[set].valid <= 1;
         cache[set].tag <= addr[31:5];
         
-        if (addr_mode == 3'b01x) begin // Write only least significant byte (8 bits)
-            cache[set].byte0 <= write_data[7:0];
+        if (addr_mode) begin // Write only least significant byte (8 bits)
+            case(byte_offset)
+                2'b00:  cache[set].byte0 <= write_data[7:0];
+                2'b01:  cache[set].byte1 <= write_data[7:0];
+                2'b10:  cache[set].byte2 <= write_data[7:0];
+                2'b11:  cache[set].byte3 <= write_data[7:0];
+            endcase
         end
         else begin // Write whole word
             cache[set].byte0 <= write_data[7:0];
