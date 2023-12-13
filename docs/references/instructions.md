@@ -78,7 +78,5 @@ You can open the file on Google Chrome or another web browser.
 ## RISC-V calling conventions
 ![Alt text](../images/calling_convention.png)
 
-## Single-cycle design
-
 ## Cache (Two-way set associative)
 ![Alt text](<../images/cache.png>)

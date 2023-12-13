@@ -113,4 +113,7 @@ This file will note down **major meetups** and breakdown the progress completed 
   - Team gym session in the morning!
   - Meetup in the afternoon
   - Agendas
-    - 
+    - Debugging `two-way set associative cache`
+    - Complete fixes for CI
+    - Write up most of the team statement
+  - 
