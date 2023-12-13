@@ -68,10 +68,10 @@ always_comb begin
         out = read_data;
     end
 
-    // Analysis of cache
-    if (read_en && hit)           $display("HIT");
-    else if (read_en && ~hit)     $display("MISS");
-    else if (write_en)            $display("STORE");
+    // Analysis of cache - uncomment this block to get data
+    // if (read_en && hit)           $display("HIT");
+    // else if (read_en && ~hit)     $display("MISS");
+    // else if (write_en)            $display("STORE");
 end
 
 

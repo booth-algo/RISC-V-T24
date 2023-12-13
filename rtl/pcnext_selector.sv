@@ -51,6 +51,10 @@ module pcnext_selector #(
                 $display("Invalid PCsrc: use the ones defined in def.sv");
             end
         endcase
+
+        // // Analysis of branching - uncomment to get data
+        // if (branch && !(PCsrc == `PC_NEXT)) $display("BRANCH");
+        // else if (~branch && !(PCsrc == `PC_NEXT)) $display("NOT BRANCH");
     end
     
 endmodule

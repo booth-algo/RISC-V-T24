@@ -5,4 +5,5 @@ logs
 *.vcd
 *.hex
 *dis.txt
-output.log
+*.log
+graphs
