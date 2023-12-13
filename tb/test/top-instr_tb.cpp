@@ -301,6 +301,26 @@ TEST_F(CpuTestbench, PDFTest)
 }
 
 
+TEST_F(CpuTestbench, PDFLinearTest)
+{
+    system("./compile.sh --input c/026-pdf_linear.c");
+    
+    runSimulation(800000);
+    
+    EXPECT_EQ((int)top->a0, 32640);
+}
+
+
+TEST_F(CpuTestbench, PDFUpDownTest)
+{
+    system("./compile.sh --input c/027-pdf_up_down.c");
+    
+    runSimulation(100000);
+    
+    EXPECT_EQ((int)top->a0, 4096);
+}
+
+
 TEST_F(CpuTestbench, cache_read_test)
 {
     system("./compile.sh --input asm/010-dm_cache_read.s");

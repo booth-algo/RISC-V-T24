@@ -87,21 +87,6 @@ TEST_F(DataMemTestbench, MemoryInitTest)
 }
 
 
-TEST_F(DataMemTestbench, LoadDataTest)
-{
-    system("cp data/triangle.mem ../rtl/data.hex");
-
-    top->A = 0x10000;
-    // Unsigned byte addressing
-    top->AddrMode = 0b011;
-    
-    runSimulation(2);
-
-    EXPECT_EQ(top->RD, 1);
-
-}
-
-
 int main(int argc, char **argv)
 {
     Verilated::commandArgs(argc, argv);

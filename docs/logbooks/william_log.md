@@ -38,6 +38,24 @@ now runs, as intended.
 
 ### Week 4 (commencing 11/12/2023)
 
+Finished cache and debugged cache. Worked on report.
+
+## Testing
+
+| Test                                       | Code Coverage (%) | Tests     |
+|--------------------------------------------|-------------------|-----------|
+| alu_tb.cpp                                 | 100               | 10        |
+| control_unit_tb.cpp                        | 91.8              | 11        |
+| data_mem_tb.cpp                            | N/A*              | 3         |
+| instr_mem_tb.cpp                           | 100               | 2         |
+| mux_tb.cpp                                 | 100               | 2         |
+| program_counter_tb.cpp                     | 100               | 3         |
+| regfile_tb.cpp                             | 93.3              | 4         |
+| sign_extend_tb.cpp                         | 50                | 6         |
+| top-f1lights_tb.cpp                        | N/A*              | 2         |
+| **top-instr_tb.cpp**                       | **N/A\***         | **36**    |
+| top-lab4_tb.cpp                            | N/A*              | 4         |
+| top-pdf_tb.cpp                             | N/A*              | 1         |
 
 ## Footnotes
 

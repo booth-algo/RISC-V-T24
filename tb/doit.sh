@@ -4,6 +4,7 @@
 
 # Usage: ./doit.sh <file1.cpp> <file2.cpp>
 # If no files are specified, it will run the whole test suite.
+# See the documentation on more information about the testbench.
 
 # Author: William Huynh <wh1022@ic.ac.uk>
 
@@ -39,7 +40,7 @@ for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
     # Translate Verilog -> C++ including testbench
-    verilator   -Wall --coverage --coverage-max-width 1 --trace \
+    verilator   -Wall --coverage --trace \
                 -cc ${RTL_FOLDER}/${name}.sv \
                 --exe ${file} \
                 -y ${RTL_FOLDER} \

@@ -36,8 +36,8 @@ protected:
 
 TEST_F(ALUTestbench, AdditionTest)
 {
-    int op1 = 5;
-    int op2 = 10;
+    int op1 = 0x55555555;
+    int op2 = 0xAAAAAAAA;
     
     //inputs for addition operation
     top->a = op1;
@@ -54,8 +54,8 @@ TEST_F(ALUTestbench, AdditionTest)
 
 TEST_F(ALUTestbench, SubtractionTest)
 {
-    int op1 = 5;
-    int op2 = 5;
+    int op1 = 0xAAAAAAAA;
+    int op2 = 0x55555555;
     
     //inputs for subtraction operation
     top->a = op1;

@@ -22,16 +22,30 @@ jobs:
             - name: setup-dependencies
               run: |
                 sudo apt update
-                sudo apt install -y libgtest-dev lcov verilator gcc-riscv64-unknown-elf
+                sudo apt-get install -y libgtest-dev lcov gcc-riscv64-unknown-elf
+                
+                sudo apt-get install -y help2man perl make g++ git autoconf libunwind-dev
+                sudo apt-get install -y python3 flex bison ccache
+                sudo apt-get install -y libgoogle-perftools-dev numactl perl-doc
+                sudo apt-get install -y libfl2
+                sudo apt-get install -y libfl-dev
+                sudo apt-get install -y zlibc zlib1g zlib1g-dev || true
+
+                echo "Installing Verilator"
+                cd /tmp
+                rm -rf verilator
+
+                git clone https://github.com/verilator/verilator verilator
+                cd verilator
+                git checkout v4.226
+                autoconf
+                ./configure
+                make -j "$(nproc)"
+                sudo make install
+                cd ..
+                rm -rf verilator
             
             - name: run-tests
               run: |
                 cd tb
                 ./doit.sh
-            
-            - name: upload-code-coverage-report
-              if: always()
-              uses: actions/upload-artifact@v2
-              with:
-                name: code-coverage-report
-                path: tb/logs/html

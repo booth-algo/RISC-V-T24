@@ -3,6 +3,8 @@
 # Usage: ./compile.sh <file.s>
 # Author: pykcheung, modified by William Huynh <wh1022@ic.ac.uk>
 
+# See the documentation on more information about the testbench.
+
 
 # Default vars
 input_file="program.s"

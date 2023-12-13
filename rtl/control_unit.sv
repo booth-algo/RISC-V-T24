@@ -46,7 +46,6 @@ always_comb begin
             RegWrite = 1;
             ALUsrc = 0;
             case(funct3)
-                
                 // add and sub
                 3'b000: begin
                     case(funct7)
@@ -100,7 +99,7 @@ always_comb begin
                             ALUctrl = `ALU_OPCODE_ASR;
                         end
     
-                        default: $display("Warning: undefined add/sub");
+                        default: $display("Warning: undefined srl/sra");
     
                     endcase
                 end
@@ -115,11 +114,7 @@ always_comb begin
                     ALUctrl = `ALU_OPCODE_SLTU;
                 end
                 
-                default: begin
-                    ALUsrc = 0;
-                    RegWrite = 0;
-                    $display("R type default", op, " ", funct3);
-                end
+                default: $display("Warning: undefined R-type instruction");
             endcase 
         end
 
@@ -171,7 +166,7 @@ always_comb begin
                             ALUctrl = `ALU_OPCODE_ASR;
                         end
     
-                        default: $display("Warning: undefined add/sub");
+                        default: $display("Warning: undefined srli/srai");
     
                     endcase
                 end
@@ -186,10 +181,7 @@ always_comb begin
                     ALUctrl = `ALU_OPCODE_SLTU;
                 end
 
-                default: begin
-                    ALUctrl = 4'b0000;
-                    $display("I type default", op, " ", funct3);
-                end
+                default: $display("Warning: undefined I-type instruction");
             endcase
         end
 
@@ -202,7 +194,6 @@ always_comb begin
             ALUsrc = 1;
             RegWrite = 1;
             case(funct3)
-                
                 // lb
                 3'b000: begin
                     AddrMode = `DATA_ADDR_MODE_B;
@@ -218,11 +209,7 @@ always_comb begin
                     AddrMode= `DATA_ADDR_MODE_BU;
                 end
 
-                default: begin
-                    ALUsrc = 1;
-                    RegWrite = 1;
-                    $display("L type default", op, " ", funct3);
-                end
+                default: $display("Warning: undefined L-type instruction");
             endcase
             
         end
@@ -235,22 +222,17 @@ always_comb begin
             RegWrite = 0;
             MemWrite = 1;
             case(funct3)
-            
-            // sb
-            3'b000: begin
-                AddrMode = `DATA_ADDR_MODE_B;
-            end
+                // sb
+                3'b000: begin
+                    AddrMode = `DATA_ADDR_MODE_B;
+                end
 
-            // sw
-            3'b010: begin
-                AddrMode = `DATA_ADDR_MODE_W;
-            end
-            
-            default: begin
-                RegWrite = 0;
-                MemWrite = 1;
-                $display("S type default", op, " ", funct3);
-            end
+                // sw
+                3'b010: begin
+                    AddrMode = `DATA_ADDR_MODE_W;
+                end
+                
+                default: $display("Warning: undefined S-type instruction");
             endcase
         end
         
@@ -261,49 +243,43 @@ always_comb begin
             ImmSrc = `SIGN_EXTEND_B;
 
             case(funct3)
-            
-            // beq
-            3'b000: begin
-                PCsrc = `PC_COND_BRANCH;
-                ALUctrl = `ALU_OPCODE_SUB;
-            end
-            
-            // bne
-            3'b001: begin
-                PCsrc = `PC_INV_COND_BRANCH;
-                ALUctrl = `ALU_OPCODE_SUB;
-            end
+                // beq
+                3'b000: begin
+                    PCsrc = `PC_COND_BRANCH;
+                    ALUctrl = `ALU_OPCODE_SUB;
+                end
+                
+                // bne
+                3'b001: begin
+                    PCsrc = `PC_INV_COND_BRANCH;
+                    ALUctrl = `ALU_OPCODE_SUB;
+                end
 
-            // blt
-            3'b100: begin
-                PCsrc = `PC_INV_COND_BRANCH;
-                ALUctrl = `ALU_OPCODE_SLT;
-            end
+                // blt
+                3'b100: begin
+                    PCsrc = `PC_INV_COND_BRANCH;
+                    ALUctrl = `ALU_OPCODE_SLT;
+                end
 
-            // bge
-            3'b101: begin
-                PCsrc = `PC_COND_BRANCH;
-                ALUctrl = `ALU_OPCODE_SLT;
-            end
+                // bge
+                3'b101: begin
+                    PCsrc = `PC_COND_BRANCH;
+                    ALUctrl = `ALU_OPCODE_SLT;
+                end
 
-            // bltu
-            3'b110: begin
-                PCsrc = `PC_INV_COND_BRANCH;
-                ALUctrl = `ALU_OPCODE_SLTU;
-            end
+                // bltu
+                3'b110: begin
+                    PCsrc = `PC_INV_COND_BRANCH;
+                    ALUctrl = `ALU_OPCODE_SLTU;
+                end
 
-            // bgeu
-            3'b111: begin
-                PCsrc = `PC_COND_BRANCH;
-                ALUctrl = `ALU_OPCODE_SLTU;
-            end
+                // bgeu
+                3'b111: begin
+                    PCsrc = `PC_COND_BRANCH;
+                    ALUctrl = `ALU_OPCODE_SLTU;
+                end
 
-            default: begin
-                PCsrc = `PC_COND_BRANCH;
-                RegWrite = 0;
-                ALUctrl = `ALU_OPCODE_SUB;
-                $display("B type default", op, " ", funct3);
-            end
+                default: $display("Warning: undefined B-type instruction");
             endcase
         end
 
@@ -347,29 +323,22 @@ always_comb begin
             RegWrite = 1;
             case(instr[7])
 
-            // ecall
-            1'b0: begin
-                ALUsrc = 1;
-                $display("ecall", op, " ", funct3);
-            end 
+                // ecall
+                1'b0: begin
+                    ALUsrc = 1;
+                    $display("ecall", op, " ", funct3);
+                end 
 
-            // ebreak
-            1'b1: begin
-                ALUsrc = 1;
-                $display("ebreak", op, " ", funct3);
-            end
+                // ebreak
+                1'b1: begin
+                    ALUsrc = 1;
+                    $display("ebreak", op, " ", funct3);
+                end
             endcase
         end
 
         //Other instructions
-        default: begin
-            RegWrite = 0;
-            ImmSrc = `SIGN_EXTEND_I;
-            ALUsrc = 0;
-            ALUctrl = `ALU_OPCODE_ADD;
-            MemWrite = 0;
-            MemRead = 0;
-        end
+        // default: $display("Warning: undefined general instruction");
     endcase
     
     // Taken outside for nesting reasons.

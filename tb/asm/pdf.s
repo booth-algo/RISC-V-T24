@@ -37,7 +37,12 @@ display:    # function send PDF array value to a0 for display
     LI      a1, 0               # a1 = offset into pdf array
     LI      a2, 255             # a2 = max index of pdf array
 _loop3:                         # repeat
+    
+    # Padded with -1 to interpret data. Comment out for vBuddy
+    LI      a0, -1
     LBU     a0, base_pdf(a1)    #   a0 = mem[base_pdf+a1)
+    LI      a0, -1
+    
     addi    a1, a1, 1           #   incr 
     BNE     a1, a2, _loop3      # until end of pdf array
     RET
