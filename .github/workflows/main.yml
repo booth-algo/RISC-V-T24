@@ -23,6 +23,21 @@ jobs:
               run: |
                 sudo apt update
                 sudo apt install -y libgtest-dev lcov verilator gcc-riscv64-unknown-elf
+                sudo apt install -y make g++ git autoconf python3 flex bison
+                
+                echo "Installing Verilator"
+                cd /tmp
+                rm -rf verilator
+
+                git clone https://github.com/verilator/verilator verilator
+                cd verilator
+                git checkout v4.226
+                autoconf
+                ./configure
+                make -j "$(nproc)"
+                sudo make install
+                cd ..
+                rm -rf verilator
             
             - name: run-tests
               run: |
