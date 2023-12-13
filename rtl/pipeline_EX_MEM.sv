@@ -13,10 +13,12 @@ module pipeline_EX_MEM #(
 
     // Control unit
     input logic RegWrite_E,
+    input logic MemRead_E,
     input logic [1:0] ResultSrc_E,
     input logic MemWrite_E,
     input logic [2:0] AddrMode_E,
     output logic RegWrite_M,
+    output logic MemRead_M,
     output logic [1:0] ResultSrc_M,
     output logic MemWrite_M,
     output logic [2:0] AddrMode_M
@@ -25,6 +27,7 @@ module pipeline_EX_MEM #(
 always_ff @(posedge clk) begin
     // Control unit
     RegWrite_M <= RegWrite_E;
+    MemRead_M <= MemRead_E;
     ResultSrc_M <= ResultSrc_E;
     MemWrite_M <= MemWrite_E;
     AddrMode_M <= AddrMode_E;

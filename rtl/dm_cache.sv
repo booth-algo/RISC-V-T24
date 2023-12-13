@@ -4,10 +4,12 @@ module dm_cache #(
 ) (
     input logic clk,
     input logic write_en,
+    input logic read_en,
     input logic [2:0] addr_mode,
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] write_data,
 
+    output logic hit,
     output logic [DATA_WIDTH-1:0] out
 );
 
@@ -37,7 +39,6 @@ logic [DATA_WIDTH-1:0] read_data;
 logic [26:0] tag;
 logic [2:0] set;
 logic [1:0] byte_offset;
-logic hit;
 
 
 // Cache read logic
@@ -47,7 +48,6 @@ always_comb begin
     byte_offset = addr[1:0];
 
     if (cache[set].valid && cache[set].tag == tag) begin
-        // $display("hit");
         hit = 1;
         out = {
             cache[set].byte3, 
@@ -58,7 +58,6 @@ always_comb begin
     end
     
     else begin
-        // $display("miss");
 
         // NOTE:
         // This requires a read to and from main memory
@@ -68,6 +67,11 @@ always_comb begin
         hit = 0;
         out = read_data;
     end
+
+    // Analysis of cache
+    if (read_en && hit)           $display("HIT");
+    else if (read_en && ~hit)     $display("MISS");
+    else if (write_en)            $display("STORE");
 end
 
 
@@ -98,7 +102,7 @@ always_ff @(posedge clk) begin
         endcase
     end
     
-    else if (!cache[set].valid || !(cache[set].tag == tag)) begin
+    else if (read_en && (!cache[set].valid || !(cache[set].tag == tag))) begin
         // Pulls data in from main memory
         cache[set].valid <= 1;
         cache[set].tag <= addr[31:5];

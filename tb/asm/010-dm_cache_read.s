@@ -15,3 +15,5 @@ main:
     lb x11, 0(x10)   # Read first word, expect cache miss
     lb x11, 1(x10)   # Read second word, expect cache miss
     lb x11, 0(x10)   # Read first word again, expect cache hit
+
+    # The expected behaviour cannot be emulated properly due to the need of reading address while storing word

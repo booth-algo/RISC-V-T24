@@ -11,5 +11,3 @@ loop:
     j loop
 
 done:
-
-# you can add a0 as counter for expected return value
