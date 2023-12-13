@@ -112,11 +112,14 @@ However, with this implementation, an error, later discovered during implementat
 
 ![schematic3](images/schematic3.png)
 
+### Direct Mapped Cache
+
 Firstly, a direct-mapped cache was designed, following the structure given in the Harris and Harris textbook, containing a cache line of 60 bits:
 - 32 (least significant bits) assigned to **DATA** 
 - 27 (next significant bits) assigned to **TAG**
 - 1 (most significant bit) assigned to **VALID** 
 
+![set](images/set_image.png)
 
 This cache line maps to the memory addressing of the cache:
 - 2 (least significant bits) assigned to **BYTE OFFSET** 
@@ -156,8 +159,6 @@ logic [2:0] set;
 logic [1:0] byte_offset;
 logic hit;
 ```
-
-![set](images/set_image.png)
 
 ### Read Logic
 
@@ -228,7 +229,14 @@ always_ff @(posedge clk) begin
             end
         endcase
     end
-    
+```
+
+The write logic is split into two modes: byte and word addressing. Word addressing is the more general case in the testbenches written therefore this was set to default. 
+
+In word addressing, the input signal, **write_data[]**, is written to the word, whereas in byte addressing, it is written to the specified byte.
+
+
+```SV
     else if (!cache[set].valid || !(cache[set].tag == tag)) begin
         // Pulls data in from main memory
         cache[set].valid <= 1;
@@ -241,9 +249,44 @@ always_ff @(posedge clk) begin
 end
 ```
 
-The write logic is split into two modes: byte and word addressing. Word addressing is the more general case in the testbenches written therefore this was set to default. 
+### Two-Way Associative Cache 
 
-In word addressing, the input signal, **write_data[]**, is written to the word, whereas in byte addressing, it is written to the specified byte.
+**inset image**
+
+For the design of the two-way associative cache, the following cache line was implemented:
+```SV
+/* two-way set associative cache (61 bits x2 so 122 total)
+        |  v  |  u  |  tag |   data   |  v  |  u  | tag  |  data  |
+        | [1] | [2] | [26] |   [32]   | [1] | [2] | [26] |  [32]  |
+    
+        // Two ways, and in each way there is 1 block
+
+        Memory address: (byte addressing) (32 bits)
+            | tag     | set    | byte offset |
+            | [26]    | [4]    |      [2]    |
+            | a[31:6] | a[5:2] | a[1:0]      |
+*/
+```
+This cacheline contains two sets of data and contains **USE**, which is implemented to include a replacement policy to reduce the number of conflicts.
+
+```SV
+typedef struct packed {
+    logic valid;
+    logic [1:0] Ubits;
+    logic [25:0] tag;
+    logic [7:0] byte0;
+    logic [7:0] byte1;
+    logic [7:0] byte2;
+    logic [7:0] byte3;
+} cache_entry_t;
+
+typedef struct packed {
+    cache_entry_t entry1; // way 1
+    cache_entry_t entry0; // way 0
+} cache_set_t;
+
+cache_set_t cache [16];
+```
 
 
 ### Simulation and Testing
