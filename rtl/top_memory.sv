@@ -65,8 +65,18 @@ always_comb begin
     endcase
 end
 
-
+/*
 dm_cache #(ADDR_WIDTH, DATA_WIDTH) dm_cache_inst (
+    .clk(clk),
+    .write_en(write_en),
+    .addr_mode(addr_mode),
+    .addr(addr),
+    .write_data(write_data),
+
+    .out(out_cache)
+);
+*/
+way2_cache #(ADDR_WIDTH, DATA_WIDTH) way2_cache_inst (
     .clk(clk),
     .write_en(write_en),
     .addr_mode(addr_mode),

@@ -71,7 +71,7 @@ always_comb begin
 end
 
 // Cache write logic: Write through cache
-always_ff @(posedge clk) begin
+always_ff @ (posedge clk) begin
     if (write_en) begin
         // Pulls data in from sw/sb
         cache[set].valid <= 1;
