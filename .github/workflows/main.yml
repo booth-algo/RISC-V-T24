@@ -23,8 +23,13 @@ jobs:
               run: |
                 sudo apt update
                 sudo apt install -y libgtest-dev lcov verilator gcc-riscv64-unknown-elf
-                sudo apt install -y make g++ git autoconf python3 flex bison
                 
+                sudo apt install -y help2man perl make g++ git autoconf python3 flex bison ccache
+                sudo apt-get install -y libgoogle-perftools-dev numactl perl-doc
+                sudo apt-get install -y libfl2
+                sudo apt-get install -y libfl-dev
+                sudo apt-get install -y zlibc zlib1g zlib1g-dev
+
                 echo "Installing Verilator"
                 cd /tmp
                 rm -rf verilator
