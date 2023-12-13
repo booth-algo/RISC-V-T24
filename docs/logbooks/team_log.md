@@ -1,6 +1,6 @@
 # Team Progress
 
-This file will note down major meetups and breakdown the progress completed by those meetups.
+This file will note down **major meetups** and breakdown the progress completed by those meetups. Note that only meetings with all 4 members present will be documented in this file.
 
 ## Lab meetup (16/11)
   - Discussed and allocated lab 4 parts to team members
@@ -85,3 +85,35 @@ This file will note down major meetups and breakdown the progress completed by t
   - A bug was found with the previous single-cycle version `v0.2.0`, however the snapshot cannot be modified so here is a remark:
     - There was a bug with the `data_mem.sv` which caused the 3 MS bytes of a word to be set to zero when using byte addressing mode - this is unintended behaviour and has been corrected in the pipelined version `v0.3.0`
     - Further details can be found in the debugging notes in `kevin.md`
+
+## Group meeting (11/12)
+  - Meetup in the afternoon + online at night
+  - Agendas
+    - `Hazard unit` has been debugged and finished over the weekend
+    - `Direct-mapped cache` needs to be implemented in top module
+  - Progress
+    - Direct-mapped cache structure drawn and connected to the top module
+    - The structure focused on a more parallel structure between the data memory and the cache
+    - Cache hit and miss was acting weird when some new tests written the night before was used to test
+    - A lot of previous tests were also failing
+    - At night, a refactored version of the cache was written, interlinking the data memory with the cache (with cache interacting with the main interface and accessing data memory when needed), and byte adressing was more focused on
+    - Unknown byte overwriting errors led to fails in the combined test (fibonacci + byte array) and the PDF test specifically
+    - Tests were conjured to test overwriting but found no faults
+
+## Group meeting (12/12)
+  - Meetup in the afternoon
+  - Agendas
+    - Fixing `direct-mapped cache`
+  - Code was refactored to address issues with byte-addressing
+  - Cache is now more byte-addressing oriented
+  - `Direct-mapped cache` was fixed and tested, but CI fixes and more tests of cache hits/misses were needed
+  - `Two-way set associative cache` logic structure was implemented
+
+## Group meeting (13/12)
+  - Team gym session in the morning!
+  - Meetup in the afternoon
+  - Agendas
+    - Debugging `two-way set associative cache`
+    - Complete fixes for CI
+    - Write up most of the team statement
+  - 

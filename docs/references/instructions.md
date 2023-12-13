@@ -176,7 +176,5 @@ waveforms to debug (see above).
 ## RISC-V calling conventions
 ![Alt text](../images/calling_convention.png)
 
-## Single-cycle design
-
 ## Cache (Two-way set associative)
 ![Alt text](<../images/cache.png>)

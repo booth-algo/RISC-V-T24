@@ -37,7 +37,7 @@ Kevin's logbook
 ## 29/11
   - Pipeline file added
   - Tried to figure out cache - think about how many bits you need in the two-way set and figure it out - draw a sketch or something
-  - Some other sminor changes
+  - Some other minor changes
   - Added mux and data memory to rtl
   - Two-way set cache structure designed
 ## 30/11
@@ -112,3 +112,8 @@ Kevin's logbook
       - The change below was implemented to remove this error and then the PDF program ran correctly
       - ![Alt text](./../images/data_mem_bug.png)
       - What is most surprising to me is that none of the tests written in both asm and C were able to catch this error, which shows holes in our testbenching skills which have room for improvement
+## 11/12 and 12/12
+  - Spent most of Monday (11/12) writing tests and working on debugging the byte overwriting error in the cache but didn't manage to isolate the specific error / instruction causing the bug (refer to `team.md`)
+  - Made the direct-mapped cache more byte-addressing oriented with William and managed to make the cache work properly with our new design
+## 13/12
+  - Compiling the `team_statement` and re-organising the documentation in the repo
