@@ -104,6 +104,8 @@ As such, it is highly recommended that readers refer to all of the `logbooks`, `
 - Team meetings, discussion and progress are logged in `team_log.md`
 - All personal contributions and progress (such as debugging notes) are noted down in personal logbooks in `docs/logbooks`
 
+## Working Evidence
+
 ## Content // Need to link to each section
 1. Lab 4
 2. Single Cycle Version
@@ -183,58 +185,9 @@ Finally an internal **HIT** signal was implemented, to ease the debugging, enhan
             | a[31:5] | a[4:2] | a[1:0] |
             // is the number of cache registers = 32 so they are referenced like this?
 */
- 
-typedef struct packed {
-    logic valid;
-    logic [26:0] tag;
-    logic [7:0] byte0;
-    logic [7:0] byte1;
-    logic [7:0] byte2;
-    logic [7:0] byte3;
-} cache_store;
-
-cache_store cache [8];
-
-logic [DATA_WIDTH-1:0] read_data;
-logic [26:0] tag;
-logic [2:0] set;
-logic [1:0] byte_offset;
-logic hit;
 ```
 
 ### Read Logic
-
-```SV
-always_comb begin
-    tag = addr[ADDR_WIDTH-1:5];
-    set = addr[4:2];
-    byte_offset = addr[1:0];
-
-    // Cache read logic
-    if (cache[set].valid && cache[set].tag == tag) begin
-        // $display("hit");
-        hit = 1;
-        out = {
-            cache[set].byte3, 
-            cache[set].byte2, 
-            cache[set].byte1, 
-            cache[set].byte0
-        };
-    end
-    
-    else begin
-        // $display("miss");
-
-        // NOTE:
-        // This requires a read to and from main memory
-        // Normally this would be done by stalling for some clock cycles
-        // However, in this model, we will not stall.
-        
-        hit = 0;
-        out = read_data;
-    end
-end
-```
 
 The data is read from cache if: 
   - the block is valid (**VALID** = 1)
@@ -245,51 +198,9 @@ Otherwise, the output signal is read from the **DATA MEMORY** through the signal
 
 ### Write Logic 
 
-```SV
-always_ff @(posedge clk) begin
-    if (write_en) begin
-        // Pulls data in from sw/sb
-        cache[set].valid <= 1;
-        cache[set].tag <= addr[31:5];
-        
-        case (addr_mode)
-            // Byte addressing
-            `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
-                case (byte_offset)
-                    2'b00:  cache[set].byte0 <= write_data[7:0];
-                    2'b01:  cache[set].byte1 <= write_data[7:0];
-                    2'b10:  cache[set].byte2 <= write_data[7:0];
-                    2'b11:  cache[set].byte3 <= write_data[7:0];
-                endcase
-            end
-            // Word addressing
-            default: begin
-                cache[set].byte0 <= write_data[7:0];
-                cache[set].byte1 <= write_data[15:8];
-                cache[set].byte2 <= write_data[23:16];
-                cache[set].byte3 <= write_data[31:24];
-            end
-        endcase
-    end
-```
-
 The write logic is split into two modes: byte and word addressing. Word addressing is the more general case in the testbenches written therefore this was set to default. 
 
 In word addressing, the input signal, **write_data[]**, is written to the word, whereas in byte addressing, it is written to the specified byte.
-
-
-```SV
-    else if (!cache[set].valid || !(cache[set].tag == tag)) begin
-        // Pulls data in from main memory
-        cache[set].valid <= 1;
-        cache[set].tag <= addr[31:5];
-        cache[set].byte0 <= read_data[7:0];
-        cache[set].byte1 <= read_data[15:8];
-        cache[set].byte2 <= read_data[23:16];
-        cache[set].byte3 <= read_data[31:24];
-    end
-end
-```
 
 ### Two-Way Associative Cache 
 
@@ -310,26 +221,6 @@ For the design of the two-way associative cache, the following cache line was im
 */
 ```
 This cacheline contains two sets of data and contains **USE**, which is implemented to include a replacement policy to reduce the number of conflicts.
-
-```SV
-typedef struct packed {
-    logic valid;
-    logic [1:0] Ubits;
-    logic [25:0] tag;
-    logic [7:0] byte0;
-    logic [7:0] byte1;
-    logic [7:0] byte2;
-    logic [7:0] byte3;
-} cache_entry_t;
-
-typedef struct packed {
-    cache_entry_t entry1; // way 1
-    cache_entry_t entry0; // way 0
-} cache_set_t;
-
-cache_set_t cache [16];
-```
-
 
 ### Simulation and Testing
 
@@ -483,9 +374,14 @@ however full instructions are listed
 
 If you want to request further guidance, you can email me: <wh1022@ic.ac.uk>.
 
-## Personal statements and other links
-(not linked yet lol)
-| Kevin | William   | Jamie | Noam  | 
-|-------|-----------|-------|-------|
-| PS    | PS        | PS    | PS    |
+## Personal statements
+
+| Member    | Personal statement | Logbook |
+|-----------|--------------------|---------|
+| Kevin     | [Personal statement](docs/personal_statements/kevin_statement.md) | [Logbook](docs/logbooks/kevin_log.md) |
+| William   | [Personal statement](docs/personal_statements/william_statement.md) | [Logbook](docs/logbooks/william_log.md) |
+| Jamie     | [Personal statement](docs/personal_statements/jamie_statement.md) | [Logbook](docs/logbooks/jamie_log.md) |
+| Noam      | [Personal statement](docs/personal_statements/noam_statement.md) | [Logbook](docs/logbooks/noam_log.md) |
+
+
 

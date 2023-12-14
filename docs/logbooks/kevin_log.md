@@ -117,3 +117,4 @@ Kevin's logbook
   - Made the direct-mapped cache more byte-addressing oriented with William and managed to make the cache work properly with our new design
 ## 13/12
   - Compiling the `team_statement` and re-organising the documentation in the repo
+## 14/12

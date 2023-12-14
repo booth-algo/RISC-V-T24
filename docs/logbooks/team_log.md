@@ -115,5 +115,16 @@ This file will note down **major meetups** and breakdown the progress completed 
   - Agendas
     - Debugging `two-way set associative cache`
     - Complete fixes for CI
+    - Cache hit/miss data analysis
     - Write up most of the team statement
-  - 
+  - Results:
+    - Team statement
+      - Cache written but needs changes
+      - Cache hit/miss data analysis written
+      - Other parts of the team statement written, including but not limited to: testing
+
+## Group meeting (14/12) (Final Team Meetup)
+  - Agendas:
+    - Finish up the team statement
+      - Single cycle
+      - 
