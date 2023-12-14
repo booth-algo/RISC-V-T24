@@ -5,8 +5,7 @@
 **Github Username:** noamweitz
 
 ## Overview
-- [Personal Statement: Noam Weitzman](#personal-statement-noam-weitzman)
-  - [Overview](#overview)
+
   - [Summary of Contributions](#summary-of-contributions)
     - [Lab 4](#lab-4)
     - [Single Cycle CPU](#single-cycle-cpu)
@@ -14,11 +13,6 @@
 - [What I learned](#what-i-learned)
 - [Mistakes I made](#mistakes-i-made)
 - [What I would do differently](#what-i-would-do-differently)
-    - [Cache](#cache)
-  - [What I learned](#what-i-learned)
-  - [Mistakes I made](#mistakes-i-made)
-  - [What I would do differently](#what-i-would-do-differently)
-
 
 ## Summary of Contributions
 
@@ -41,6 +35,7 @@ The implementation of the sign extension module was a bit more complicated as I 
 
 I also used this lab as an opportunity to write up another kind of testebenches by writing the ALU testbench: [ALU Testbench](/tb/test/alu_tb.cpp).
 
+---
 ### Single Cycle CPU
 
 Moving from Lab 4 to the whole Single Cycle implementation meant lots of modules had to be refactored as we needed to implement a whole lot more operations as seen in the RISC-V Instruction Set:
@@ -55,6 +50,7 @@ The refactoring of the **ALU** and **Sign Extension** modules was fairly straigh
 
 Finally, the **Data Memory** module also had to be refactored, because we had to implement byte specific instructions like lb and sb, allowing more specific control over bytes instead of just word control: [Data Memory](../../rtl/data_mem.sv).
 
+---
 ### Cache
 
 Implementing cache helped to increase overall computer performance by hindering *memory performance*. This was done by using the *temporal locality* property of memory. We started by implementing direct-mapped cache, where each set only holds one block of data: [Direct-Mapped Cache module](../../rtl/dm_cache.sv).
@@ -66,6 +62,7 @@ In this design,
 
 
 This causes conflicts many memory addresses will map to the same set. This will result in a lower hit rate than we would have by implementing a two-way set associative cache. 
+
 
 ## What I learned
 This project was extremely useful for me in enhancing my technical skills across various areas.
