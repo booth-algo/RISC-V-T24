@@ -40,15 +40,19 @@ Here are the relevant commands. More can be found in the documentation.
 
 
 ## Final submission
+
 Our team has successfully completed and verified the following for our RV32I 
   processor:
-- Lab 4 (Tag: v0.1.0)
-- Single Cycle Version (Tag: v0.2.0)
-- Pipelined Version (Tag: v0.3.0)
-- Direct-mapped Cache Version (Tag: v0.4.0)
 
-Implemented but not completely verified:
-- Two-way set associative Cache Version
+| Tag                                                            | Description  |
+| -------------------------------------------------------------- |------------- |
+| [v0.1.0](https://github.com/booth-algo/RISC-V-T24/tree/v0.1.0) | Lab4         |
+| [v0.2.0](https://github.com/booth-algo/RISC-V-T24/tree/v0.2.0) | Single-Cycle |
+| [v0.3.0](https://github.com/booth-algo/RISC-V-T24/tree/v0.3.0) | Pipelined    |
+| [v0.4.0](https://github.com/booth-algo/RISC-V-T24/tree/v0.4.0) | Direct-mapped Cache
+
+
+Implemented but unverified: two-way set associative cache
 
 ## Team Contribution
 - Work Contribution Table
@@ -468,8 +472,8 @@ To check whether the cache hit / miss behaviour was accurate, data analysis was 
 [`011-dm_cache_temp_locality.s`](tb/asm/011-dm_cache_temp_locality.s).
 
 This is the assembly code referenced from Lecture 9. The expected hit rate (as
-seen in slide 14 at the time of reference) is 80% (12/15). This was verified
-as 81% (13/16), as the last reading came from our pipeline implementation. This 
+seen in slide 14 at the time of reference) is **80% (12/15)**. This was verified
+as **81% (13/16)**, as the last reading came from our pipeline implementation. This 
 can be verified on the [graph](images/hit_rates_all_tests.jpg), already 
 referenced in the cache section.
 
