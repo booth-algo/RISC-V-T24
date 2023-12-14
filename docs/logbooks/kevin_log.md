@@ -59,11 +59,11 @@ Kevin's logbook
     - Noticed that the JAL perfectly stored the return address in x1
     - Hypothesized that maybe the JALR instruction was working properly, but not for the special case "ret"
     - Added some instructions `addi    x4, x4, 8` and `jalr    x3, x4, 8` to test JALR
-    - ![Alt text](./../images/6Dec-debug.png)
+    - ![Alt text](../../images/6Dec-debug.png)
     - Waveforms show that JALR obtains the correct values for `x3 = PC + 4` and `PC_next = x4 + 8`
     - For the F1 lights code, I also tried an earlier return - I then realised there was an error with the addi instruction which loads 0xFF - after discussing with William next morning, it was an issue with the testbench - one of the Gtests expected 0x2000 load to a0 but it didn't run, so that caused an error, but since the last Gtest stops whenever 0xFF is loaded to a0 (it was a test for final value), it simply doesn't run past it as it has already met the expected behaviour of the test - I didn't notice that.
     - Also, I trialed and errored with the 019 code and realised by looking at the disassembly text that the program starts running inside the function defined as `int add` above `int main`, instead of starting at `int main`, as evidenced by the addresses in the disassembly text and the program counter waveform. I fixed this issue by declaring `int add` but not defining the function, instead defining it after `int main`. This results in:
-      - ![Alt text](./../images/019debug.png)
+      - ![Alt text](../../images/019debug.png)
       - where bfc00000 starts at the `main`, instead of `add`
     - After that, JALR worked fine. I noticed this error by looking at the waveform loop indefinitely within the `add` function addresses.
     - Further discussions in the morning allowed us to fix the testbenches and code which now runs perfectly.
@@ -110,7 +110,7 @@ Kevin's logbook
       - I double checked both files and found nothing wrong with their respective `readmemh` commands, but I noticed an inconsistency with the `addr_mode` function implemented
       - For the byte addressing mode, it seems to be setting all bytes other than the LS byte to 0 - however, it should not be doing that - it should be writing only the LS byte, but not set all the other bytes of the word to 0
       - The change below was implemented to remove this error and then the PDF program ran correctly
-      - ![Alt text](./../images/data_mem_bug.png)
+      - ![Alt text](../../images/data_mem_bug.png)
       - What is most surprising to me is that none of the tests written in both asm and C were able to catch this error, which shows holes in our testbenching skills which have room for improvement
 ## 11/12 and 12/12
   - Spent most of Monday (11/12) writing tests and working on debugging the byte overwriting error in the cache but didn't manage to isolate the specific error / instruction causing the bug (refer to `team.md`)

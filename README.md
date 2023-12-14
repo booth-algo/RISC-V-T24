@@ -68,7 +68,7 @@ Here are the relevant commands. More can be found in the documentation.
 To use vBuddy, refer to WSL documentation. You may find this command useful:
 
 ```bash
-# Must be ttyUSB0- otherwise find and replace in vbuddy.cpp
+# Must be ttyUSB0 - otherwise find and replace in vbuddy.cpp
 sudo chmod a+rw /dev/ttyUSB0
 ```
 
@@ -86,7 +86,7 @@ sudo chmod a+rw /dev/ttyUSB0
 - `images`: images for `docs`
 - `rtl`: RV32I processor modules
 - `tb`: Testbench and scripts
-- 
+
 ### Workflow
 
 - After `lab4`, modules / work were dynamically allocated to team members
@@ -128,8 +128,8 @@ https://github.com/booth-algo/RISC-V-T24/assets/107279223/bfe780a5-3d4b-4b68-b6d
 ## Team Contribution
 
 - Work Contribution Table
-- `*` (one star) refers to **partial / minor contribution**
-- `**` (two stars) refers to **full / major contribution**
+- `*` (one star) refers to **minor contribution**
+- `**` (two stars) refers to **major contribution**
 
 |              |                               | Kevin (booth-algo) | Will (saturn691) | Jamie (jamiemitchell123) | Noam (noamweitz) |
 | ------------ | ----------------------------- | ------------------ | ---------------- | ------------------------ | ---------------- |
@@ -149,9 +149,9 @@ https://github.com/booth-algo/RISC-V-T24/assets/107279223/bfe780a5-3d4b-4b68-b6d
 |              | Sign Extend (refactor)        |                    | **               |                          | *                |
 | Pipeline     | Pipeline flip-flop stages     | **                 | *                |                          |                  |
 |              | Hazard unit                   | **                 | **               |                          |                  |
-| Cache        | Memory (refactor)             |                    | **               |                          |                  |
+| Cache        | Memory (refactor)             | *                  | **               |                          |                  |
 |              | Direct mapped cache           | **                 | **               | **                       | **               |
-|              | Two-way set associative cache | *                  |                  | **                       | **               |
+|              | Two-way set associative cache | **                 | **               | **                       | **               |
 
 As a team, we all agree that the above table and commits do not accurately measure the contribution of team members due to the following reasons:
 
