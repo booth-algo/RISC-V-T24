@@ -127,4 +127,7 @@ This file will note down **major meetups** and breakdown the progress completed 
   - Agendas:
     - Finish up the team statement
       - Single cycle
-      - 
+      - Pipeline
+      - Cache (modifications required)
+      - The general statement and evidence of testing / working vbuddy
+    - Two-way set associative cache
