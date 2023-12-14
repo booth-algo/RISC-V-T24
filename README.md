@@ -40,15 +40,15 @@ Here are the relevant commands. More can be found in the documentation.
 
 
 ## Final submission
-- Our team has successfully completed and verified the following for our RV32I 
+Our team has successfully completed and verified the following for our RV32I 
   processor:
-  - Lab 4 (Tag: v0.1.0)
-  - Single Cycle Version (Tag: v0.2.0)
-  - Pipelined Version (Tag: v0.3.0)
-  - Direct-mapped Cache Version (Tag: v0.4.0)
+- Lab 4 (Tag: v0.1.0)
+- Single Cycle Version (Tag: v0.2.0)
+- Pipelined Version (Tag: v0.3.0)
+- Direct-mapped Cache Version (Tag: v0.4.0)
 
-- Implemented but not completely verified:
-  - Two-way set associative Cache Version
+Implemented but not completely verified:
+- Two-way set associative Cache Version
 
 ## Team Contribution
 - Work Contribution Table
@@ -77,11 +77,13 @@ Here are the relevant commands. More can be found in the documentation.
 |              | Direct mapped cache           | **                 | **               | **                       | **               |
 |              | Two-way set associative cache | *                  |                  | **                       | **               |
 
-- As a team, we all agree that both the list and GitHub commits do not accurately measure the contribution of team members due to the following reasons:
+As a team, we all agree that both the list and GitHub commits do not accurately measure the contribution of team members due to the following reasons:
+
   1. When working together in Room 404 / calling on Discord (online), we would operate on only one of the laptops, so some commits made by team members are often a combined effort of two or more members, while the other laptop might be on another version / tag for testing and debugging
   2. The effort revolving around debugging is often highly overlooked - commits with simple fixes often took hours / days of effort from more than one member to debug a small mistake
   3. Testbench building and writing played a huge role in streamlining our process, and multiple tests were written to specifically do debugging and isolate problematic parts / instructions
-- As such, it is highly recommended that readers refer to all of the `logbooks`, `personal statements`, and `commits`, to accurately evaluate the amount of work, effort and contribution of each member
+
+As such, it is highly recommended that readers refer to all of the `logbooks`, `personal statements`, and `commits`, to accurately evaluate the amount of work, effort and contribution of each member
 
 ## Team Workflow
 ### Repo management (using `git`)
@@ -344,22 +346,13 @@ Cache memory enhances computer performance. While direct-mapped cache showcased 
 
 ## Main focuses / Specialities
 - We believe that there are several special implementations and highlights which elevates and distinguishes our repo from other teams
-- 
-
-Waffle:
-- GitHub
-  - Branches
-  - Tags
-  - Actions (CI pipeline)
-- Testbenches
-  - GTest
-  - Writing asm and C tests
-  - Regex and parsing
+  
 
 ## Testing: Testbench, Scripts, CI*, Data Analysis
 
 > “If it's not tested, it's broken” - Bruce Eckel
 
+We believe that our test-driven development elevates and distinguishes our repo from other teams.
 
 From the beginning, we used test-driven development. Sometimes the tests
 were written before the components.
@@ -375,8 +368,8 @@ Implementations include:
   1. **CI pipeline** - GitHub Actions
   2. **Testbench and bash scripts** - GTests
   3. **Code Coverage** - LCOV
-  3. **ASM and C tests**
-  4. **Cache hit/miss test** - Data analysis
+  4. **ASM and C tests**
+  5. **Cache hit/miss test** - Data analysis
 
 Note: to try the commands in this section, please execute the following command:
 
