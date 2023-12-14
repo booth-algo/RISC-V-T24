@@ -2,7 +2,7 @@
 
 **Name:** Noam Weitzman  
 **CID:** 02049854   
-**Github username:** noamweitz
+**Github Username:** noamweitz
 
 ## Overview
 - [Personal Statement: Noam Weitzman](#personal-statement-noam-weitzman)
@@ -10,6 +10,10 @@
   - [Summary of Contributions](#summary-of-contributions)
     - [Lab 4](#lab-4)
     - [Single Cycle CPU](#single-cycle-cpu)
+    - [Cache](#cache) 
+- [What I learned](#what-i-learned)
+- [Mistakes I made](#mistakes-i-made)
+- [What I would do differently](#what-i-would-do-differently)
     - [Cache](#cache)
   - [What I learned](#what-i-learned)
   - [Mistakes I made](#mistakes-i-made)
@@ -56,7 +60,7 @@ Finally, the **Data Memory** module also had to be refactored, because we had to
 Implementing cache helped to increase overall computer performance by hindering *memory performance*. This was done by using the *temporal locality* property of memory. We started by implementing direct-mapped cache, where each set only holds one block of data: [Direct-Mapped Cache module](../../rtl/dm_cache.sv).
 ![dm_cache implementation](../../images/schematic3.png)
 The implementation of direct-mapped cache was more complicated than expected, especially as we had started with a different, faulty design: 
-![faulty dm_cache implementation](../../images/schematic1.png)
+![faulty dm_cache implementation](/images/schematic1.png)
 In this design, 
 
 
@@ -84,4 +88,4 @@ These last mistakes taught me the importance of thorough understanding of the ha
 
 ## What I would do differently
 
-Overall, I believe we worked great as a team, and I am proud of the work we produced in such a short time. I believe every team members feels they contributed to the team and learned a lot from the project 
+Overall, I believe we worked well as a team, and I am proud of the work we produced in such a short time. I feel that every team member contributed to the project and learned a lot. However, as mentioned above, if we were to collaborate again on a RISC-V CPU design, I would ensure a more thorough understanding of the overall hardware needed for the implementation. Finally, it was tricky to split tasks and assign them individually since an individual's contribution would impact everyone else's progress. Nonetheless, the team collaboration was great and flowed effortlessly.
