@@ -5,13 +5,15 @@
 **Github username:** noamweitz
 
 ## Overview
-- [Summary of Contributions](#summary-of-contributions)
+- [Personal Statement: Noam Weitzman](#personal-statement-noam-weitzman)
+  - [Overview](#overview)
+  - [Summary of Contributions](#summary-of-contributions)
     - [Lab 4](#lab-4)
     - [Single Cycle CPU](#single-cycle-cpu)
-    - [Cache](#cache) 
-- [What I learned](#what-i-learned)
-- [Mistakes I made](#mistakes-i-made)
-- [What I would do differently](#what-i-would-do-differently)
+    - [Cache](#cache)
+  - [What I learned](#what-i-learned)
+  - [Mistakes I made](#mistakes-i-made)
+  - [What I would do differently](#what-i-would-do-differently)
 
 
 ## Summary of Contributions
@@ -38,23 +40,23 @@ I also used this lab as an opportunity to write up another kind of testebenches 
 ### Single Cycle CPU
 
 Moving from Lab 4 to the whole Single Cycle implementation meant lots of modules had to be refactored as we needed to implement a whole lot more operations as seen in the RISC-V Instruction Set:
-![RISC-V insrtcutions implemented for Single Cycle](/images/RISC-Vcard.png)
+![RISC-V insrtcutions implemented for Single Cycle](../../images/RISC-Vcard.png)
 
-This meant effort had to be put into refactoring some modules, especially the **Control Unit** which turned out to be pretty tedious: [Control Unit module](/rtl/control_unit.sv). Implementing the Control Unit involved a deep understanding of the overall design of the design to understand how operations impact the different signals: 
-![RISC-V](/images/) Insert image of the whole architecture.
+This meant effort had to be put into refactoring some modules, especially the **Control Unit** which turned out to be pretty tedious: [Control Unit module](../../rtl/control_unit.sv). Implementing the Control Unit involved a deep understanding of the overall design of the design to understand how operations impact the different signals: 
+![RISC-V](../../images/) Insert image of the whole architecture.
 
-In order to correctly implement the Control Unit, I also got involved in writing testbenches, especially in asssembly language, which allowed me to test one specific RISC-V instruction. This turned out to be extremely useful for debugging: [Exemple of Assembly Testbench I implemented](/tb/asm/006-lb-lbu-sb.s).
+In order to correctly implement the Control Unit, I also got involved in writing testbenches, especially in asssembly language, which allowed me to test one specific RISC-V instruction. This turned out to be extremely useful for debugging: [Exemple of Assembly Testbench I implemented](../../tb/asm/006-lb-lbu-sb.s).
 
-The refactoring of the **ALU** and **Sign Extension** modules was fairly straightforward, as we just needed to implement all types of instructions not in the Lab 4 design: [ALU module](/rtl/alu.sv) and [Sign Extend](/rtl/sign_extend.sv).
+The refactoring of the **ALU** and **Sign Extension** modules was fairly straightforward, as we just needed to implement all types of instructions not in the Lab 4 design: [ALU module](../../rtl/alu.sv) and [Sign Extend](../../rtl/sign_extend.sv).
 
-Finally, the **Data Memory** module also had to be refactored, because we had to implement byte specific instructions like lb and sb, allowing more specific control over bytes instead of just word control: [Data Memory](/rtl/data_mem.sv).
+Finally, the **Data Memory** module also had to be refactored, because we had to implement byte specific instructions like lb and sb, allowing more specific control over bytes instead of just word control: [Data Memory](../../rtl/data_mem.sv).
 
 ### Cache
 
-Implementing cache helped to increase overall computer performance by hindering *memory performance*. This was done by using the *temporal locality* property of memory. We started by implementing direct-mapped cache, where each set only holds one block of data: [Direct-Mapped Cache module](/rtl/dm_cache.sv).
-![dm_cache implementation](/images/schematic3.png)
+Implementing cache helped to increase overall computer performance by hindering *memory performance*. This was done by using the *temporal locality* property of memory. We started by implementing direct-mapped cache, where each set only holds one block of data: [Direct-Mapped Cache module](../../rtl/dm_cache.sv).
+![dm_cache implementation](../../images/schematic3.png)
 The implementation of direct-mapped cache was more complicated than expected, especially as we had started with a different, faulty design: 
-![faulty dm_cache implementation](/images/schematic1.png)
+![faulty dm_cache implementation](../../images/schematic1.png)
 In this design, 
 
 
