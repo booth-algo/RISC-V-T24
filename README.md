@@ -105,7 +105,33 @@ As such, it is highly recommended that readers refer to all of the `logbooks`, `
 - All personal contributions and progress (such as debugging notes) are noted down in personal logbooks in `docs/logbooks`
 
 ## Working Evidence
+### Graphs
+| Dataset | Graph | Dataset | Graph |
+|-|-|-|-|
+| Gaussian | ![gaussian_graph](images/data/gaussian.png) | Sine | ![sine_graph](images/data/sine.png) |
+| Triangle | ![triangle_graph](images/data/triangle.png) | Noisy | /![noisy_graph](images/data/noisy.png) |
+
+### Videos
+
+F1 lights
+
 https://github.com/booth-algo/RISC-V-T24/assets/107279223/7ba429f9-0615-4acf-bf2c-6efdae65fc95
+
+Gaussian
+
+https://github.com/booth-algo/RISC-V-T24/assets/107279223/ae81e89a-4829-4060-a14d-17d87582065d
+
+Sine
+
+https://github.com/booth-algo/RISC-V-T24/assets/107279223/a9c6b198-6e7f-49ab-9ae8-99291412456b
+
+Triangle
+
+https://github.com/booth-algo/RISC-V-T24/assets/107279223/46700d7b-6817-48e7-a547-8d06d6d3c28a
+
+Noisy
+
+https://github.com/booth-algo/RISC-V-T24/assets/107279223/bfe780a5-3d4b-4b68-b6db-5aa5694de6ce
 
 ## Content // Need to link to each section
 1. Lab 4
