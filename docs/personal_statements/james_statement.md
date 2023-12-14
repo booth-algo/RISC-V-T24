@@ -8,8 +8,7 @@ In the single cycle design, I was reponsible for the design and implementation o
 - Data Memory
 - Restructuring
 - Top file
-I also contributed to the refactoring of the
-- Control Unit
+- Refactoring of Control Unit
 
 #### ALU
 **insert picture**
