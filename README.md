@@ -35,9 +35,17 @@ Here are the relevant commands. More can be found in the documentation.
 | `./doit.sh`                           | Runs the entire testbench.            |
 | `./doit.sh test/top-instr_tb.cpp`     | Runs the entire instruction testbench |
 | `./doit.sh test/top-pdf_tb.cpp`       | Runs the PDF testbench (stdout)       |
+| `./doit.sh test/top-pdf_TB.cpp`       | Runs the PDF testbench (vBuddy)       |
 | `./doit.sh test/top-f1lights_tb.cpp`  | Runs the F1 lights testbench (stdout) |
+| `./doit.sh test/top-f1lights_TB.cpp`  | Runs the F1 lights testbench (vBuddy) |
 | `./analyse.py demo`                   | Creates PDF graphs of all reference data
 
+To use vBuddy, refer to WSL documentation. You may find this command useful:
+
+```bash
+# Must be ttyUSB0- otherwise find and replace in vbuddy.cpp
+sudo chmod a+rw /dev/ttyUSB0
+```
 
 ## Final submission
 
