@@ -160,6 +160,63 @@ When you run a test, it may or may not fail. It is recommended to use the
 waveforms to debug (see above).
 
 
+## Data analysis (analysis.py)
+
+### Branch/Cache Hit-Rate
+
+To perform data analysis, you need to "switch on comment blocks" in the RTL.
+This can be a bit tedious, but this is necessary.
+
+In `dm_cache.sv`:
+
+```sv
+// Analysis of cache - uncomment this block to get data
+    // if (read_en && hit)           $display("HIT");
+    // else if (read_en && ~hit)     $display("MISS");
+    // else if (write_en)            $display("STORE");
+```
+
+In `pcnext_selector.sv`:
+
+```sv
+// // Analysis of branching - uncomment to get data
+// if (branch && !(PCsrc == `PC_NEXT)) $display("BRANCH");
+// else if (~branch && !(PCsrc == `PC_NEXT)) $display("NOT BRANCH");
+```
+
+Then, run the `doit.sh` script as following.
+
+```
+./doit.sh test/top-instr_tb.cpp > output.log
+```
+
+Now this can be fed in to be analysed by the Python script.
+
+```bash
+./analyse.py run --input output.log
+```
+
+Et voilà! This will give you branch and cache hit rate graphs.
+
+### PDF plotting
+
+To get PDF graphs through the PDF testbench, run the following:
+
+```bash
+./analyse.py demo
+```
+
+The behind-the-scenes mechanism can also be accessed:
+
+```bash
+# Obtain the Gaussian data
+cp data/gaussian.mem ../rtl/data.hex
+./doit.sh test/top-pdf_tb.cpp > gaussian.log
+
+# Plot the Gaussian
+./analyse.py plot --input gaussian.log
+```
+
 ## Git instructions (creating new branch)
 - Switch to main before deleting
 - Delete: `git branch -d <branch_name>`

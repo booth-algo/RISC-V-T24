@@ -9,14 +9,21 @@
 
 import argparse
 import statistics
+import subprocess
+import shutil
+import os
 from pathlib import Path
 import re
 import matplotlib.pyplot as plt
 
 
 # Global constants
-INPUT_FILE = Path(__file__).resolve().parent / "output.log"
-OUTPUT_FOLDER = Path(__file__).resolve().parent / "graphs"
+PARENT_DIR = Path(__file__).resolve().parent
+INPUT_FILE = PARENT_DIR / "output.log"
+OUTPUT_FOLDER = PARENT_DIR / "graphs"
+DATA_FOLDER = PARENT_DIR / "data"
+RTL_FOLDER = PARENT_DIR.parent / "rtl"
+
 CACHE_DATA_NAME = "cache_data.png"
 BRANCH_DATA_NAME = "branch_data.png"
 PLOT_NAME = "plot.png"
@@ -179,6 +186,33 @@ class PDFDataPlotter:
         plt.savefig(output_folder / (name + ".png"), dpi=300)
 
 
+class Demo:
+    def __init__(self):
+        file_names = [os.path.splitext(f)[0] for f in os.listdir(DATA_FOLDER)
+                      if os.path.isfile(os.path.join(DATA_FOLDER, f))]
+
+        for name in file_names:
+            # Move data to the right place
+            print(f"Processing {name}.mem...")
+            shutil.copy(DATA_FOLDER / f"{name}.mem", RTL_FOLDER / "data.hex")
+
+            log_filepath = f"{name}.log"
+
+            # Run the ./doit.sh command to run the PDF
+            with open(log_filepath, "w") as log_file:
+                subprocess.run(
+                    ["./doit.sh", "test/top-pdf_tb.cpp"],
+                    stdout=log_file,
+                    stderr=subprocess.DEVNULL,
+                    text=True
+                )
+
+            pdf_data_plotter = PDFDataPlotter(log_filepath)
+            pdf_data_plotter.plot_pdf(name, OUTPUT_FOLDER)
+
+        print(f"Complete! Results can be found here: {OUTPUT_FOLDER}")
+
+
 def analyse(input_file):
     data_parser = DataParser(input_file)
     results = data_parser.get_data()
@@ -191,6 +225,10 @@ def plot(input_file, name):
     pdf_data_plotter.plot_pdf(name, OUTPUT_FOLDER)
 
 
+def demo():
+    showDemo = Demo()
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Takes in a log file and extracts data such as data "
@@ -200,20 +238,26 @@ def main():
 
     # Run analysis
     analyse_parser = subparsers.add_parser(
-        "run",
-        help="Run analysis of the instruction testbench (top-instr_tb.cpp)")
+        "run", help="Run analysis of the instruction testbench (top-instr_tb.cpp)")
     analyse_parser.add_argument(
         "-i", "--input", help="Path to the input log file", default=INPUT_FILE)
     analyse_parser.set_defaults(func=analyse)
 
     # Plot
     plot_parser = subparsers.add_parser(
-        "plot", help="Run plot for the PDF testbench (top-pdf_tb.cpp)")
+        "plot", help="Plot a PDF graph using the PDF testbench (top-pdf_tb.cpp)")
     plot_parser.add_argument(
-        "-i", "--input", help="Path to the input data file", default=INPUT_FILE)
+        "-i", "--input", help="Path to the input data log file", required=True)
     plot_parser.add_argument(
-        "-n", "--name", help="Name of the plot", required=True)
+        "-n", "--name", help="Name of the plot")
     plot_parser.set_defaults(func=plot)
+
+    # Demo
+    demo_parser = subparsers.add_parser(
+        "demo", help="Run the whole PDF testbench and automatically plot the "
+        "graphs, without any need for inputs"
+    )
+    demo_parser.set_defaults(func=demo)
 
     args = parser.parse_args()
 
@@ -221,8 +265,17 @@ def main():
 
     if args.mode == 'run':
         args.func(args.input)
+    elif args.mode == "plot":
+        if not args.name:
+            name = Path(args.input).stem
+        else:
+            name = args.name
+
+        args.func(args.input, name)
+    elif args.mode == "demo":
+        args.func()
     else:
-        args.func(args.input, args.name)
+        print("Invalid option")
 
 
 if __name__ == "__main__":

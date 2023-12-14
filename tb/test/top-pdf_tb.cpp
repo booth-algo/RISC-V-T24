@@ -1,5 +1,13 @@
 /*
  *  Verifies the results of the CPU and exits with a 0 on success.
+ *
+ *  Instructions for usage (IMPORTANT)
+ *  ---------------------------------------------------------------------------
+ *  Load the data memory in the RTL folder by copying over data from the data
+ *  folder
+ *  If you want to use Vbuddy, you must uncomment the lines fenced with ---,
+ *  however leave the fences in. The default behaviour is off.
+ * 
  *  Author: William Huynh <wh1022@ic.ac.uk>
 */
 
@@ -27,15 +35,14 @@ protected:
 
 TEST_F(CpuTestbench, InitialStateTest)
 {
-    // Before the simulation takes place, place correct data in right place
-    system("cp data/sine.mem ../rtl/data.hex");
-
     // Initialise VBuddy
+    //-------------------------------------------------------------------------
     // if (vbdOpen() != 1)
     // {
     //     SUCCEED() << "Not actually lol";
     // }
     // vbdHeader("PDF plotting");
+    //-------------------------------------------------------------------------
     
     int plot = 0;
 
@@ -50,6 +57,9 @@ TEST_F(CpuTestbench, InitialStateTest)
         if (plot && (int)top->a0 >= 0)
         {
             std::cout << (int)top->a0 << std::endl;
+            //-----------------------------------------------------------------
+            // vbdPlot(top->a0);
+            //-----------------------------------------------------------------
             plot++;
         }
         if (plot > 256)
