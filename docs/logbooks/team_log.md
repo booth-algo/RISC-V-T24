@@ -4,8 +4,8 @@ This file will note down **major meetups** and breakdown the progress completed 
 
 ## Lab meetup (16/11)
   - Discussed and allocated lab 4 parts to team members
-    ![Alt text](../images/lab4_design.png)
-    ![Alt text](../images/lab4_allocation.png)
+    ![Alt text](../../images/lab4_design.png)
+    ![Alt text](../../images/lab4_allocation.png)
   - Team goals:
     1. Lab 4 design
     2. Single cycle
