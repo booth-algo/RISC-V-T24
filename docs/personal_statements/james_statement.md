@@ -1,7 +1,13 @@
 # Personal Statement - James Mitchell 02226128
+## Overview 
+[Contributions](#Contributions)
+- [Single Cycle](#Single Cycle)
+- [Cache](#Cache)
+[What I've Leaned](#What I've Learned)
+[Mistakes I Made](#Mistakes I Made)
 ## Contributions
 ### Single Cycle 
-
+[Single Cycle](/docs/team_statements_sections/single_cycle.md)
 In the single cycle design, I was reponsible for the design and implementation of the:
 - ALU
 - Register file
@@ -9,6 +15,8 @@ In the single cycle design, I was reponsible for the design and implementation o
 - Restructuring
 - Top file
 - Refactoring of Control Unit
+  
+---
 
 #### ALU
 **insert picture**
@@ -23,29 +31,41 @@ For the initial design of the lab 4 ALU, only 3 operations were required **ADD**
         default:    ALUout = 0;   
     endcase
 ```
+---
+
 #### Register File
 **insert picture**
 The initial design of the single cycle required a 32 registers each of width 32 bits. 
 [regfile](/rtl/regfile.sv)
+
+---
 
 #### Data Memory
 **insert Picture**
 A new module **data_mem** was required for the single cycle design so Kevin and I. Designed, implemented and tested the module.
 [data_mem](/rtl/data_mem.sv)
 
+---
+
 #### Restructuring
 **insert Picture**
 When changing the design to single cycle, putting the muxes inside the **Program Counter** and the **ALU** proved problematic. I pulled out the muxes into the top file to make it more readable and writing the top module easier.
 
+---
+
 #### Top Module 
 For the single cycle design, I wrote the top module design including the additional modules and wired appropriately.
+
+--- 
 
 ### Cache
 In the cache design, I was responsible for the design of the
 - Direct Mapped Cache
 - Two-Way Assosiative Cache
 The final implementation was a split contribution between the team.
-**link to cache.md**
+[Cache](docs/team_statement_sections/cache.md)
+  
+ ---
  
 #### Direct Mapped Cache
 
@@ -67,8 +87,5 @@ After taking a large portion of the workload related to cache, I have leanrt tho
 ## Mistakes I made 
 I made a few mistakes in this project related to my management and skills learned. I regret not taking the opportunity to learning the workings of the testbenches and how to write them at the start of the project from my peers. Learning this skill would've enabled more effective debugging, helping out the team more in this area.  
 
-## The Team 
-In my opinion, the team worked exellently together and the dynamics of the team were effortless. I believe that the workload of the team was equally distributed and I am thankful for the work that my group have put into this project
-
 ## What I Would Do Differently
-If the group was to do this project again, I would ensure that we planned appropriately the design of each module before implementation to reduce time spent redesigning modules in the CPU and unneccessary time spent debugging.
+In my opinion, the team worked exellently together and the dynamics of the team were effortless. I believe that the workload of the team was equally distributed and I am thankful for the work that my group have put into this project. If the group was to do this project again, I would ensure that we planned appropriately the design of each module before implementation to reduce time spent redesigning modules in the CPU and unneccessary time spent debugging.
