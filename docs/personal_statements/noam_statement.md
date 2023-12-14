@@ -57,6 +57,8 @@ The implementation of direct-mapped cache was more complicated than expected, es
 ![faulty dm_cache implementation](/images/schematic1.png)
 In this design, 
 
+
+
 This causes conflicts many memory addresses will map to the same set. This will result in a lower hit rate than we would have by implementing a two-way set associative cache. 
 
 ## What I learned
@@ -70,11 +72,13 @@ Finally, it played a crucial role as my first actual coding project collaboratin
 
 ## Mistakes I made
 
+- I believe that the main mistake I did when writing code at first was not making it modular enough. An example of this is in the Control Unit, where I would specify the *opcode*, *funct3* and *funct7* bits instead of defining them somewhere and referring to them. This was probably the biggest mistake I made initially but improved with practice. This resulted in the code being more tedious to refactor.
 
+- It took some time for me to understand how important it was to seek explanations from teammates to leverage their strengths and improve my weak spots.
 
-cache first implementation, not global code enough that had to be refactored, misunderstanding of how to handle byte addressing vs word addressing
+- I had a misunderstanding of how byte addressing was handled compared to word addressing, leading to issues when debugging with the rest of the team. We also began with a wrong design of cache (as explained above in [cache](#cache) section).
 
-Taught me importance of thorough understanding before trying to implemetn a faulty design. highlight value of clear and organised design and detail attention.
+These last mistakes taught me the importance of thorough understanding of the hardware we want to implement before proceeding with a faulty design. This highlighted the value of a clear and organised design and paying attention to details.
 
 ## What I would do differently
 
