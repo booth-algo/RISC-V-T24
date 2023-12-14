@@ -5,17 +5,18 @@
 
 ## Overview 
 
-- [Contributions](#Contributions)
-  - [Single Cycle](#Single-Cycle)
-  - [Cache](#Cache)
-- [What I've Leaned](#What-i've-Learned)
-- [Mistakes I Made](#Mistakes-I-made)
+- [Contributions](#contributions)
+  - [Single Cycle](#single-cycle)
+  - [Cache](#cache)
+- [What I Have Leaned](#what-i-have-learned)
+- [Mistakes I Made](#mistakes-i-made)
 - [What I would do differently](#what-i-would-do-differently)
-- 
+  
 ## Contributions
 ### Single Cycle 
 [Single Cycle](/docs/team_statements_sections/single_cycle.md)
-![Single Cycle](../../images/single_cycle.png)
+
+
 In the single cycle design, I was reponsible for the design and implementation of the:
 - ALU
 - Register file
@@ -23,12 +24,17 @@ In the single cycle design, I was reponsible for the design and implementation o
 - Restructuring
 - Top file
 - Refactoring of Control Unit
+
+  
+  ![Single Cycle](../../images/single_cycle.png)
   
 ---
 
 #### ALU
-![ALU](../../images/ALU.png)
-For the initial design of the lab 4 ALU, only 3 operations were required **ADD**, **SUB**, **SLT**. However, in the single cycle to accomodate to all of the other instructions, we also required **AND** and **OR** operations. 
+
+
+For the initial design of the lab 4 ALU, only 3 operations were required **ADD**, **SUB**, **SLT**. However, in the single cycle to accomodate to all of the other instructions, we also required **AND** and **OR** operations.
+
 ```SV
   case(ALUctrl)
         3'b000:     ALUout = a + b;
@@ -43,21 +49,26 @@ For the initial design of the lab 4 ALU, only 3 operations were required **ADD**
 
 #### Register File
 ![regfile](../../images/regfile.png)
+
+
 The initial design of the single cycle required a 32 registers each of width 32 bits. 
+
 [regfile](../rtl/regfile.sv)
 
 ---
 
 #### Data Memory
-**insert Picture**
+
 A new module **data_mem** was required for the single cycle design so Kevin and I. Designed, implemented and tested the module.
+
+
 [data_mem](/rtl/data_mem.sv)
 
 ---
 
 #### Restructuring
 ![restructure](../../images/muxes.png)
-When changing the design to single cycle, putting the muxes inside the **Program Counter** and the **ALU** proved problematic. I pulled out the muxes into the top file to make it more readable and writing the top module easier.
+When changing the design to single cycle, putting the muxes inside the **Data Memory** and the **ALU** proved problematic. I pulled out the muxes into the top file to make it more readable and writing the top module easier.
 
 ---
 
@@ -72,23 +83,32 @@ In the cache design, I was responsible for the design of the
 - Direct Mapped Cache
 - Two-Way Assosiative Cache
 The final implementation was a split contribution between the team.
+
+
 [Cache](docs/team_statement_sections/cache.md)
   
  ---
  
 #### Direct Mapped Cache
 ![Direct Mapped Memory Addressing](../../images/set_image.png)
+
 The Direct Mapped Cache required a rewrite of the memroy module. From the Harris & Harris textbook, I designed a cacheline and memory addressing for the cache memory and then wrote the dm_cache.sv file with Noam for the direct mapped cache. 
-![dm_cache implementation](../../images/schematic3.png)
-However, after this initial design, it was spotted in the testing that the clock cycles were misaligned so all the members of the team rewrote the top memory module together for this design and implemented it.
+
 ![faulty dm_cache implementation](../../images/schematic1.png)
 
-#### 2-Way Associative Cache
-![2-Way Memory Addressing](../../images.cache.png)
-As I was designing the cache line and memory addressing for the direct mapped cache. I also wrote the code for the two-way associative cache based off an outline Kevin had provided. Noam and I finished this code using what we had learned from the direct mapped cache, the lectures and the textbook. The implementation of the **Replacement Policy** took time to research and Noam assisted with the syntax and logic behind the code  However, due to time, our final code was never fully implemented and tested.
-![2-Way Asscoiative Cache code](../../cache/cache.sv)
+However, after this initial design, it was spotted in the testing that the clock cycles were misaligned so all the members of the team rewrote the top memory module together for this design and implemented it.
 
-## What I've Learned 
+![dm_cache implementation](../../images/schematic3.png)
+
+
+#### 2-Way Associative Cache
+![2-Way Memory Addressing](../../images/cache.png)
+
+As I was designing the cache line and memory addressing for the direct mapped cache. I also wrote the code for the two-way associative cache based off an outline Kevin had provided. Noam and I finished this code using what we had learned from the direct mapped cache, the lectures and the textbook. The implementation of the **Replacement Policy** took time to research and Noam assisted with the syntax and logic behind the code  However, due to time, our final code was never fully implemented and tested.
+
+![2-Way Asscoiative Cache code](../cache/cache.sv)
+
+## What I Have Learned 
 This project has been essential in my learning and development of this module. From the application of the theory in the coursework to the leaning how to manage time, delegate workload and work effectively in a team. This project has been a fantastic oppurtunity to create a CPU with a reduced version of what is used in industry as well as learning how optimisation is important and the implementation of this. The opportunity to learn and work with peers, I had not previously worked with was an opportunity to see how others work and learn from the strengths and weaknesses of the individual members in the team, the group's varying experience allowed for teaching of valuable methodology.
 
 The scope of the project was time appropriate and the workload was difficult. The project allowed me to learn how to code as a team, with transcending the fear of editing or debugging code that one of my peers has written. My skills of debugging, writing readable code and communicating appropriately greatly improved over the scope of the project. This was my first experience with dealing with a project of this scale related to the CPU, so this was a great stepping stone for my future career and alligns to my goals going forward.
