@@ -105,6 +105,7 @@ As such, it is highly recommended that readers refer to all of the `logbooks`, `
 - All personal contributions and progress (such as debugging notes) are noted down in personal logbooks in `docs/logbooks`
 
 ## Working Evidence
+https://github.com/booth-algo/RISC-V-T24/assets/107279223/7ba429f9-0615-4acf-bf2c-6efdae65fc95
 
 ## Content // Need to link to each section
 1. Lab 4
