@@ -59,11 +59,38 @@ Here are the relevant commands. More can be found in the documentation.
 | ------------------------------------- |-------------------------------------- |
 | `./doit.sh`                           | Runs the entire testbench.            |
 | `./doit.sh test/top-instr_tb.cpp`     | Runs the entire instruction testbench |
-| `./doit.sh test/top-pdf_tb.cpp`       | Runs the PDF testbench (stdout)       |
-| `./doit.sh test/top-pdf_TB.cpp`       | Runs the PDF testbench (vBuddy)       |
+| `./doit.sh test/top-pdf_tb.cpp`       | Runs the PDF testbench*(stdout)       |
+| `./doit.sh test/top-pdf_TB.cpp`       | Runs the PDF testbench*(vBuddy)       |
 | `./doit.sh test/top-f1lights_tb.cpp`  | Runs the F1 lights testbench (stdout) |
 | `./doit.sh test/top-f1lights_TB.cpp`  | Runs the F1 lights testbench (vBuddy) |
 | `./analyse.py demo`                   | Creates PDF graphs of all reference data
+
+\* Note: to run the PDF testbench, you need to load the data memory. 
+Run only ONE of the following BEFORE `doit.sh`.
+
+Gaussian:
+
+```bash
+cp data/gaussian.mem ../rtl/data.hex
+```
+
+Noisy:
+
+```bash
+cp data/noisy.mem ../rtl/data.hex
+```
+
+Sine:
+
+```bash
+cp data/sine.mem ../rtl/data.hex
+```
+
+Triangle:
+
+```bash
+cp data/triangle.mem ../rtl/data.hex
+```
 
 To use vBuddy, refer to WSL documentation. You may find this command useful:
 
@@ -86,12 +113,13 @@ sudo chmod a+rw /dev/ttyUSB0
 - `images`: images for `docs`
 - `rtl`: RV32I processor modules
 - `tb`: Testbench and scripts
-
+- 
 ### Workflow
 
 - After `lab4`, modules / work were dynamically allocated to team members
-- Team meetings, discussion and progress are logged in `team_log.md`
-- All personal contributions and progress (such as debugging notes) are noted down in personal logbooks in `docs/logbooks`
+- Team meetings, discussion and progress are logged in 
+[`team_log.md`](docs/logbooks/team_log.md)
+- All personal contributions and progress (such as debugging notes) are noted down in personal logbooks in [`docs/logbooks`](docs/logbooks/)
 
 
 ## Working Evidence

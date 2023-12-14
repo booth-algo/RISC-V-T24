@@ -42,6 +42,13 @@ Some tests can generate a waveform. To view the waveform:
 gtkwave waveform.vcd
 ```
 
+You can also open up GTKWave with an input file. Try this (if `me.gtkw` exists):
+
+```bash
+# Uses the me.gtkw to preload waves, reducing the need to reload everytime
+gtkwave waveform.vcd -a me.gtkw
+```
+
 Note: there may be seperate test cases in one testbench. If you want to see the
 waveforms for one file, it is essential to comment out other test cases so that
 the right waveforms are generated.
@@ -184,7 +191,7 @@ In `pcnext_selector.sv`:
 // else if (~branch && !(PCsrc == `PC_NEXT)) $display("NOT BRANCH");
 ```
 
-Then, run the `doit.sh` script as following.
+Then, run the `doit.sh` script as follows.
 
 ```
 ./doit.sh test/top-instr_tb.cpp > output.log
@@ -231,7 +238,7 @@ cp data/gaussian.mem ../rtl/data.hex
   - `git branch -b <branch_name>`
 
 ## RISC-V calling conventions
-![Alt text](../images/calling_convention.png)
+![Alt text](../../images/calling_convention.png)
 
 ## Cache (Two-way set associative)
-![Alt text](<../images/cache.png>)
+![Alt text](<../../images/cache.png>)

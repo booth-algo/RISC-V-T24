@@ -16,6 +16,9 @@ sudo apt-get install -y libfl2
 sudo apt-get install -y libfl-dev
 sudo apt-get install -y zlibc zlib1g zlib1g-dev
 
+# For the analyse.py
+sudo apt install python3-pip
+pip install matplotlib
 
 # Install verilator unless stated otherwise
 if command -v "verilator" > /dev/null; then

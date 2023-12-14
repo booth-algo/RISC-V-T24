@@ -12,7 +12,8 @@ component undergoes extensive, random testing. However, it was decided that
 a simpler, traditional testing approach will be used due to time constraints.
 
 Before reading this section, it is *heavily* recommended to try out the 
-testbench. Navigate to the [Quick Start](#quick-start) for more information.
+testbench. Navigate to the [Quick Start](../../README.md#quick-start) for more 
+information.
 
 Implementations include:
   1. **CI pipeline** - GitHub Actions
@@ -21,7 +22,8 @@ Implementations include:
   4. **ASM and C tests**
   5. **Cache hit/miss test** - Data analysis
 
-Note: to try the commands in this section, please execute the following command:
+Note: to try the commands in this section, please execute the following command
+from the project directory:
 
 ```bash
 cd tb
@@ -29,15 +31,15 @@ cd tb
 
 \* CI = Continuous Integration
 
-### CI pipeline - GitHub Actions
+## CI pipeline - GitHub Actions
 
-The [CI pipeline](../../.github/workflows/main.yml) automatically generates a pass 
-or a fail on every push/merge into the remote git repository, notifying 
+The [CI pipeline](../../.github/workflows/main.yml) automatically generates a 
+pass or a fail on every push/merge into the remote git repository, notifying 
 developers in case their changes anything. 
 
 It is also an easy way for others to see how our code is tested.
 
-### Testbench and bash scripts - GTests
+## Testbench and bash scripts - GTests
 
 Two types of testbenches were implemented:
   1. Unit testbenches
@@ -54,7 +56,10 @@ caching the built versions of the CPU every time, since they are simpler
 to read. More documentation is found in each file's header e.g. 
 [`compile.sh`](../../tb/compile.sh).
 
-### Code Coverage
+## Code Coverage
+
+Measuring code coverage allows us to find potentially untested pieces of code.
+This turned out to be especially useful for the control unit.
 
 Running a unit testbench generates a code coverage report using LCOV.
 Give it a go:
@@ -63,7 +68,8 @@ Give it a go:
 ./doit.sh test/alu_tb.cpp
 ```
 
-Now check this [webpage](../../tb/logs/html/index.html) for code coverage.
+Now check this [webpage](../../tb/logs/html/index.html) for code coverage (will
+appear after the script is ran).
 
 Here are the statistics for the entire testbench. 
 
@@ -86,14 +92,14 @@ Here are the statistics for the entire testbench.
 \* There was a segmentation error when running certain testbenches, therefore
 data could not be collected.
 
-### ASM and C test writing
+## ASM and C test writing
 
 Tests were written for specific modules and instructions.
 
  Some tests were particularly useful for debugging some hidden bugs, including 
 [`022-combined.c`](../../tb/c/022-combined.c), 
-[`c/023-linked_list.c`](../../tb/c/023-linked_list.c), which provided huge help when 
-debugging [`data_mem.sv`](../../rtl/data_mem.sv) and 
+[`c/023-linked_list.c`](../../tb/c/023-linked_list.c), which provided huge help 
+when debugging [`data_mem.sv`](../../rtl/data_mem.sv) and 
 [`instr_mem.sv`](../../rtl/instr_mem.sv).
 
 C code can be disassembed into assembly, allowing us to trace instructions and
@@ -104,15 +110,44 @@ implementation. Give it a go:
 ./compile.sh --input c/023-linked_list.c
 ```
 
-Now check the disassembly [here](../../tb/c/023-linked_list.dis.txt).
+Now check the disassembly [here](../../tb/c/023-linked_list.dis.txt) (will
+appear after the script is ran).
 
-These tests allows us to **isolate** bugs down to certain instructions / behaviour.
+These tests allows us to **isolate** bugs down to certain instructions / 
+behaviour.
 
-### Cache hit / miss test - Data analysis
+Another advantage of using C is that expected outputs can easily be checked.
+Give it a go:
 
-After debugging, the implementation of direct-mapped cache passed all written tests, but it wasn't clear whether it exhibited the correct behaviour. 
+```bash
+cd c
+gcc -o program 023-linked_list.c
+./program
+```
 
-To check whether the cache hit / miss behaviour was accurate, data analysis was done using previous tests written in `asm` specifically for hit/miss.
+Here's what you should get:
+
+```
+158
+```
+
+This is done through conditional compilation, allowing the RISC-V compiler to
+ignore the line below, referenced from 
+[`c/023-linked_list.c`](../../tb/c/023-linked_list.c).
+
+```c
+#if !defined(__riscv)
+    printf("%d\n", ans);
+#endif
+```
+
+## Cache hit / miss test - Data analysis
+
+After debugging, the implementation of direct-mapped cache passed all written 
+tests, but it wasn't clear whether it exhibited the correct behaviour. 
+
+To check whether the cache hit / miss behaviour was accurate, data analysis 
+was done using previous tests written in `asm` specifically for hit/miss.
 
 **Case Study**: 
 [`011-dm_cache_temp_locality.s`](../../tb/asm/011-dm_cache_temp_locality.s).
@@ -120,7 +155,7 @@ To check whether the cache hit / miss behaviour was accurate, data analysis was 
 This is the assembly code referenced from Lecture 9. The expected hit rate (as
 seen in slide 14 at the time of reference) is **80% (12/15)**. This was verified
 as **81% (13/16)**, as the last reading came from our pipeline implementation. This 
-can be verified on the [graph](../../images/hit_rates_all_tests.jpg) below, also 
+can be verified on the graph below, also 
 referenced in the cache section.
 
 ![graph](../../images/hit_rates_all_tests.jpg)
