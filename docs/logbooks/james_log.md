@@ -37,5 +37,9 @@
 ## 13-14/12
 - Personal statement written + cache.md written with Noam
 
+## 15/12
+- LRU implemted in 2 way cache
+- Personal statement completed
+
   
 
