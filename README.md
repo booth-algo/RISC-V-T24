@@ -1,6 +1,7 @@
-# RISC-V Team 24 Statement
+# RISC-V RV32I Processor
 
-## Team 24
+## Team 24 Statement
+
 | Kevin Lau (repo manager) | William Huynh | James Mitchell | Noam Weitzman |
 |-|-|-|-|
 
@@ -29,7 +30,7 @@ Our team has successfully completed and verified the following for our RV32I
 |-----------|--------------------|---------|
 | Kevin     | [Personal statement](docs/personal_statements/kevin_statement.md) | [Logbook](docs/logbooks/kevin_log.md) |
 | William   | [Personal statement](docs/personal_statements/william_statement.md) | [Logbook](docs/logbooks/william_log.md) |
-| Jamie     | [Personal statement](docs/personal_statements/jamie_statement.md) | [Logbook](docs/logbooks/jamie_log.md) |
+| Jamie     | [Personal statement](docs/personal_statements/james_statement.md) | [Logbook](docs/logbooks/james_log.md) |
 | Noam      | [Personal statement](docs/personal_statements/noam_statement.md) | [Logbook](docs/logbooks/noam_log.md) |
 
 
