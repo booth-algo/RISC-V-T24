@@ -124,6 +124,10 @@ sudo chmod a+rw /dev/ttyUSB0
 
 ## Working Evidence
 
+Note: The following evidence was collected from running `tag v0.4.0`, the `direct-mapped cache` version of our code. 
+
+- If you want to check our `testbenches` or plot the `graphs` below, please refer to the [Quick Start](#quick-start) section above, where all instructions are available.
+
 ### Graphs
 | Dataset | Graph | Dataset | Graph |
 |-|-|-|-|

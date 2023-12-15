@@ -83,7 +83,7 @@
 
 ### (4) Cache
 
-- (a) I worked on the structure of the `cache` and the `read logic` very early on while `single cycle` was being completed. I initially designed the two-way set associative cache structure.
+- (a) I worked on the structure of the `cache` and the `read logic` very early on while `single cycle` was being completed. I initially designed the two-way set associative cache structure with Jamie.
 
 - (b) Participated in the **working** `direct mapped cache` implementation by integrating `direct mapped cache` into `top` by creating a new memory unit with William (squashed commits made by William, co-authored by me).
 
