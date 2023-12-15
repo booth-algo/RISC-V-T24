@@ -24,7 +24,7 @@
   
 ## Contributions
 ### Single Cycle 
-[Single Cycle](/docs/team_statements_sections/single_cycle.md)
+[Single Cycle](../../docs/team_statements_sections/single_cycle.md)
 
 
 In the single cycle design, I was reponsible for the design and implementation of the:
@@ -64,7 +64,7 @@ For the initial design of the lab 4 ALU, only 3 operations were required **ADD**
 
 The initial design of the single cycle required a 32 registers each of width 32 bits. 
 
-[regfile](../rtl/regfile.sv)
+[regfile](../../rtl/regfile.sv)
 
 ---
 
@@ -74,7 +74,7 @@ A new module **data_mem** was required for the single cycle design so Kevin and 
 
 [Data memory commit](https://github.com/booth-algo/RISC-V-T24/commit/839a96757fc2fb19f1f6a06d36f8ff8e2de9464b)
 
-[data_mem](/rtl/data_mem.sv)
+[data_mem](../../rtl/data_mem.sv)
 
 ---
 
@@ -97,7 +97,7 @@ In the cache design, I was responsible for the design of the
 The final implementation was a split contribution between the team.
 
 
-[Cache](../docs/team_statement_sections/cache.md)
+[Cache](../../docs/team_statement_sections/cache.md)
   
  ---
  
