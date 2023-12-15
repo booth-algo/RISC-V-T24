@@ -6,10 +6,12 @@ module top_memory #(
 ) (
     input logic clk,
     input logic write_en,
+    input logic read_en,
     input logic [2:0] addr_mode,
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] write_data,
 
+    output logic hit,
     output logic [DATA_WIDTH-1:0] out
 );
 
@@ -79,10 +81,12 @@ dm_cache #(ADDR_WIDTH, DATA_WIDTH) dm_cache_inst (
 way2_cache #(ADDR_WIDTH, DATA_WIDTH) way2_cache_inst (
     .clk(clk),
     .write_en(write_en),
+    .read_en(read_en),
     .addr_mode(addr_mode),
     .addr(addr),
     .write_data(write_data),
 
+    .hit(hit),
     .out(out_cache)
 );
 

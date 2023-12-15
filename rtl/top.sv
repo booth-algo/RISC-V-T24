@@ -71,7 +71,14 @@ module top #(
     
     logic MemRead_D;
     logic MemRead_E;
+    
+    // These are ONLY for analysis purposes- there is no need for this signal otherwise
+    logic MemRead_M;
 
+    /* verilator lint_off UNUSEDSIGNAL */
+    logic hit;
+    /* verilator lint_on UNUSEDSIGNAL */
+    
     logic [WIDTH-1:0] WriteData_E;
     logic [WIDTH-1:0] WriteData_M;
     
@@ -280,11 +287,13 @@ module top #(
         .PCP4_M(PCP4_M),
 
         .RegWrite_E(RegWrite_E),
+        .MemRead_E(MemRead_E),
         .ResultSrc_E(ResultSrc_E),
         .MemWrite_E(MemWrite_E),
         .AddrMode_E(AddrMode_E),
 
         .RegWrite_M(RegWrite_M),
+        .MemRead_M(MemRead_M),
         .ResultSrc_M(ResultSrc_M),
         .MemWrite_M(MemWrite_M),
         .AddrMode_M(AddrMode_M)
@@ -297,10 +306,12 @@ module top #(
     top_memory top_memory_inst (
         .clk(clk),
         .write_en(MemWrite_M),
+        .read_en(MemRead_M),
         .addr_mode(AddrMode_M),
         .addr(ALUResult_M),
         .write_data(WriteData_M),
         
+        .hit(hit),
         .out(ReadData_M)
     );
 
