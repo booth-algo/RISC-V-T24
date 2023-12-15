@@ -4,14 +4,24 @@
 **Github Username:** JamieMitchell123
 
 ## Overview 
-
+- [Summary](#summary)
 - [Contributions](#contributions)
   - [Single Cycle](#single-cycle)
   - [Cache](#cache)
 - [What I Have Leaned](#what-i-have-learned)
 - [Mistakes I Made](#mistakes-i-made)
 - [What I would do differently](#what-i-would-do-differently)
-  
+
+## Summary 
+
+- I have worked on the single cycle and the cache of this processor designing many of the modules
+    - lab 4/ Single Cycle modules
+    -  Direct Mapped Cache
+    -  Two-Way Associative Cache
+- My Personal Logbook notes the process of all of this as well as highlights the work that I completed at different stages of the process
+- I have included a concise reflection of my work here but more information on how each of the modules were designed and implemented can be found in the **team statement** as well as the **commits**
+
+- 
 ## Contributions
 ### Single Cycle 
 [Single Cycle](/docs/team_statements_sections/single_cycle.md)
@@ -24,6 +34,7 @@ In the single cycle design, I was reponsible for the design and implementation o
 - Restructuring
 - Top file
 - Refactoring of Control Unit
+  **link commits**
 
   
   ![Single Cycle](../../images/single_cycle.png)
@@ -33,7 +44,7 @@ In the single cycle design, I was reponsible for the design and implementation o
 #### ALU
 
 
-For the initial design of the lab 4 ALU, only 3 operations were required **ADD**, **SUB**, **SLT**. However, in the single cycle to accomodate to all of the other instructions, we also required **AND** and **OR** operations.
+For the initial design of the lab 4 ALU, only 3 operations were required **ADD**, **SUB**, **SLT**. However, in the single cycle to accomodate to all of the other instructions, **AND** and **OR** operations were also required.
 
 ```SV
   case(ALUctrl)
@@ -48,8 +59,6 @@ For the initial design of the lab 4 ALU, only 3 operations were required **ADD**
 ---
 
 #### Register File
-![regfile](../../images/regfile.png)
-
 
 The initial design of the single cycle required a 32 registers each of width 32 bits. 
 
@@ -74,7 +83,7 @@ When changing the design to single cycle, putting the muxes inside the **Data Me
 
 #### Top Module 
 
-For the single cycle design, I wrote the top module design including the additional modules and wired appropriately.
+For the single cycle design, I wrote the top module design, including the additional modules and wired appropriately.
 
 --- 
 
@@ -93,18 +102,21 @@ The final implementation was a split contribution between the team.
 ![Direct Mapped Memory Addressing](../../images/set_image.png)
 
 The Direct Mapped Cache required a rewrite of the memroy module. From the Harris & Harris textbook, I designed a cacheline and memory addressing for the cache memory and then wrote the dm_cache.sv file with Noam for the direct mapped cache. 
+**link commit**
 
 ![faulty dm_cache implementation](../../images/schematic1.png)
 
 However, after this initial design, it was spotted in the testing that the clock cycles were misaligned so all the members of the team rewrote the top memory module together for this design and implemented it.
-
+**commit**
 ![dm_cache implementation](../../images/schematic3.png)
 
 
 #### 2-Way Associative Cache
 ![2-Way Memory Addressing](../../images/cache.png)
 
-As I was designing the cache line and memory addressing for the direct mapped cache. I also wrote the code for the two-way associative cache based off an outline Kevin had provided. Noam and I finished this code using what we had learned from the direct mapped cache, the lectures and the textbook. The implementation of the **Replacement Policy** took time to research and Noam assisted with the syntax and logic behind the code  However, due to time, our final code was never fully implemented and tested.
+As I was designing the cache line and memory addressing for the direct mapped cache. I also wrote the code for the two-way associative cache based off an outline Kevin had provided. Noam and I finished this code using what we had learned from the direct mapped cache, the lectures and the textbook. The implementation of the **Replacement Policy** took time to research and Noam assisted with the syntax and logic behind the code. The code runs successfully passes both the F1 and PDF test benches along with the other 35 testbenches written however, the final implementaion due to time was never implemented in the final product. 
+**link to cache branch**
+**link to LRU commmit**
 
 ![2-Way Asscoiative Cache code](../cache/cache.sv)
 
@@ -116,7 +128,7 @@ The scope of the project was time appropriate and the workload was difficult. Th
 After taking a large portion of the workload related to cache, I have leanrt thoroughly through research the workings of the cache and its purpose and performance relating to conflicts of the CPU, some of which are covered in this project and will be used for future projects and has inspired me to move past the scope of this course.
 
 ## Mistakes I made 
-I made a few mistakes in this project related to my management and skills learned. I regret not taking the opportunity to learning the workings of the testbenches and how to write them at the start of the project from my peers. Learning this skill would've enabled more effective debugging, helping out the team more in this area.  
+I made a few mistakes in this project related to my management and skills learned. I regret not taking the opportunity to learning the workings of the testbenches early in the process. Learning this skill would've enabled more effective debugging, helping out the team more in this area.  
 
 ## What I Would Do Differently
-In my opinion, the team worked exellently together and the dynamics of the team were effortless. I believe that the workload of the team was equally distributed and I am thankful for the work that my group have put into this project. If the group was to do this project again, I would ensure that we planned appropriately the design of each module before implementation to reduce time spent redesigning modules in the CPU and unneccessary time spent debugging.
+In my opinion, the team worked exellently together and the dynamics of the team were effortless. I believe that the workload of the team was equally distributed and I am thankful for the work that my group have put into this project. If the group was to do this project again, I would ensure that we planned appropriately the design of each module before implementation to reduce time spent redesigning modules in the CPU and unneccessary time spent debugging. Finally, it was a difficult task to split work equally since an individual's contribution would impact everyone else's progress due to a lack of communication. 
