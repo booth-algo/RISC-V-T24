@@ -42,7 +42,7 @@ Moving from Lab 4 to the whole Single Cycle implementation meant lots of modules
 ![RISC-V insrtcutions implemented for Single Cycle](../../images/RISC-Vcard.png)
 
 This meant effort had to be put into refactoring some modules, especially the **Control Unit** which turned out to be pretty tedious: [Control Unit module](../../rtl/control_unit.sv). Implementing the Control Unit involved a deep understanding of the overall design of the design to understand how operations impact the different signals: 
-![RISC-V](../../images/) Insert image of the whole architecture.
+![RISC-V](../../images/single_cycle.png) Insert image of the whole architecture.
 
 In order to correctly implement the Control Unit, I also got involved in writing testbenches, especially in asssembly language, which allowed me to test one specific RISC-V instruction. This turned out to be extremely useful for debugging: [Exemple of Assembly Testbench I implemented](../../tb/asm/006-lb-lbu-sb.s).
 
