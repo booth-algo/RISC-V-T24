@@ -7,7 +7,7 @@
 ## Summary
 
 - I was the **main tester** for the team. Before or after reading this section,
-I heavily encourage checking out the [testbench](../../tb), written 
+I heavily encourage checking out the [testbench](../../tb), written
 primarily by me. More information on the section can be found 
 [here](../team_statement_sections/testing.md).
 
@@ -34,7 +34,7 @@ contributions:
 - [Introduced CI (GitHub Actions).](https://github.com/booth-algo/RISC-V-T24/commit/e54ccb36dd0e178ce7d2d33e432cf981efefee37).
 - [Created industry standard testing (GTest).](https://github.com/booth-algo/RISC-V-T24/commit/a2b177139707acfb482ee30f0e28641d65d4e017).
   Once again, I encourage checking the [`test folder`](../../tb/test/)
-- Pipelined the testing process through bash scriping
+- Pipelined the testing process through bash scripting
   [doit.sh](https://github.com/booth-algo/RISC-V-T24/commit/3c00492c35f810ab3cbe71c34fc84aca1d494801),
   [compile.sh](https://github.com/booth-algo/RISC-V-T24/commit/e61392896bef151a95739cd8ffe378ef269152c2)
 
@@ -98,19 +98,19 @@ the CPU, as it was necessary for me to write well-calibrated
 
 > "The only real mistake is the one from which we learn nothing" - Henry Ford
 
-From a technical POV, there were a *lot* of edge cases thay were not caught out 
+From a technical POV, there were a *lot* of edge cases they were not caught out 
 by the integration tests. For example, here's a case study:
 
 **Case Study**: Cache edge case  
 **Test**: [`027-pdf_up_down.c`](../../tb/c/027-pdf_up_down.c)  
 **Fixed**: [#25](https://github.com/booth-algo/RISC-V-T24/pull/25)
-(same as the commit above: "Solved the edge case of byte adddressing").
+(same as the commit above: "Solved the edge case of byte addressing").
 
 The cache, before fixing, would pass every single test case that existed before
 027 was written, even [`025-pdf.c`](../../tb/c/025-pdf.c). The need to address
-this issue stemed from the reference program looking *slightly* off.
+this issue stemmed from the reference program looking *slightly* off.
 
-However, even 027 exibited strange behaviour with certain values. At the top of 
+However, even 027 exhibited strange behaviour with certain values. At the top of 
 the file is this line of code:
 
 ```c
@@ -144,11 +144,11 @@ debugging easier.
 - Host formal weekly meetings. We saw each other a lot, but at times, team 
   members would be unaware of changes/responsibilities.
 - Branch protected `main`, and squashed commits. This would allow freedom to
-  commit as much as one wants, without affecting the main branch history.
+  commit as much as one want, without affecting the main branch history.
 - Ensure everyone reads merge requests. This would have been super helpful, as
   it would have fixed the 2 problems listed directly above.
 
 ## Other notes
 
 - Thank you to Kevin for helping me to solve the data memory edge case. This 
-  took the whole weekend and it would not been possible without you.
+  took the whole weekend, and it would not been possible without you.

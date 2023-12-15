@@ -103,7 +103,7 @@ Tests were written for specific modules and instructions.
 when debugging [`data_mem.sv`](../../rtl/data_mem.sv) and 
 [`instr_mem.sv`](../../rtl/instr_mem.sv).
 
-C code can be disassembed into assembly, allowing us to trace instructions and
+C code can be disassembled into assembly, allowing us to trace instructions and
 memory locations easily, which helped a lot especially after pipeline
 implementation. Give it a go:
 
