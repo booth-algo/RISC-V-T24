@@ -30,6 +30,12 @@ from the project directory:
 cd tb
 ```
 
+If you haven't already, please run the script to install dependencies:
+
+```bash
+./install.sh
+```
+
 \* CI = Continuous Integration
 
 ## CI pipeline - GitHub Actions

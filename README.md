@@ -17,7 +17,10 @@ Our team has successfully completed and verified the following for our RV32I
 | [v0.4.0](https://github.com/booth-algo/RISC-V-T24/tree/v0.4.0) | Direct-mapped Cache | [cache.md](./docs/team_statement_sections/cache.md) |
 
 #### Important Notes ####
-- We are especially proud of our `testbench`, which has been a major contributor to our test-driven development for this project -- please take the time to read [testing.md](docs/team_statement_sections/testing.md), which highlights important features such as CI, code coverage, data analysis, etc.
+- We are especially proud of our `testbench`, which has been a major contributor 
+  to our test-driven development for this project -- please take the time to 
+  read [testing.md](docs/team_statement_sections/testing.md), which highlights 
+  important features such as CI, code coverage, data analysis, etc.
 - Implemented but unverified: `Two-way set associative cache`
 
 ## Personal statements
@@ -59,14 +62,14 @@ Here are the relevant commands. More can be found in the documentation.
 | ------------------------------------- |-------------------------------------- |
 | `./doit.sh`                           | Runs the entire testbench.            |
 | `./doit.sh test/top-instr_tb.cpp`     | Runs the entire instruction testbench |
-| `./doit.sh test/top-pdf_tb.cpp`       | Runs the PDF testbench*(stdout)       |
-| `./doit.sh test/top-pdf_TB.cpp`       | Runs the PDF testbench*(vBuddy)       |
+| `./doit.sh test/top-pdf_tb.cpp`       | Runs the PDF testbench* (stdout)      |
+| `./doit.sh test/top-pdf_TB.cpp`       | Runs the PDF testbench* (vBuddy)      |
 | `./doit.sh test/top-f1lights_tb.cpp`  | Runs the F1 lights testbench (stdout) |
 | `./doit.sh test/top-f1lights_TB.cpp`  | Runs the F1 lights testbench (vBuddy) |
 | `./analyse.py demo`                   | Creates PDF graphs of all reference data
 
 \* Note: to run the PDF testbench, you need to load the data memory. 
-Run only ONE of the following BEFORE `doit.sh`.
+Run only ONE of the following commands BEFORE `doit.sh`.
 
 Gaussian:
 
@@ -104,29 +107,33 @@ sudo chmod a+rw /dev/ttyUSB0
 ### Repo management (using `git`)
 
 - The functions of `git` were fully utilised in this project
-- `Branches` were created for implementations of different features to avoid conflict and pushing faulty / poorly written code to `main`
+- `Branches` were created for implementations of different features to avoid 
+  conflict and pushing faulty / poorly written code to `main`
 - `Tags` were created for each completed version of the RV32I processor
 
 ### Repo organisation 
 
-- `docs`: logbooks, statements, references
-- `images`: images for `docs`
-- `rtl`: RV32I processor modules
-- `tb`: Testbench and scripts
-- 
+- [`docs`](docs/): logbooks, statements, references
+- [`images`](images/): images for [`docs`](docs/)
+- [`rtl`](rtl/): RV32I processor modules
+- [`tb`](tb/): Testbench and scripts
+
 ### Workflow
 
 - After `lab4`, modules / work were dynamically allocated to team members
 - Team meetings, discussion and progress are logged in 
 [`team_log.md`](docs/logbooks/team_log.md)
-- All personal contributions and progress (such as debugging notes) are noted down in personal logbooks in [`docs/logbooks`](docs/logbooks/)
-
+- All personal contributions and progress (such as debugging notes) are noted 
+  down in personal logbooks in [`docs/logbooks`](docs/logbooks/)
 
 ## Working Evidence
 
-Note: The following evidence was collected from running `tag v0.4.0`, the `direct-mapped cache` version of our code. 
+Note: The following evidence was collected from running `tag v0.4.0`, the 
+`direct-mapped cache` version of our code.
 
-- If you want to check our `testbenches` or plot the `graphs` below, please refer to the [Quick Start](#quick-start) section above, where all instructions are available.
+- If you want to check our [`testbenches`](tb/) or plot the `graphs` below, 
+  please refer to the [Quick Start](#quick-start) section above, where all 
+  instructions are available.
 
 ### Graphs
 | Dataset | Graph | Dataset | Graph |
@@ -185,12 +192,23 @@ https://github.com/booth-algo/RISC-V-T24/assets/107279223/bfe780a5-3d4b-4b68-b6d
 |              | Direct mapped cache           | **                 | **               | **                       | **               |
 |              | Two-way set associative cache | **                 | **               | **                       | **               |
 
-As a team, we all agree that the above table and commits do not accurately measure the contribution of team members due to the following reasons:
+As a team, we all agree that the above table and commits do not accurately 
+measure the contribution of team members due to the following reasons:
 
-  1. When working together in Room 404 / calling on Discord (online), we would operate on only one of the laptops, so some commits made by team members are often a combined effort of two or more members, while the other laptop might be on another version / tag for testing and debugging.
+  1. When working together in Room 404 / calling on Discord (online), we would 
+  operate on only one of the laptops, so some commits made by team members are 
+  often a combined effort of two or more members, while the other laptop might 
+  be on another version / tag for testing and debugging.
 
-  2. The effort revolving around debugging is often highly overlooked - commits with simple fixes often took hours / days of effort from two or more members to debug a small mistake.
+  2. The effort revolving around debugging is often highly overlooked - commits 
+  with simple fixes often took hours / days of effort from two or more members 
+  to debug a small mistake.
 
-  3. Testbench building and writing played a huge role in streamlining our process, and multiple tests were written to specifically do debugging and isolate problematic parts / instructions.
+  3. Testbench building and writing played a huge role in streamlining our 
+  process, and multiple tests were written to specifically do debugging and 
+  isolate problematic parts / instructions.
 
-As such, it is highly recommended that readers refer to all of the `logbooks`, `personal statements`, and `commits`, to accurately evaluate the amount of work, effort and contribution of each member.
+As such, it is highly recommended that readers refer to all of the 
+[`logbooks`](docs/logbooks/), [`personal statements`](docs/personal_statements/), 
+and `commits`, to accurately evaluate the amount of work, effort and contribution 
+of each member.

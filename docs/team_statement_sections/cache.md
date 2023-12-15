@@ -21,10 +21,7 @@ processor, and that its neighbouring memory addresses are more likely to be
 fetched.
 
 At the time of writing, we have a complete working version of 
-`direct-mapped cache`, and a working version of 
-`two-way set associative cache`.
-
-Update: 15/12 - 12:26pm - The LRU replacement policy is being worked on.
+`direct-mapped cache`, and a prototype of `two-way set associative cache`,
 
 ## Design Specifications
 
@@ -62,7 +59,7 @@ This cache line maps to the memory addressing of the cache:
 |-|-|-|
 | 27 | `TAG` | Identifying data stored in direct-mapped memory |
 | 3 | `SET` | Establish and index the cache storage in memory |
-| 2 | `BYTE OFFSET` | Accomodate word addressing and byte addressing |
+| 2 | `BYTE OFFSET` | Accommodate word addressing and byte addressing |
 
 A memory address of 32 bits allows for both modes of addressing, controlled by a 
 signal `ADDRMODE`. A set size of $2^3 = 8$ allows for fast compact memory.
@@ -157,7 +154,7 @@ The resulting `HIT` rates are represented in the following graph:
 ![hit rates](../../images/hit_rates_all_tests.jpg)
 
 Among the observed `HIT` rates for all conducted tests, a notable median value 
-of `50.0%` emerges. This figure signifies that the main memory is accessed half 
+of `50.0%` emerges. This figure signifies that the main memory was accessed half 
 the time, reflecting an enhanced memory performance. This metric is indicative 
 of an efficient cache utilization, where a significant portion of requested data 
 is found in the cache, reducing the need to access slower main memory.

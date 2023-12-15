@@ -138,7 +138,7 @@ The last hazard to deal with was the control hazard created due to branching and
 
 ![control hazards](../../images/control_hazards.png)
 
-We assumed that branch isn't taken and let the pipeline fetch the next two instructions, and flush the two instructions if the branch is eventually taken. This is done by setting the control lines when they reach the EX stage.
+We assumed that branch isn't taken and let the pipeline fetch the next two instructions and flush the two instructions if the branch is eventually taken. This is done by setting the control lines when they reach the EX stage.
 
 In order to do so, we refactored the program counter to add a new component, [`pcnext_selector.sv`](../../rtl/pcnext_selector.sv), which feeds the signal `branch` to the `hazard unit`, and it sends a flush signal to the respective flip-flops.
 

@@ -100,9 +100,11 @@ For `single cycle`, we wrote [unit testbenches](../../tb/test) to ensure that al
 | Data memory | [data_mem_tb.cpp](../../tb/test/data_mem_tb.cpp) |
 | Instruction memory | [instr_mem_tb.cpp](../../tb/test/instr_mem_tb.cpp) |
 | MUX | [mux_tb.cpp](../../tb/test/mux_tb.cpp) |
-| PC | [program_counter_tb.cpp](../../tb/test/control_unit_tb.cpp) |
+| PC | [program_counter_tb.cpp](../../tb/test/program_counter_tb.cpp) |
 
-The speciality of these testbenches is that it uses industry standard `GTests`, as stated in the [`testing.md`](testing.md). A snippet of one of the tests from the [`control unit testbench`](../../tb/test/control_unit_tb.cpp):
+The speciality of these testbenches is that it uses industry standard `GTests`, 
+as stated in the [`testing.md`](testing.md). A snippet of one of the tests from 
+the [`control unit testbench`](../../tb/test/control_unit_tb.cpp):
 
 ```cpp
 TEST_F(ControlunitTestbench, MemWriteTest)
@@ -134,10 +136,15 @@ This allows us to check for the expected behaviour of each control / data path s
 
 ![GTest running in terminal](../../images/gtest.png)
 
-which definition can be found in the `doit.sh`.
+which definition can be found in the [`doit.sh`](../../tb/doit.sh).
 
-The bash scripts [`compile.sh`](../../tb/compile.sh) and [`doit.sh`](../../tb/doit.sh) help compile and assemble [`C`](../../tb/c/) and [`asm`](../../tb/asm) tests in the testbench, run the tests, and creates `disassembly texts` for debugging purposes.
+The bash scripts [`compile.sh`](../../tb/compile.sh) and 
+[`doit.sh`](../../tb/doit.sh) help compile and assemble 
+[`C`](../../tb/c/) and [`asm`](../../tb/asm) tests in the testbench, run the 
+tests, and creates `disassembly texts` for debugging purposes.
 
-Every team member participated in writing these testbenches to ensure everyone gains experience of DevOps in hardware / firmware development. 
+Every team member participated in writing these testbenches to ensure 
+everyone gains experience of DevOps in hardware / firmware development. 
 
-It is highly encouraged for the reader to take a look at the [`testing.md`](testing.md) to understand how the entire testbench is used.
+It is highly encouraged for the reader to take a look at 
+the [`testing.md`](testing.md) to understand how the entire testbench is used.

@@ -58,6 +58,8 @@ TEST_F(CpuTestbench, SubroutineFinalValueTest)
     {
         runSimulation(); // Evaluate the model
 
+        std::cout << top->a0 << std::endl;
+
         if (top->a0 == 0x7f) // Check if a0 has the correct final value
         {
             SUCCEED();
