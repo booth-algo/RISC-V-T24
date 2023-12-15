@@ -55,13 +55,11 @@ Finally, the **Data Memory** module also had to be refactored, because we had to
 
 Implementing cache helped to increase overall computer performance by hindering *memory performance*. This was done by using the *temporal locality* property of memory. We started by implementing direct-mapped cache, where each set only holds one block of data: [Direct-Mapped Cache module](../../rtl/dm_cache.sv).
 ![dm_cache implementation](../../images/schematic3.png)
-The implementation of direct-mapped cache was more complicated than expected, especially as we had started with a different, faulty design: 
-![faulty dm_cache implementation](/images/schematic1.png)
-In this design, 
+The implementation of direct-mapped cache was more complicated than expected, especially because we had started we a different design. I worked closely on the first implementation with James, where we wrote together the read and write logic. We then worked altogether as a team on refactoring it on a long teams call.
 
-
-
-This causes conflicts many memory addresses will map to the same set. This will result in a lower hit rate than we would have by implementing a two-way set associative cache. 
+The direct-mapped cache caused conflicts as many memory addresses mapped to the same set:
+![Direct Mapped Memory Addressing](../../images/set_image.png)
+This results in a lower hit rate than we would have by implementing a two-way set associative cache. I worked closely with James on implementing the two-way set associative cache but, we did not have time to debug our implementation.
 
 
 ## What I learned
