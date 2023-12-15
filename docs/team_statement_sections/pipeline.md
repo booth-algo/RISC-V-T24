@@ -7,7 +7,6 @@
 | [Data Hazards](#data-hazards) |
 | [Control Hazards](#control-hazards) |
 | [Simulation and Testing](#simulation-and-testing) |
-| [Conclusion](#conclusion) |
 
 ## Introduction
 
@@ -158,7 +157,13 @@ always_comb begin
 ```
 (code snippet of [`pcnext_selector.sv`](../../rtl/pcnext_selector.sv))
 
-For further insights, please refer to the [branch hit rate analysis](#hazard-unit---branch-hit-rate-analysis) below.
+| Branch signal | Flush signals |
+|-|-|
+| ![Branch signal](../../images/branching.png) | ![Flushing](../../images/flushing.png) |
+
+(For a clearer picture, please refer to the [diagram](#design-specifications) above)
+
+*Note: For further insights, please refer to the [branch hit rate analysis](#hazard-unit---branch-hit-rate-analysis) below.
 
 ## Simulation and Testing
 
@@ -207,8 +212,3 @@ We see that most of the times, a branch occurs in the for loop (at `bfc0003c`). 
 Since our control hazard's `flush and stall` assumes branch not taken, it mostly inaccurately predicts the branching behaviour, resulting in two clock cycles being lost.
 
 A better implementation would be to use `branch prediction` to guess if branch will be taken, which would reduce lost clock cycles. However, we were short on time, and therefore this was not implemented.
-
-## Conclusion
-
-Building the pipeline prepared us well for the implementation of the cache, and allowed us to get a better grasp of the control and data signals occuring in the processor.
-

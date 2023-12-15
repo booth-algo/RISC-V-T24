@@ -5,7 +5,6 @@
 | [Introduction](#introduction) |
 | [Design Specifications](#design-specifications) |
 | [Simulation and Testing](#simulation-and-testing) |
-| [Conclusion](#conclusion) |
 
 ## Introduction
 
@@ -142,7 +141,3 @@ The bash scripts [`compile.sh`](../../tb/compile.sh) and [`doit.sh`](../../tb/do
 Every team member participated in writing these testbenches to ensure everyone gains experience of DevOps in hardware / firmware development. 
 
 It is highly encouraged for the reader to take a look at the [`testing.md`](testing.md) to understand how the entire testbench is used.
-
-## Conclusion
-
-Overall, the `single cycle` version was a nice build-up, and honed our skills well to take on the more challenging parts of the RV32I processor design.
