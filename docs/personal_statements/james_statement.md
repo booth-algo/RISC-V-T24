@@ -21,7 +21,7 @@
 - My Personal Logbook notes the process of all of this as well as highlights the work that I completed at different stages of the process
 - I have included a concise reflection of my work here but more information on how each of the modules were designed and implemented can be found in the **team statement** as well as the **commits**
 
-- 
+  
 ## Contributions
 ### Single Cycle 
 [Single Cycle](/docs/team_statements_sections/single_cycle.md)
@@ -29,12 +29,11 @@
 
 In the single cycle design, I was reponsible for the design and implementation of the:
 - [ALU](../../rtl/alu.sv)
-- [register file](../../rtl/regfile.sv)
+- [Register file](../../rtl/regfile.sv)
 - [Data memory](../../rtl/data_mem.sv)
 - [Top File](../../rtl/top.sv)
 - Restructuring
 - Refactoring of Control Unit
-  **link commits**
 
   
   ![Single Cycle](../../images/single_cycle.png)
@@ -56,9 +55,10 @@ For the initial design of the lab 4 ALU, only 3 operations were required **ADD**
         default:    ALUout = 0;   
     endcase
 ```
----
 
 [ALU commit](https://github.com/booth-algo/RISC-V-T24/commit/ce83249d85a73ddd43959b309a3c04d96794e4a5)
+
+---
 
 #### Register File
 
@@ -124,7 +124,7 @@ As I was designing the cache line and memory addressing for the direct mapped ca
 
 [LRU Commit](https://github.com/booth-algo/RISC-V-T24/commit/1e984468319cc8c3ddfdf2d63fa8c2554fc69d85)
 
-![2-Way Asscoiative Cache code](../../cache/2way_cache.sv)
+[2-Way Asscoiative Cache code](../../cache/2way_cache.sv)
 
 ## What I Have Learned 
 This project has been essential in my learning and development of this module. From the application of the theory in the coursework to the leaning how to manage time, delegate workload and work effectively in a team. This project has been a fantastic oppurtunity to create a CPU with a reduced version of what is used in industry as well as learning how optimisation is important and the implementation of this. The opportunity to learn and work with peers, I had not previously worked with was an opportunity to see how others work and learn from the strengths and weaknesses of the individual members in the team, the group's varying experience allowed for teaching of valuable methodology.
