@@ -48,7 +48,7 @@ logic [2:0] set;
 logic [1:0] byte_offset;
 logic [1:0] Ubits; 
 
-logic [$clog2(NUM_WAYS)-1:0] counter;
+logic replace;
 
 typedef enum logic [1:0] {
     just_hit, 
@@ -56,166 +56,134 @@ typedef enum logic [1:0] {
     long_hit
 } my_state;
 
-my_state [NUM_WAYS-1:0] current_state;
-my_state [NUM_WAYS-1:0] next_state;
-
-
-// Initialise FSM
-initial begin
-    for (int i = 0; i < NUM_WAYS; i++) begin
-        current_state[i] = long_hit;
-        next_state[i] = long_hit;
-    end
-end
-
-
 // Cache read logic
 always_comb begin
     set = addr[4:2];
     byte_offset = addr[1:0];
     hit = 0;
 
+    if(cache[0][set].Ubits > cache[1][set].Ubits) begin
+        replace = 1;
+    end
+    else begin
+        replace = 0;
+    end
+
     // Calculate hits
+    tag = addr[ADDR_WIDTH-1:5];
     for (int i = 0; i < NUM_WAYS; i++) begin
-        tag = addr[ADDR_WIDTH-1:5];
-        if (cache[i][set].valid && cache[i][set].tag == tag) begin
+        if (cache[replace][set].valid && cache[replace][set].tag == tag) begin
             hit = 1;
+            cache[replace][set].Ubits = 2;
+            cache[!replace][set].Ubits = cache[!replace][set].Ubits - 1;
             out = {
-                cache[i][set].byte3, 
-                cache[i][set].byte2, 
-                cache[i][set].byte1, 
-                cache[i][set].byte0
+                cache[replace][set].byte3, 
+                cache[replace][set].byte2, 
+                cache[replace][set].byte1, 
+                cache[replace][set].byte0
             };
             break;
         end 
     end
 
+
     // Get the data- if there's no hit, fetch from main memory.
     if (hit == 0) begin
         out = read_data;
+        if(cache[0][set].Ubits > 0) begin
+            cache[0][set].Ubits = cache[0][set].Ubits - 1;
+        end
+         if(cache[1][set].Ubits > 0) begin
+            cache[1][set].Ubits = cache[1][set].Ubits - 1;
+        end
     end
 end
-
-logic i;
-i = 0;
 
 // Cache write logic: Write through cache
 // LRU: random
 always_ff @(posedge clk) begin
     if (write_en) begin
         // Pulls data in from sw/sb
-        for (int i = 0; i < NUM_WAYS; i++) begin
-            cache[i][set].valid <= 1'b1;
-            cache[i][set].tag <= addr[31:5];
+        cache[replace][set].valid <= 1'b1;
+        cache[replace][set].tag <= addr[31:5];
 
-            case (addr_mode)
-                // Byte addressing
-                `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
-                    case (byte_offset)
-                        2'b11:  cache[i][set].byte3 <= write_data[7:0];
-                        2'b10:  cache[i][set].byte2 <= write_data[7:0];
-                        2'b01:  cache[i][set].byte1 <= write_data[7:0];
-                        2'b00:  cache[i][set].byte0 <= write_data[7:0];
-                    endcase
-                end
-                // Word addressing
-                default: begin
-                    cache[i][set].byte3 <= write_data[31:24];
-                    cache[i][set].byte2 <= write_data[23:16];
-                    cache[i][set].byte1 <= write_data[15:8];
-                    cache[i][set].byte0 <= write_data[7:0];
-                end
-            endcase
-        end
+        case (addr_mode)
+            // Byte addressing
+            `DATA_ADDR_MODE_B, `DATA_ADDR_MODE_BU: begin
+                case (byte_offset)
+                    2'b11:  cache[replace][set].byte3 <= write_data[7:0];
+                    2'b10:  cache[replace][set].byte2 <= write_data[7:0];
+                    2'b01:  cache[replace][set].byte1 <= write_data[7:0];
+                    2'b00:  cache[replace][set].byte0 <= write_data[7:0];
+                endcase
+            end
+            // Word addressing
+            default: begin
+                cache[replace][set].byte3 <= write_data[31:24];
+                cache[replace][set].byte2 <= write_data[23:16];
+                cache[replace][set].byte1 <= write_data[15:8];
+                cache[replace][set].byte0 <= write_data[7:0];
+            end
+        endcase
     end
-
     // We still have to check if the "valid_way" is valid- this could just be random
     else if (read_en && !hit) begin
         // Pulls data in from main memory
-        for (int i = 0; i < NUM_WAYS; i++) begin
-            cache[i][set].valid <= 1;
-            cache[i][set].tag <= addr[31:5];
+        cache[replace][set].valid <= 1;
+        cache[replace][set].tag <= addr[31:5];
 
-            cache[i][set].byte3 <= read_data[31:24];
-            cache[i][set].byte2 <= read_data[23:16];
-            cache[i][set].byte1 <= read_data[15:8];
-            cache[i][set].byte0 <= read_data[7:0];
-        end
+        cache[replace][set].byte3 <= read_data[31:24];
+        cache[replace][set].byte2 <= read_data[23:16];
+        cache[replace][set].byte1 <= read_data[15:8];
+        cache[replace][set].byte0 <= read_data[7:0];
     end
 
     // Edge case - what if byte addressing AND invalid.
     // Then we would have to pull in data from main memory AS WELL
-
-    if (write_en && addr_mode == 3'b01x && !(cache[i][set].tag == tag)) begin
+    
+    if (write_en && addr_mode == 3'b01x && !(cache[replace][set].tag == tag)) begin
         case (byte_offset)
             2'b11:  begin
-                cache[i][set].byte2 <= read_data[23:16];
-                cache[i][set].byte1 <= read_data[15:8];
-                cache[i][set].byte0 <= read_data[7:0];
+                cache[replace][set].byte2 <= read_data[23:16];
+                cache[replace][set].byte1 <= read_data[15:8];
+                cache[replace][set].byte0 <= read_data[7:0];
             end
             2'b10:  begin
-                cache[i][set].byte3 <= read_data[31:24];
-                cache[i][set].byte1 <= read_data[15:8];
-                cache[i][set].byte0 <= read_data[7:0];
+                cache[replace][set].byte3 <= read_data[31:24];
+                cache[replace][set].byte1 <= read_data[15:8];
+                cache[replace][set].byte0 <= read_data[7:0];
             end
             2'b01:  begin
-                cache[i][set].byte3 <= read_data[31:24];
-                cache[i][set].byte2 <= read_data[23:16];
-                cache[i][set].byte0 <= read_data[7:0];
+                cache[replace][set].byte3 <= read_data[31:24];
+                cache[replace][set].byte2 <= read_data[23:16];
+                cache[replace][set].byte0 <= read_data[7:0];
             end
             2'b00:  begin
-                cache[i][set].byte3 <= read_data[31:24];
-                cache[i][set].byte2 <= read_data[23:16];
-                cache[i][set].byte1 <= read_data[15:8];
+                cache[replace][set].byte3 <= read_data[31:24];
+                cache[replace][set].byte2 <= read_data[23:16];
+                cache[replace][set].byte1 <= read_data[15:8];
             end
         endcase
     end
-
-    // Drive the FSM
-    for (int i = 0; i < NUM_WAYS; i++) begin
-        current_state[i] <= next_state[i];
+    
+    if(cache[!replace][set].Ubits > 0) begin
+        cache[!replace][set].Ubits <= cache[!replace][set].Ubits - 1;
     end
-
-    counter <= counter + 1;
+    else begin
+        cache[replace][set].Ubits <= 2;
+    end
+    // store
 end
 
+// check appropriate set
+// store - write
+// if matches tag and v = 1, replace info, u = 2, u -= 1
+// if doesnt match tag or v = 0, replace with smallest u bit, u = 2, u -=1
 
-// FSM
-/*
-always_comb begin
-    for (int i = 0; i < NUM_WAYS; i++) begin
-        case (current_state)
-            just_hit: begin
-                if (hit[i]) begin
-                    cache[set].Ubits = `JUST_HIT;
-                end
-                else begin
-                    cache[set].Ubits = `RECENTLY_HIT;
-                end
-            end
-            recently_hit: begin
-                if (hit[i]) begin
-                    cache[i][set].Ubits = `JUST_HIT;
-                end
-                else begin
-                    cache[i][set].Ubits = `LONG_HIT;
-                end
-            end
-            long_hit: begin
-                if (hit[i]) begin
-                    cache[i][set].Ubits = `JUST_HIT;
-                end
-                else begin
-                    // counter = i;
-                end
-            end
-            default: begin
-                cache[i][set].Ubits = `LONG_HIT; 
-            end
-        endcase
-    end
-end
-*/
+// load - read
+// if matches tag and v = 1, load, u = 2, u -=1 [Y]
+// if doesnt match tag or v = 0, replace smallest u bit, read from main memory
+
 
 data_mem data_mem_inst (
     .clk(clk),

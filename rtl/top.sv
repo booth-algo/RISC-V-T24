@@ -75,9 +75,9 @@ module top #(
     // These are ONLY for analysis purposes- there is no need for this signal otherwise
     logic MemRead_M;
 
-    /* verilator lint_off UNUSEDSIGNAL */
+    
     logic hit;
-    /* verilator lint_on UNUSEDSIGNAL */
+   
     
     logic [WIDTH-1:0] WriteData_E;
     logic [WIDTH-1:0] WriteData_M;
