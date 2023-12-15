@@ -21,11 +21,11 @@ There weren't any specific modifications or modules added on to the schematic ab
 
 ### Data memory
 
-We noticed that while the loading of the `instruction memory` was offset in the bash scripts while loading, the `data memory` has to be offset correctly in SystemVerilog code.
+We noticed that while the loading of the `instruction memory` was offset in the bash scripts while loading, the `data memory` had to be offset correctly in SystemVerilog code.
 
 | Memory map | Explanation |
 |-|-|
-| ![Memory map](<../../images/mem_stack.jpg>) | The memory map shows that the `data memory` goes from `0x01000` to `0x1FFFF`, which means we need $2^{17}$.
+| ![Memory map](<../../images/mem_stack.jpg>) | The memory map shows that the `data memory` goes from `0x01000` to `0x1FFFF`, which means we need $2^{17}$ addresses, hence the initialisation of our data array below.
 
 ```sv
 // Define the data array
@@ -49,6 +49,8 @@ We noticed that while the loading of the `instruction memory` was offset in the 
     end
 ``` 
 
+`AddrMode` was added to efficiently implement byte addressing for `lb` and `sb` instructions, which would also prove to be really useful in running the reference program [`pdf.s`](../../tb/asm/pdf.s).
+
 ```SV
 // Read and write operations
 always_ff @(posedge clk) begin
@@ -65,23 +67,19 @@ always_ff @(posedge clk) begin
 end
 ```
 
-`AddrMode` was added to efficiently implement byte addressing for `lb` and `sb` instructions, which would also prove to be really useful in running the reference program [`pdf.s`](../../tb/asm/pdf.s).
-
 Extra note: There is a bug in `data memory` in the tag `v0.2.0` which was not discovered until a debugging session later on when working on `pipelining`. This is because for `byte addressing`, we wrote the 
 
 ### Control unit
 
-Emphasis must also be placed on the `control unit`, which took the most time to debug for `single cycle`. A [`def.sv`](../../rtl/def.sv) was created to define all the `OP_Codes`, `PC_Codes`, etc.
+Emphasis must also be placed on the `control unit`, which took the most time to debug for `single cycle`. 
+
+For reusability and readability concerns, [`def.sv`](../../rtl/def.sv) was created to define all the `OPCODE`, `PCCODE`, etc.
 
 | Control Unit | Instruction List |
 |-|-|
 | ![Control Unit](../../images/control_unit.png) | ![Instr List](../../images/RISC-Vcard.png) |
 
-`JALR` was particularly hard to implement
-
-troubles with the `ret` function...
-
-This can be seen in [`def.sv`](../../rtl/def.sv), where `JALR` gets its own OP_CODE. 
+While we swiftly implemented most of the basic instruction set, `JALR` was particularly hard to implement. We had troubles with the `ret` function not working as expected, and took some time to debug. The trouble can be seen in [`def.sv`](../../rtl/def.sv), where `JALR` gets its own `PC CODE`:
 
 ```sv
 `define PC_NEXT                     3'b000
@@ -90,6 +88,7 @@ This can be seen in [`def.sv`](../../rtl/def.sv), where `JALR` gets its own OP_C
 `define PC_INV_COND_BRANCH          3'b100
 `define PC_COND_BRANCH              3'b101
 ```
+(A snippet of `def.sv`)
 
 ## Simulation and Testing
 
@@ -132,13 +131,13 @@ TEST_F(ControlunitTestbench, MemWriteTest)
     }
 }
 ```
-This allows us to check for the expected behaviour. The testbench provides feedback in the terminal in the following format:
+This allows us to check for the expected behaviour of each control / data path signal in each module. The testbench provides feedback in the terminal in the following format:
 
 ![GTest running in terminal](../../images/gtest.png)
 
-which can be found in the `doit.sh`.
+which definition can be found in the `doit.sh`.
 
-The bash scripts [`compile.sh`](../../tb/compile.sh) and [`doit.sh`](../../tb/doit.sh) helps compile and assemble [`C`](../../tb/c/) and [`asm`](../../tb/asm) tests in the testbench, run the tests, and creates `disassembly texts` for debugging purposes.
+The bash scripts [`compile.sh`](../../tb/compile.sh) and [`doit.sh`](../../tb/doit.sh) help compile and assemble [`C`](../../tb/c/) and [`asm`](../../tb/asm) tests in the testbench, run the tests, and creates `disassembly texts` for debugging purposes.
 
 Every team member participated in writing these testbenches to ensure everyone gains experience of DevOps in hardware / firmware development. 
 
@@ -146,4 +145,4 @@ It is highly encouraged for the reader to take a look at the [`testing.md`](test
 
 ## Conclusion
 
-Overall, the `single cycle` version was a nice build-up to the more challenging parts of the RV32I processor design, and honed my skills well for the upcoming 
+Overall, the `single cycle` version was a nice build-up, and honed our skills well to take on the more challenging parts of the RV32I processor design.
