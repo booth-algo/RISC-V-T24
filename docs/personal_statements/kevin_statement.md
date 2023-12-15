@@ -10,7 +10,7 @@
 | [Summary](#summary) |
 | [Contributions](#contributions) |
 | [Self-reflection](#self-reflection) |
-| [Other notes](#other-notes) |
+| [Extra notes](#extra-notes) |
 
 ## Summary
 
@@ -65,9 +65,9 @@
 
 - I would say that the my workflow was quite *pipelined* (joke intended) - I started working early on bits of the pipeline while waiting for other members to complete the single cycle version.
 
-- (a) I was the **main contributor** for the **entire** (a) `pipeline` and (b) `hazard unit`, which I spent a lot of time building and debugging with William's help.
+- (a) I was the **main contributor** for the **entire** (a) `pipeline` and (b) `hazard unit`, which I spent a lot of time building and debugging with William's help in-person and on long online calls.
 
-- (b) The `hazard unit` took a lot of effort to debug - there is a section in my logbook dedicated to the weekend debugging session (here's the [link](../logbooks/kevin_log.md#912-and-1012)). 
+- (b) The `hazard unit` took a lot of effort to debug - there is a section in my logbook dedicated to the weekend debugging session with William (here's the [link](../logbooks/kevin_log.md#912-and-1012)). 
   - The above section details my thought process throghout the debugging session, which I am really proud of. 
   - I think the key is to isolate instructions or components to an area as small as possible, so you can focus on them directly. 
   - For example, there was this specific load word data dependency hazard that occured only when running, which I isolated out from a `disassembly text` after running one of the `c` testbenches. This helped me create the [load word test](../../tb/asm/008-lw_test_1.s).
@@ -121,13 +121,15 @@
 
 - Using multiple features of `git` for version control as the repo manager, including using branches, tags, rebasing, etc.
 
-- Improving my SystemVerilog writing skills and deepening my understanding of a CPU.
+- Improving my SystemVerilog writing skills and deepening my understanding of a CPU on the RTL level. I feel like I have finally gotten a true thorough understanding of the datapath and controlpath through working on parts such as pipelining and figuring how the control and data signals should go to, something which I didn't really understand from the Year 1 DECA module.
 
-- Improving my RISC-V assmebly code writing, which I mastered by writing and improving tests.
+- Improving my RISC-V assmebly code writing, which I mastered by writing and improving tests, and increasing my familiarity with the RISC-V ISA.
 
 - Learning how to integrate CI/CD pipeline into a project's development.
 
 - Improving my debugging skills, such as using waveforms and my assembly tests to isolate instructions, then debug the problematic SystemVerilog code.
+
+- I would like to express my enjoyment throughout this project despite the toughest struggles. It has provided me a great opportunity to learn to cooperate with team members I am unfamiliar with, and most importantly it gave me the experience of programming a CPU from scratch, truly a rewarding experience.
 
 ### What I would've done differently / Mistakes I made
 
@@ -135,12 +137,10 @@
 
 - Spent more time understanding and helping out with various sections of the testbench, so that I could improve in the field of DevOps and which could streamline my debugging process in future projects.
 
-- As I noted in my logbook ([here](../logbooks/kevin_log.md#912-and-1012)), none of the `asm` or `c` tests were able to catch a `data memory` error which I debugged. This shows that there are holes in my testbench writing skillset which need to be filled.
+- As I noted in my logbook ([debugging bug #3](../logbooks/kevin_log.md#912-and-1012)), none of the `asm` or `c` tests were able to catch a `data memory` error which I debugged. This shows that there are holes in my testbench writing skillset which need to be filled.
 
-- I spent too much time at the start worrying about future things such as pipeline and cache, and I could've spent more time helping other members with the single cycle implementation.
+- I spent too much time at the start worrying about future things such as pipeline and cache, and I could've spent more time helping other members with the single cycle implementation. I think our progress would be even further if I did.
 
-## Other notes
+## Extra notes
 
-- I would like to express my enjoyment throughout this project despite the toughest struggles. It has provided me a great opportunity to learn to cooperate with team members I am unfamiliar with, and most importantly it gave me the experience of programming a CPU from scratch, truly a rewarding experience.
-
-- I would like to express my greatest gratitude to my lab partner William, whom with I spent lots and lots of time coding and debugging the RISC-V processor on Discord calls, and for writing up a testbench so that I can debug the RTL code more efficiently.
+- I would like to express my <u>greatest gratitude</u> to my lab partner William, whom with I spent lots and lots of time coding and debugging the RISC-V processor on Discord calls, and for writing up a testbench so that I can debug the RTL code more efficiently.
