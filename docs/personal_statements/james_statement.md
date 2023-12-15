@@ -24,7 +24,7 @@
   
 ## Contributions
 ### Single Cycle 
-[Single Cycle](../../docs/team_statements_sections/single_cycle.md)
+[Single Cycle](../../team_statements_sections/single_cycle.md)
 
 
 In the single cycle design, I was reponsible for the design and implementation of the:
@@ -97,7 +97,7 @@ In the cache design, I was responsible for the design of the
 The final implementation was a split contribution between the team.
 
 
-[Cache](../../docs/team_statement_sections/cache.md)
+[Cache](../../team_statement_sections/cache.md)
   
  ---
  
