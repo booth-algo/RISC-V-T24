@@ -1,3 +1,6 @@
+# Reference: Peter Cheung, Lecture 9, 
+# http://www.ee.ic.ac.uk/pcheung/teaching/EIE2-IAC/Lecture%209%20-%20Cache%20Memory%20(notes).pdf
+
 main:
     addi s0, zero, 5
     addi s1, zero, 0

@@ -22,7 +22,6 @@ data_files=()
 passes=0
 fails=0
 
-
 # Handle terminal arguments
 if [[ $# -eq 0 ]]; then
     # If no arguments provided, run all tests
@@ -51,10 +50,7 @@ for file in "${files[@]}"; do
 
     # Build C++ project with automatically generated Makefile
     make -j -C obj_dir/ -f Vdut.mk
-
-    # Clear data.hex file. Can be overwritten in tests, via system calls
-    truncate -s 0 ${RTL_FOLDER}/data.hex
-
+    
     # Run executable simulation file
     ./obj_dir/Vdut
     

@@ -42,3 +42,12 @@ I was in charge of designing the **Sign Extension** unit, as well as the **Contr
 
 ### 11/12
     - Worked with whole team  on debugging direct mapped cache. Debbuged most tests, 3 still not passsing. Worked on a new implementation of cache because previous one was flawed
+
+### 12/12
+    - Worked with team on finishing debugging the direct-mapped cache. Introduced new implementation that works. Started working with Jamie on the two-way set associative cache
+
+### 13/12
+    - Continued working on the two-way set associative cache with Jamie, started writing up the report for cache as well as my personal statement
+
+### 14/12
+    - Finished my personal statement

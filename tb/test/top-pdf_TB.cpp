@@ -5,7 +5,9 @@
  *  ---------------------------------------------------------------------------
  *  Load the data memory in the RTL folder by copying over data from the data
  *  folder
- * 
+ *  
+ *  vBuddy should be in port /dev/ttyUSB0
+ *   
  *  Author: William Huynh <wh1022@ic.ac.uk>
 */
 
@@ -35,11 +37,11 @@ TEST_F(CpuTestbench, InitialStateTest)
 {
     // Initialise VBuddy
     //-------------------------------------------------------------------------
-    // if (vbdOpen() != 1)
-    // {
-    //     SUCCEED() << "Not actually lol";
-    // }
-    // vbdHeader("PDF plotting");
+    if (vbdOpen() != 1)
+    {
+        SUCCEED() << "Not actually lol";
+    }
+    vbdHeader("PDF plotting");
     //-------------------------------------------------------------------------
     
     int plot = 0;
@@ -54,10 +56,7 @@ TEST_F(CpuTestbench, InitialStateTest)
         }
         if (plot && (int)top->a0 >= 0)
         {
-            std::cout << (int)top->a0 << std::endl;
-            //-----------------------------------------------------------------
-            // vbdPlot(top->a0);
-            //-----------------------------------------------------------------
+            vbdPlot(top->a0, 0, 255);
             plot++;
         }
         if (plot > 256)

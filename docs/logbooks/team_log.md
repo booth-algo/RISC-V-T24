@@ -4,8 +4,8 @@ This file will note down **major meetups** and breakdown the progress completed 
 
 ## Lab meetup (16/11)
   - Discussed and allocated lab 4 parts to team members
-    ![Alt text](../images/lab4_design.png)
-    ![Alt text](../images/lab4_allocation.png)
+    ![Alt text](../../images/lab4_design.png)
+    ![Alt text](../../images/lab4_allocation.png)
   - Team goals:
     1. Lab 4 design
     2. Single cycle
@@ -115,5 +115,19 @@ This file will note down **major meetups** and breakdown the progress completed 
   - Agendas
     - Debugging `two-way set associative cache`
     - Complete fixes for CI
+    - Cache hit/miss data analysis
     - Write up most of the team statement
-  - 
+  - Results:
+    - Team statement
+      - Cache written but needs changes
+      - Cache hit/miss data analysis written
+      - Other parts of the team statement written, including but not limited to: testing
+
+## Group meeting (14/12) (Final Team Meetup)
+  - Agendas:
+    - Finish up the team statement
+      - Single cycle
+      - Pipeline
+      - Cache (modifications required)
+      - The general statement and evidence of testing / working vbuddy
+    - Two-way set associative cache
