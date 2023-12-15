@@ -11,31 +11,21 @@
 
 ## Introduction
 
-In computer architecture, memory performance plays a pivotal role in computer performance, but has been lagging behind processor performance. To mitigate this, memory hierarchy is introduced:
+Cache memory was introduced into this project, allowing us to have a faster type of memory with limited storage accessible to the processor.
 
-![mem_hierarchy](../../images/mem_hierarchy.png)
- 
-Cache memory is the fastest type of memory accessible from the processor but has limited storage and is more expensive. Cache memory will be used to store data likely to be used again, whether because it was used recently or because nearby data was used recently; properties referred to as temporal and spatial locality. Ideally, cache would supply most data to the processor, as accessing main memory is a less attractive option. 
+We aimed to implement the concepts of "cache prefetching", which capitalised on the ideas of "temporal locality" and "spatial locality", which dictates which data memory to store in the cache based on what is most often fetched by the processor, and that its neighbouring memory addresses are more likely to be fetched.
 
-Memory performance is defined using **HIT** and **MISS** attributes, where the wanted data is either in the actual level of memory hierarchy (**HIT**) or not (**MISS**). Hence, the Average Memory Access Time (**AMAT**) depends on the access time to different layers of memory, and the miss rates associated with those layers.
-
-Cache memory is stored in sets, where each memory address maps to exactly one cache set, and each set having **N** blocks (with N being the **degree of associativity** of the cache). Direct mapped cache refers to 1-set associativity, so each set holds a unique block. Although direct mapped cache improves memory performance, it will encounter issues as many memory addresses map to the same set, resulting in conflict.
-
-In response, a two-way set associative cache is introduced, offering a solution by allowing each set to host two distinct data blocks from two members of the set. In the course of this project, the implementation of a direct-mapped cache has proven successful and aligns with expectations. However, the two-way set associative cache, while implemented, presents challenges and does not operate seamlessly.
+At the time of writing, we have a complete working version of `direct-mapped cache`, and a working version of `two-way set associative cache`, but the replacement policy has not been completed nor verified.
 
 ## Design Specifications
 
-To improve the design of the CPU which retrieves data from the data memory, a cache was designed to increase the speed of retrieving information. In the original design of the memory, the data memory contained input signals, **Address** and **WriteData** and **ReadData** as the output signal, as shown below. 
-
-![schematic2](../../images/schematic2.jpg)
-
-Retrieving data from memory took approximately 1000 clock cycles, hindering the time needed to complete instructions. **##** To improve this, a cache design was implemented using the following schematic:
+Our initial cache design was implemented using the following schematic:
 
 ![schematic1](../../images/schematic1.png)
 
-In this design, the **Address** signal is inputted to both the direct mapped cache and the data memory. If the address #insert signal# is mapped to one of the sets of data, the output signal **MISS** is set to low, and the data is read out of the cache through the multiplexer. If the **Address** signal does not map to a cache set, the output signal **MISS** = 1, and the output is read through the multiplexer but the technical aspect of this will be explored later.
+In this design, the `Address` signal is inputted to both the direct mapped cache and the data memory. If the address `insert signal` is mapped to one of the sets of data, the output signal `MISS` is set to low, and the data is read out of the cache through the multiplexer. If the `Address` signal does not map to a cache set, the output signal `MISS` = 1, and the output is read through the multiplexer.
 
-However, with this implementation, an error, later discovered during implementation, occurred upon writing data from the **DATA MEMORY** to the **CACHE** due to misalignment of clock cycles. A new high-level configuration was required for the memory block. A more concise design was implemented, removing the multiplexer, accommodating the data to be read and written through the cache.
+However, with this implementation, an error, later discovered during implementation, occurred upon writing data from the `DATA MEMORY` to the `CACHE` due to misalignment of clock cycles. A new high-level configuration was required for the memory block. A more concise design was implemented, removing the multiplexer, accommodating the data to be read and written through the cache.
 
 ![schematic3](../../images/schematic3.png)
 

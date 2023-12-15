@@ -1,9 +1,8 @@
 # Kevin's Personal Statement
 
-| Name | Kevin Lau Cheuk Hang |
-|-|-|
-| CID | 02240867 |
-| GitHub handle | booth-algo |
+- Name: Kevin Lau Cheuk Hang
+- CID: 02240867
+- GitHub handle: booth-algo
 
 | Table of Contents |
 |-|
