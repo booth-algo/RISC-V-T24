@@ -3,7 +3,7 @@
 | Table of Contents |
 |-|
 | [Introduction](#introduction) |
-| [Basic Pipeline](#basic-pipeline) |
+| [Design Specifications](#design-specifications) |
 | [Data Hazards](#data-hazards) |
 | [Control Hazards](#control-hazards) |
 | [Simulation and Testing](#simulation-and-testing) |
@@ -27,7 +27,7 @@ The hard part was the `Hazard Unit`, where we had to implement three types of me
 
 Below is the overview of the `Hazard Unit`:
 
-![hazard]()
+![Hazard unit](../../images/hazard_unit.jpg)
 
 The details of the implementation are included below, and for notes of debugging processes, please refer to our [personal logbooks](../logbooks) and [personal statements](../personal_statements/).
 
@@ -36,15 +36,27 @@ The details of the implementation are included below, and for notes of debugging
 
 ### Read-after-write (RAW) Dependency Hazard - Forwarding
 
-No drawing needed
+![Forwarding](../../images/forwarding.png)
+
+Signals added
 
 ### LW Data Dependency Hazard - Stalling
 
-Diagram for stalling 
+| Diagram | Schematic | 
+|-|-|
+| ![Stalling diagram](<../../images/stall_diagram.jpg>) | ![Stalling schematic](../../images/stall_schematic.jpg) |
 
-Signals for stalling
+Logic:
+```sv
+
+```
 
 ## Control Hazards - Stall and Flush
+
+![control hazards](../../images/control_hazards.png)
+
+
+For further insights, please refer to the [branch hit rate analysis](#hazard-unit---branch-hit-rate-analysis) below.
 
 ## Simulation and Testing
 

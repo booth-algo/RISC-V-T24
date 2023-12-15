@@ -71,13 +71,25 @@ Extra note: There is a bug in `data memory` in the tag `v0.2.0` which was not di
 
 ### Control unit
 
-Emphasis must also be placed on the `control unit`, which took the most time to debug for `single cycle`.
+Emphasis must also be placed on the `control unit`, which took the most time to debug for `single cycle`. A [`def.sv`](../../rtl/def.sv) was created to define all the `OP_Codes`, `PC_Codes`, etc.
 
 | Control Unit | Instruction List |
 |-|-|
 | ![Control Unit](../../images/control_unit.png) | ![Instr List](../../images/RISC-Vcard.png) |
 
-A 
+`JALR` was particularly hard to implement
+
+troubles with the `ret` function...
+
+This can be seen in [`def.sv`](../../rtl/def.sv), where `JALR` gets its own OP_CODE. 
+
+```sv
+`define PC_NEXT                     3'b000
+`define PC_ALWAYS_BRANCH            3'b001
+`define PC_JALR                     3'b010
+`define PC_INV_COND_BRANCH          3'b100
+`define PC_COND_BRANCH              3'b101
+```
 
 ## Simulation and Testing
 
