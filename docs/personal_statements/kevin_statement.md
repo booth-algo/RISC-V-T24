@@ -50,8 +50,8 @@
 
 - (c) I also implemented the `data memory`, and also worked on the testbench for it.
 
-- (d) I spent some time debugging the `JALR` instruction which William was struggling to debug. It proved to be the most challenging instruction to debug, of which I [noted the evidence and process in my logbook](../logbooks/kevin_log.md#5-612-midnight.)
-  - I linked William's commit here, since I debugged JALR and sent William a list of notes to help him debug. These notes and thought processes are explained in detail in the logbook link above. 
+- (d) I spent some time debugging the `JALR` instruction. It proved to be the most challenging instruction to debug, of which I [noted the evidence and process in my logbook](../logbooks/kevin_log.md#5-612-midnight.)
+  - I linked William's commit here, since I debugged JALR and sent him a list of notes to help him fix the code. These notes and thought processes are explained in detail in the logbook link above. 
   - Some WhatsApp images screenshots if you're interested: [Debug notes 1](../../images/jalr-debug-1.png) / [Debug notes 2](../../images/jalr-debug-2.png)
 
 | Contribution | Commits | Logbook |
@@ -105,7 +105,7 @@
 - (c) Pipeline: I also wrote the `lw_test_1.s`, which isolates a load word issue as I mentioned above in the pipelining section.
 
 - (c) Cache: I created a list of `asm` tests for cache, including 009 to 015 under [asm](../../tb/asm), to track hit / miss behaviour.
-  - These tests contributed to the **behavioural testing** for `direct mapped cache`
+  - These tests contributed to the **behavioural testing** for `direct mapped cache` ([description in section statement](../team_statement_sections/cache.md#simulation-and-testing))
   - These tests later contributed to the **regression testing** for `direct mapped cache`, **verifying** the behaviour of the cache.
 
 | Contribution | Commits | Logbook |

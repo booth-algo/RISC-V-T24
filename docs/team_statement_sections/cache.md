@@ -1,6 +1,15 @@
 # Cached Version
 
-### Introduction
+| Table of Contents |
+|-|
+| [Introduction](#introduction) |
+| [Design Specifications](#design-specifications) |
+| [Direct Mapped Cache](#direct-mapped-cache) |
+| [Two-Way Set Associative Cache](#two-way-set-associative-cache) |
+| [Simulation and Testing](#simulation-and-testing) |
+| [Conclusion and Further Improvements](#conclusion-and-further-improvements) |
+
+## Introduction
 
 In computer architecture, memory performance plays a pivotal role in computer performance, but has been lagging behind processor performance. To mitigate this, memory hierarchy is introduced:
 
@@ -14,7 +23,7 @@ Cache memory is stored in sets, where each memory address maps to exactly one ca
 
 In response, a two-way set associative cache is introduced, offering a solution by allowing each set to host two distinct data blocks from two members of the set. In the course of this project, the implementation of a direct-mapped cache has proven successful and aligns with expectations. However, the two-way set associative cache, while implemented, presents challenges and does not operate seamlessly.
 
-### Design Specifications
+## Design Specifications
 
 To improve the design of the CPU which retrieves data from the data memory, a cache was designed to increase the speed of retrieving information. In the original design of the memory, the data memory contained input signals, **Address** and **WriteData** and **ReadData** as the output signal, as shown below. 
 
@@ -30,7 +39,7 @@ However, with this implementation, an error, later discovered during implementat
 
 ![schematic3](../../images/schematic3.png)
 
-### Direct Mapped Cache
+## Direct Mapped Cache
 
 Firstly, a direct-mapped cache was designed, following the structure given in the Harris and Harris textbook, containing a cache line of 60 bits:
 - 32 (least significant bits) assigned to **DATA** 
@@ -122,9 +131,7 @@ The write logic is split into two modes: byte and word addressing. Word addressi
 In word addressing, the input signal, **write_data[]**, is written to the word, whereas in byte addressing, it is written to the specified byte.
 
 
-### [Two-Way Associative Cache](../../rtl/way2cache.sv) 
-
-**insert image**
+## [Two-Way Set Associative Cache](../../rtl/way2cache.sv) 
 
 For the design of the two-way associative cache, the following cache line was implemented:
 ```SV
@@ -143,9 +150,13 @@ For the design of the two-way associative cache, the following cache line was im
 This cacheline contains two sets of data and contains **USE**, which is implemented to include a replacement policy to reduce the number of conflicts.
 
 
-### Simulation and Testing
+## Simulation and Testing
 
 Extensive data analysis has been done on the cache. 
+
+Several tests created in the `asm` folder were written for behavioural testing (hit / miss testing) for the cache. These tests were also useful in regression testing, which can be seen in the plotted bar chart below. A [Python Script](../../tb/analyse.py) was used to do data analysis on the hit / miss rate of the cache, and the below bar chart was plotted. 
+
+The explanation for the work behind the data analysis is discussed in detail in [`testing.md`](../team_statement_sections/testing.md) - please have a read.
 
 ### Performance Analysis
 
@@ -155,6 +166,6 @@ Memory performance is tested by calculating the **HIT** and **MISS** rates for a
 
 Among the observed **HIT** rates for all conducted tests, a notable median value of **50.0%** emerges. This figure signifies that the main memory is accessed half the time, reflecting an enhanced memory performance. This metric is indicative of an efficient cache utilization, where a significant portion of requested data is found in the cache, reducing the need to access slower main memory.
 
-### Conclusion and Further Improvements
+## Conclusion and Further Improvements
 
 Cache memory enhances computer performance. While direct-mapped cache showcased gains, it displayed conflicts in cases of overlapping addresses. Two-way set associative cache, although more efficient by resolving overlapping conflicts, was designed but not fully implemented.

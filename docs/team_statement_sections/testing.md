@@ -2,7 +2,7 @@
 
 > “If it's not tested, it's broken” - Bruce Eckel
 
-We believe that our test-driven development elevates and distinguishes our repo from other teams.
+**We believe that our test-driven development elevates and distinguishes our repo from other teams.**
 
 From the beginning, we used test-driven development. Sometimes the tests
 were written before the components.
@@ -15,12 +15,13 @@ Before reading this section, it is *heavily* recommended to try out the
 testbench. Navigate to the [Quick Start](../../README.md#quick-start) for more 
 information.
 
-Implementations include:
-  1. **CI pipeline** - GitHub Actions
-  2. **Testbench and bash scripts** - GTests
-  3. **Code Coverage** - LCOV
-  4. **ASM and C tests**
-  5. **Cache hit/miss test** - Data analysis
+| Table of Contents |
+|-|
+| [CI pipeline - GitHub Actions](#ci-pipeline---github-actions) |
+| [Testbench and bash scripts - GTests](#testbench-and-bash-scripts---gtests) |
+| [Code Coverage](#code-coverage) |
+| [ASM and C test writing](#asm-and-c-test-writing) | 
+| [Cache hit / miss test - Data analysis](#cache-hit--miss-test---data-analysis) | 
 
 Note: to try the commands in this section, please execute the following command
 from the project directory:
